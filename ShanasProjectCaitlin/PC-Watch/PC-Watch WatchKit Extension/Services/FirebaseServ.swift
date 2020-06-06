@@ -1,0 +1,26 @@
+//
+//  FirebaseServ.swift
+//  PC-Watch WatchKit Extension
+//
+//  Created by Shana Duchin on 5/9/20.
+//  Copyright © 2020 Infinite Options. All rights reserved.
+//
+
+import Foundation
+
+class FirebaseServ{
+    
+    func getFirebaseData(completion: @escaping ([Values]) -> ()) {
+            guard let url = URL(string: "https://firestore.googleapis.com/v1/projects/project-caitlin-c71a9/databases/(default)/documents/users/7R6hAVmDrNutRkG3sVRy/day_events") else { return }
+            
+            URLSession.shared.dataTask(with: url) { (data, _, _) in
+                let format = try! JSONDecoder().decode(Firebase2.self, from: data!)
+                let items = format.documents.map{$0.fields.dayEvent.arrayValue.values}
+                let joined = Array(items.joined())
+                DispatchQueue.main.async {
+                    completion(joined)
+                }
+            }
+        .resume()
+    }
+}
