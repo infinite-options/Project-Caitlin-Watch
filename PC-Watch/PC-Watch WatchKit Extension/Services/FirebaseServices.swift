@@ -11,7 +11,7 @@ import Foundation
 class FirebaseServices{
     
     func getFirebaseData(completion: @escaping ([Value]) -> ()) {
-            guard let url = URL(string: "https://firestore.googleapis.com/v1/projects/project-caitlin-c71a9/databases/(default)/documents/users/7R6hAVmDrNutRkG3sVRy") else { return }
+            guard let url = URL(string: "https://firestore.googleapis.com/v1/projects/project-caitlin-c71a9/databases/(default)/documents/users/VzYNSZMGGRrtzm74zPmM") else { return }
             
             URLSession.shared.dataTask(with: url) { (data, _, _) in
                 let data = try! JSONDecoder().decode(Firebase.self, from: data!)

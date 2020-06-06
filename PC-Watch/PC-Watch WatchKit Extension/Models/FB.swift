@@ -20,8 +20,8 @@ struct Firebase: Codable {
 // MARK: - FirebaseFields
 struct FirebaseFields: Codable {
     var goalsRoutines: GoalsRoutines
-    var googleAuthToken, googleRefreshToken, lastName, firstName: FirstName
-    var aboutMe: AboutMe
+    var googleAuthToken, googleRefreshToken, lastName, firstName: stringValue
+    var aboutMe: AboutMe?
 
     enum CodingKeys: String, CodingKey {
         case goalsRoutines = "goals&routines"
@@ -40,14 +40,14 @@ struct AboutMe: Codable {
 
 // MARK: - AboutMeMapValue
 struct AboutMeMapValue: Codable {
-    var fields: PurpleFields
+    var fields: AboutMeMapFields
 }
 
-// MARK: - PurpleFields
-struct PurpleFields: Codable {
+// MARK: - AboutMeMapFields
+struct AboutMeMapFields: Codable {
     var havePic: HavePic
-    var pic, messageDay, messageCard: FirstName
-    var importantPeople: ImportantPeople
+    var pic, messageDay, messageCard: stringValue
+    var importantPeople: ImportantPeople?
 
     enum CodingKeys: String, CodingKey {
         case havePic = "have_pic"
@@ -70,16 +70,16 @@ struct ImportantPeople: Codable {
 
 // MARK: - ImportantPeopleArrayValue
 struct ImportantPeopleArrayValue: Codable {
-    var values: [PurpleValue]
+    var values: [referenceValue]
 }
 
-// MARK: - PurpleValue
-struct PurpleValue: Codable {
+// MARK: - referenceValue
+struct referenceValue: Codable {
     var referenceValue: String
 }
 
-// MARK: - FirstName
-struct FirstName: Codable {
+// MARK: - stringValue
+struct stringValue: Codable {
     var stringValue: String
 }
 
@@ -100,24 +100,24 @@ struct Value: Codable {
 
 // MARK: - ValueMapValue
 struct ValueMapValue: Codable {
-    var fields: FluffyFields
+    var fields: GRFields
 }
 
 // MARK: - FluffyFields
-struct FluffyFields: Codable {
-    var photo: FirstName
+struct GRFields: Codable {
+    var photo: stringValue
     var isAvailable, isComplete, isSublistAvailable: HavePic
-    var availableStartTime: FirstName
+    var availableStartTime: stringValue
     var isPersistent: HavePic
-    var datetimeCompleted: FirstName?
-    var expectedCompletionTime: FirstName
+    var datetimeCompleted: stringValue?
+    var expectedCompletionTime: stringValue
     var isTimed, isInProgress: HavePic?
-    var datetimeStarted, audio: FirstName?
-    var availableEndTime: FirstName
+    var datetimeStarted, audio: stringValue?
+    var availableEndTime: stringValue
     var userNotifications: Notifications
-    var id: FirstName
+    var id: stringValue
     var tags: Tags?
-    var title: FirstName
+    var title: stringValue
     var taNotifications: Notifications
     var deleted: HavePic?
 
@@ -149,28 +149,28 @@ struct Notifications: Codable {
 
 // MARK: - TaNotificationsMapValue
 struct TaNotificationsMapValue: Codable {
-    var fields: TentacledFields
+    var fields: NotificationFields
 }
 
-// MARK: - TentacledFields
-struct TentacledFields: Codable {
-    var during, after, before: After
+// MARK: - NotificationState
+struct NotificationFields: Codable {
+    var during, after, before: NotificationMapKey
 }
 
-// MARK: - After
-struct After: Codable {
-    var mapValue: AfterMapValue
+// MARK: - NotificationMap
+struct NotificationMapKey: Codable {
+    var mapValue: NotificationMapValue
 }
 
-// MARK: - AfterMapValue
-struct AfterMapValue: Codable {
-    var fields: StickyFields
+// MARK: - NotificationFields
+struct NotificationMapValue: Codable {
+    var fields: NotificationMapFields
 }
 
 // MARK: - StickyFields
-struct StickyFields: Codable {
+struct NotificationMapFields: Codable {
     var isEnabled: HavePic
-    var time, message: FirstName
+    var time, message: stringValue
     var isSet: HavePic
 
     enum CodingKeys: String, CodingKey {
@@ -187,5 +187,5 @@ struct Tags: Codable {
 
 // MARK: - TagsArrayValue
 struct TagsArrayValue: Codable {
-    var values: [FirstName]
+    var values: [stringValue]
 }
