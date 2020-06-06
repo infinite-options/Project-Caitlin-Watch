@@ -11,14 +11,14 @@ import Foundation
 class FirebaseServ{
     
     func getFirebaseData(completion: @escaping ([Values]) -> ()) {
-            guard let url = URL(string: "https://firestore.googleapis.com/v1/projects/project-caitlin-c71a9/databases/(default)/documents/users/7R6hAVmDrNutRkG3sVRy/day_events") else { return }
+            guard let url = URL(string: "https://firestore.googleapis.com/v1/projects/project-caitlin-c71a9/databases/(default)/documents/users/VzYNSZMGGRrtzm74zPmM/day_events") else { return }
             
             URLSession.shared.dataTask(with: url) { (data, _, _) in
                 let format = try! JSONDecoder().decode(Firebase2.self, from: data!)
-                let items = format.documents.map{$0.fields.dayEvent.arrayValue.values}
-                let joined = Array(items.joined())
+                let items = format.documents?.map{$0.fields.dayEvent.arrayValue.values}
+                let joined = Array(arrayLiteral: items?.joined())
                 DispatchQueue.main.async {
-                    completion(joined)
+//                    completion(joined)
                 }
             }
         .resume()

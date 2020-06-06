@@ -12,9 +12,9 @@ import Foundation
 
 // MARK: - Firebase
 struct Firebase: Codable {
-    var name: String
+    var name: String?
+    var createTime, updateTime: String?
     var fields: FirebaseFields
-    var createTime, updateTime: String
 }
 
 // MARK: - FirebaseFields

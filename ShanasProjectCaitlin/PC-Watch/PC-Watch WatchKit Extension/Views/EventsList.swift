@@ -58,7 +58,7 @@ struct EventsList: View {
 //
                                //firebaseDate = DateFormatter().date(from: item.mapValue.fields.when.timestampValue)!
                               // if isDate == true {
-                                Text(item.mapValue.fields.title.stringValue)
+                            Text(item.mapValue.fields.title.stringValue)
 
                            }
                        }

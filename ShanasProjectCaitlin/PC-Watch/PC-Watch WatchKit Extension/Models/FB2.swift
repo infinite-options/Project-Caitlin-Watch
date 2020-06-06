@@ -22,7 +22,7 @@ struct Firebase2: Codable {
         var createTime, updateTime: String
     }
     
-    var documents: [Document]
+    var documents: [Document]?
     //var document: Document
 }
 
