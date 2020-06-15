@@ -49,7 +49,7 @@ struct EventsList: View {
 //            return true
 //        }
     var body: some View {
-               NavigationLink(destination:
+               //NavigationLink(destination:
                    List {
                        ForEach(data, id: \.mapValue.fields.title.stringValue) { item in
                            VStack(alignment: .leading) {
@@ -73,10 +73,10 @@ struct EventsList: View {
                         
                     }
                        }
-                   }) {
-                   Text("Events")
-                       .frame(height: 50, alignment: .center)
-               }
+                   }//) {
+                   //Text("Events")
+                     //  .frame(height: 50, alignment: .center)
+               //}
            }
     
     private func config() {
