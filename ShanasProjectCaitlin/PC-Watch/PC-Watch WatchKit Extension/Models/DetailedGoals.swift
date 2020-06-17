@@ -23,14 +23,7 @@ class StepsModel: ObservableObject{
         Step(title: "Step 3", status: false),
         Step(title: "Step 4", status: false)
     ]
-}
-
-struct Instruction{
-    var img: Image
-    var done: Bool
-}
-
-class InstructionsStep: ObservableObject {
+    
     @Published var instructions: [Instruction] = [
         Instruction(img: Image("bureau"), done: false),
         Instruction(img: Image("shelf"), done: false)
@@ -57,7 +50,13 @@ class InstructionsStep: ObservableObject {
             print("New color: \(rowColor)")
         }
     }
-    
+}
+
+struct Instruction{
+    var img: Image
+    var done: Bool
+}
+    /*
     func getColor(compl: Int) -> Color {
         print("hello..")
         if compl == 1 && compl < 2 {
@@ -70,4 +69,4 @@ class InstructionsStep: ObservableObject {
             return Color.gray
         }
     }
-}
+ */

@@ -34,7 +34,7 @@ struct PersistentView: View {
         HStack{
             Spacer()
             if(self.goal){
-                NavigationLink(destination: GoalList()){
+                NavigationLink(destination: GoalList(model: StepsModel())){
                     Image("Goals").renderingMode(.original).resizable().frame(width:43, height:43)
                         .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 10))
                 }.buttonStyle(PlainButtonStyle())

@@ -11,82 +11,56 @@ import SwiftUI
 
 struct DetailedGoalView: View {
     @ObservedObject var model: StepsModel
-    @ObservedObject var InstructModel = InstructionsStep()
-    /*
-    let colorbinding: Binding(
-        get: { return Color.gray },
-        set: {
-            return Color{
-                if compl == 1 && compl < 2 {
-                    return Color.yellow.opacity(0.5)
-                }
-                else if compl >= 2 {
-                    return Color.green.opacity(0.5)
-                }
-                else {
-                    return Color.gray
-                }
-            }
-        }
-    )*/
+    
+    //@ObservedObject var col = model.rowColor
+    //@ObservedObject var InstructModel: InstructionsStep
     
     var body: some View{
         List{
             
             ForEach(model.steps.indices, id: \.self){ id in
-                NavigationLink(destination: InstructionView(InstructModel: self.InstructModel,
-                                step: self.model.steps[id].title)) {
+                NavigationLink(destination: InstructionView(model: StepsModel(), step: self.model.steps[id].title)) {
                     VStack{
                         Text(self.model.steps[id].title)
-                        .font(.system(.headline, design: .rounded))
-                    }.listRowPlatterColor(self.InstructModel.rowColor)
+                            .font(.system(.headline, design: .rounded))
+                    }.listRowPlatterColor(self.model.rowColor)
                 }
             }
         }
     }
 }
 
-
 struct InstructionView: View{
-    @ObservedObject var InstructModel: InstructionsStep
-    
+    @ObservedObject var model: StepsModel
+    //@ObservedObject var InstructModel: InstructionsStep
     var step: String
-    //@State var instructStatus = [false, false]
-    //@State var showOverlay: Bool = false
+    
     var body: some View{
-        //Text("\(step)")
         VStack{
-        /*List{
-            ForEach(InstructModel.instructions.indices, id: \.self){ id in
-                Button(action: {print("Images")}){
-                    self.InstructModel.instructions[id].img.renderingMode(.original)
-                }.buttonStyle(PlainButtonStyle())
-            }
-        }*/
             HStack{
                 Button(action: {
-                    self.InstructModel.instructions[0].done = true
-                    self.InstructModel.completed += 1
-                    print("\(self.InstructModel.rowColor)")
+                    self.model.instructions[0].done = true
+                    self.model.completed += 1
+                    print("\(self.model.rowColor)")
                 }){
-                    if self.InstructModel.instructions[0].done == false {
-                        self.InstructModel.instructions[0].img.renderingMode(.original)
+                    if self.model.instructions[0].done == false {
+                        self.model.instructions[0].img.renderingMode(.original)
                     }
-                    else if self.InstructModel.instructions[0].done {
-                        self.InstructModel.instructions[0].img.renderingMode(.original)
+                    else if self.model.instructions[0].done {
+                        self.model.instructions[0].img.renderingMode(.original)
                         .overlay(Image("check")).opacity(0.4)
                     }
                 }.buttonStyle(PlainButtonStyle())
                 
                 Button(action: {
-                    self.InstructModel.instructions[1].done = true
-                    self.InstructModel.completed += 1
+                    self.model.instructions[1].done = true
+                    self.model.completed += 1
                 }){
-                    if self.InstructModel.instructions[1].done == false {
-                        self.InstructModel.instructions[1].img.renderingMode(.original)
+                    if self.model.instructions[1].done == false {
+                        self.model.instructions[1].img.renderingMode(.original)
                     }
-                    else if self.InstructModel.instructions[1].done {
-                        self.InstructModel.instructions[1].img.renderingMode(.original)
+                    else if self.model.instructions[1].done {
+                        self.model.instructions[1].img.renderingMode(.original)
                         .overlay(Image("check")).opacity(0.4)
                     }
                 }.buttonStyle(PlainButtonStyle())
@@ -97,9 +71,9 @@ struct InstructionView: View{
 
 
 struct GoalList: View {
-    
     @State var data = [Value]()
-    //@EnvironmentObject var InstructModel: InstructionsStep
+    @ObservedObject var model: StepsModel
+    
     var body: some View {
         GeometryReader { geo in
             VStack {
@@ -116,7 +90,7 @@ struct GoalList: View {
                         VStack(alignment: .leading) {
                             if item.mapValue.fields.isAvailable.booleanValue {
                                 if item.mapValue.fields.photo.stringValue != "" {
-                                    NavigationLink(destination: DetailedGoalView(model: StepsModel())){
+                                    NavigationLink(destination: DetailedGoalView(model: self.model)){
                                         HStack {
                                             AsyncImage(
                                                 url: URL(string: item.mapValue.fields.photo.stringValue)!,
@@ -142,6 +116,6 @@ struct GoalList: View {
 
 struct GoalList_Previews: PreviewProvider {
     static var previews: some View {
-        GoalList()
+        GoalList(model: StepsModel())
     }
 }

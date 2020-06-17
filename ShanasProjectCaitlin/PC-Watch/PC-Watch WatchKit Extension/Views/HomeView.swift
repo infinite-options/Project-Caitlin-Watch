@@ -11,7 +11,6 @@ import SwiftUI
 struct HomeView: View {
     
     @State var data = [Value]()
-    
     var body: some View {
         /*List{
             NavigationLink(destination: RoutineList()){Text("Routines").frame(height: 50, alignment: .center)}
