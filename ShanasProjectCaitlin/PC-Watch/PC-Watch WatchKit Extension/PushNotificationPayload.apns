@@ -1,9 +1,9 @@
 {
     "aps": {
         "alert": {
-            "body": "Test message",
-            "title": "Optional title",
-            "subtitle": "Optional subtitle"
+            "body": "Open your Manifest app to keep track of your tasks",
+            "title": "It's Time for your Routine!",
+            "subtitle": ""
         },
         "category": "myCategory",
         "thread-id": "5280"

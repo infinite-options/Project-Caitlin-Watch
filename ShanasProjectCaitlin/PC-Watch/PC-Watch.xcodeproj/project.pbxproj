@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A91D05A24955173001662D4 /* NotificationProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A91D05724955172001662D4 /* NotificationProcessor.swift */; };
+		1A91D05B24955173001662D4 /* WatchSessionBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A91D05824955172001662D4 /* WatchSessionBehavior.swift */; };
+		1A91D05C24955173001662D4 /* NotificationHandleable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A91D05924955173001662D4 /* NotificationHandleable.swift */; };
+		1A91D06024955178001662D4 /* WatchSessionBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A91D05E24955178001662D4 /* WatchSessionBehavior.swift */; };
+		1A91D06124955178001662D4 /* NotificationHandleable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A91D05F24955178001662D4 /* NotificationHandleable.swift */; };
+		1A91D06224955178001662D4 /* NotificationProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A91D05D24955178001662D4 /* NotificationProcessor.swift */; };
+		1A91D06A24955C28001662D4 /* SharedCode in Resources */ = {isa = PBXBuildFile; fileRef = 1A91D06924955C28001662D4 /* SharedCode */; };
 		27BF9DB6243BD385006A5466 /* PC-Watch WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 27BF9DB5243BD385006A5466 /* PC-Watch WatchKit App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		27BF9DBC243BD385006A5466 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27BF9DBA243BD385006A5466 /* Interface.storyboard */; };
 		27BF9DBE243BD389006A5466 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27BF9DBD243BD389006A5466 /* Assets.xcassets */; };
@@ -73,6 +80,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1A91D05724955172001662D4 /* NotificationProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NotificationProcessor.swift; path = "../../../../../../demos/NotificationDemo/NotificationDemo WatchKit Extension/NotificationProcessor.swift"; sourceTree = "<group>"; };
+		1A91D05824955172001662D4 /* WatchSessionBehavior.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WatchSessionBehavior.swift; path = "../../../../../../demos/NotificationDemo/NotificationDemo WatchKit Extension/WatchSessionBehavior.swift"; sourceTree = "<group>"; };
+		1A91D05924955173001662D4 /* NotificationHandleable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NotificationHandleable.swift; path = "../../../../../../demos/NotificationDemo/NotificationDemo WatchKit Extension/NotificationHandleable.swift"; sourceTree = "<group>"; };
+		1A91D05D24955178001662D4 /* NotificationProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationProcessor.swift; sourceTree = "<group>"; };
+		1A91D05E24955178001662D4 /* WatchSessionBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSessionBehavior.swift; sourceTree = "<group>"; };
+		1A91D05F24955178001662D4 /* NotificationHandleable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHandleable.swift; sourceTree = "<group>"; };
+		1A91D06924955C28001662D4 /* SharedCode */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SharedCode; sourceTree = "<group>"; };
 		27BF9DB1243BD385006A5466 /* PC-Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PC-Watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		27BF9DB5243BD385006A5466 /* PC-Watch WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PC-Watch WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		27BF9DBB243BD385006A5466 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
@@ -114,6 +128,7 @@
 		27BF9DAA243BD385006A5466 = {
 			isa = PBXGroup;
 			children = (
+				1A91D06924955C28001662D4 /* SharedCode */,
 				27BF9DB9243BD385006A5466 /* PC-Watch WatchKit App */,
 				27BF9DC8243BD389006A5466 /* PC-Watch WatchKit Extension */,
 				27BF9DB2243BD385006A5466 /* Products */,
@@ -143,6 +158,9 @@
 		27BF9DC8243BD389006A5466 /* PC-Watch WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
+				1A91D05F24955178001662D4 /* NotificationHandleable.swift */,
+				1A91D05D24955178001662D4 /* NotificationProcessor.swift */,
+				1A91D05E24955178001662D4 /* WatchSessionBehavior.swift */,
 				27BF9DFA243BD5CB006A5466 /* Views */,
 				27BF9DF2243BD583006A5466 /* Resources */,
 				27BF9DF5243BD5A3006A5466 /* Services */,
@@ -172,6 +190,9 @@
 			children = (
 				27BF9DEF243BD501006A5466 /* FB.swift */,
 				552E9B9E2467417C00D6E20B /* FB2.swift */,
+				1A91D05924955173001662D4 /* NotificationHandleable.swift */,
+				1A91D05724955172001662D4 /* NotificationProcessor.swift */,
+				1A91D05824955172001662D4 /* WatchSessionBehavior.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -306,6 +327,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A91D06A24955C28001662D4 /* SharedCode in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -335,15 +357,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A91D05B24955173001662D4 /* WatchSessionBehavior.swift in Sources */,
 				552E9B9F2467417C00D6E20B /* FB2.swift in Sources */,
 				27BF9E05243E783A006A5466 /* GoalList.swift in Sources */,
 				27BF9DCC243BD389006A5466 /* HostingController.swift in Sources */,
+				1A91D05C24955173001662D4 /* NotificationHandleable.swift in Sources */,
 				27BF9E02243E774F006A5466 /* RoutineList.swift in Sources */,
+				1A91D05A24955173001662D4 /* NotificationProcessor.swift in Sources */,
 				27BF9DD0243BD389006A5466 /* NotificationController.swift in Sources */,
 				27E475AD2442413700D380FA /* AsyncImage.swift in Sources */,
+				1A91D06224955178001662D4 /* NotificationProcessor.swift in Sources */,
+				1A91D06124955178001662D4 /* NotificationHandleable.swift in Sources */,
 				27BF9E07243E78A1006A5466 /* EventsList.swift in Sources */,
 				27E475A9244240B200D380FA /* ImageLoader.swift in Sources */,
 				27BF9DCE243BD389006A5466 /* ExtensionDelegate.swift in Sources */,
+				1A91D06024955178001662D4 /* WatchSessionBehavior.swift in Sources */,
 				552E9B9B2467345E00D6E20B /* FirebaseServ.swift in Sources */,
 				27BF9DF1243BD501006A5466 /* FB.swift in Sources */,
 				27BF9DFE243BD600006A5466 /* HomeView.swift in Sources */,
