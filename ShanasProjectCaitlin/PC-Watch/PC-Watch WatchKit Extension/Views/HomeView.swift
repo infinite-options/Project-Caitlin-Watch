@@ -20,6 +20,7 @@ struct HomeView: View {
             NavigationLink(destination: EventsList()){Text("Events").frame(height: 50, alignment: .center)}
                 
             }*/
+        
         VStack{
             Spacer()
             PersistentView(goal: true, event: true, routine: true, help: false)

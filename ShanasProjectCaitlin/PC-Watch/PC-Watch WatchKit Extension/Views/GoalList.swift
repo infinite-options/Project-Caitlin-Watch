@@ -9,27 +9,72 @@
 
 import SwiftUI
 
-struct DetailedGoalView: View {
-    @ObservedObject var model: StepsModel
-    
+struct TasksView: View {
+    //@ObservedObject var model: StepsModel
+    @State var data = [ValueTask]()
+    @State var goalID: String
     //@ObservedObject var col = model.rowColor
     //@ObservedObject var InstructModel: InstructionsStep
     
     var body: some View{
-        List{
-            
-            ForEach(model.steps.indices, id: \.self){ id in
-                NavigationLink(destination: InstructionView(model: StepsModel(), step: self.model.steps[id].title)) {
-                    VStack{
-                        Text(self.model.steps[id].title)
-                            .font(.system(.headline, design: .rounded))
-                    }.listRowPlatterColor(self.model.rowColor)
+        List {
+            ForEach(self.data, id: \.mapValue.fields.id.stringValue) { item in
+                VStack(alignment: .leading) {
+                    if item.mapValue.fields.isAvailable.booleanValue {
+                        if item.mapValue.fields.photo.stringValue != "" {
+                            NavigationLink(destination: StepsView(taskID: item.mapValue.fields.id.stringValue, goalID: self.goalID)){
+                                HStack {
+                                    AsyncImage(
+                                        url: URL(string: item.mapValue.fields.photo.stringValue)!,
+                                            placeholder: Image("blacksquare")
+                                                ).aspectRatio(contentMode: .fit)
+                                            Text(item.mapValue.fields.title.stringValue)
+                                }
+                            }
+                        }
+                    }
                 }
+            }
+        }.onAppear {
+            FirebaseServices().getFirebaseTasks(goalID: self.goalID) {
+                (data) in self.data = data
             }
         }
     }
 }
 
+struct StepsView: View {
+    @State var data = [ValueTask]()
+    @State var taskID: String
+    @State var goalID: String
+    
+    var body: some View {
+        List {
+            ForEach(self.data, id: \.mapValue.fields.id.stringValue) { item in
+                VStack(alignment: .leading) {
+                    if item.mapValue.fields.isAvailable.booleanValue {
+                        if item.mapValue.fields.photo.stringValue != "" {
+                                HStack {
+                                    AsyncImage(
+                                        url: URL(string: item.mapValue.fields.photo.stringValue)!,
+                                            placeholder: Image("blacksquare")
+                                                ).aspectRatio(contentMode: .fit)
+                                            Text(item.mapValue.fields.title.stringValue)
+                                }
+                        }
+                    }
+                }.onTapGesture {
+                    print("Step ID: ")
+                    print(item.mapValue.fields.id.stringValue)
+                }
+            }
+        }.onAppear {
+            FirebaseServices().getFirebaseStep(stepID: self.taskID, goalID: self.goalID) {
+                (data) in self.data = data
+            }
+        }
+    }
+}
 struct InstructionView: View{
     @ObservedObject var model: StepsModel
     //@ObservedObject var InstructModel: InstructionsStep
@@ -90,7 +135,7 @@ struct GoalList: View {
                         VStack(alignment: .leading) {
                             if item.mapValue.fields.isAvailable.booleanValue {
                                 if item.mapValue.fields.photo.stringValue != "" {
-                                    NavigationLink(destination: DetailedGoalView(model: self.model)){
+                                    NavigationLink(destination: TasksView(goalID: item.mapValue.fields.id.stringValue)){
                                         HStack {
                                             AsyncImage(
                                                 url: URL(string: item.mapValue.fields.photo.stringValue)!,
