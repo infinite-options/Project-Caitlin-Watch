@@ -38,7 +38,8 @@ class FirebaseServices{
     }
     
     func getFirebaseStep(stepID: String, goalID: String, completion: @escaping ([ValueTask]) -> ()) {
-        var StepUrl = "https://firestore.googleapis.com/v1/projects/project-caitlin-c71a9/databases/(default)/documents/users/TuqC2z3ta8dGueJlDS6s/goals&routines/"
+        var StepUrl =
+        "https://firestore.googleapis.com/v1/projects/project-caitlin-c71a9/databases/(default)/documents/users/TuqC2z3ta8dGueJlDS6s/goals&routines/"
         StepUrl.append(goalID)
         StepUrl.append("/actions&tasks/")
         StepUrl.append(stepID)
