@@ -178,6 +178,8 @@ struct FluffyFields: Codable {
     var taNotifications: Notifications
     var photo: EmailID
     var isAvailable: HavePic
+    var startDayAndTime: EmailID
+    var endDayAndTime: EmailID
 
     enum CodingKeys: String, CodingKey {
         case isSublistAvailable = "is_sublist_available"
@@ -196,6 +198,8 @@ struct FluffyFields: Codable {
         case taNotifications = "ta_notifications"
         case photo
         case isAvailable = "is_available"
+        case startDayAndTime = "start_day_and_time"
+        case endDayAndTime = "end_day_and_time"
     }
 }
 

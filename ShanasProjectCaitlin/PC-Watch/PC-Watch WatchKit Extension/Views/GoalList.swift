@@ -10,11 +10,8 @@
 import SwiftUI
 
 struct TasksView: View {
-    //@ObservedObject var model: StepsModel
-    @State var data = [ValueTask]()
-    @State var goalID: String
-    //@ObservedObject var col = model.rowColor
-    //@ObservedObject var InstructModel: InstructionsStep
+    @State private var data = [ValueTask]()
+    var goalID: String
     
     var body: some View{
         List {
@@ -44,9 +41,9 @@ struct TasksView: View {
 }
 
 struct StepsView: View {
-    @State var data = [ValueTask]()
-    @State var taskID: String
-    @State var goalID: String
+    @State private var data = [ValueTask]()
+    var taskID: String
+    var goalID: String
     
     var body: some View {
         List {
@@ -54,13 +51,13 @@ struct StepsView: View {
                 VStack(alignment: .leading) {
                     if item.mapValue.fields.isAvailable.booleanValue {
                         if item.mapValue.fields.photo.stringValue != "" {
-                                HStack {
-                                    AsyncImage(
-                                        url: URL(string: item.mapValue.fields.photo.stringValue)!,
-                                            placeholder: Image("blacksquare")
-                                                ).aspectRatio(contentMode: .fit)
-                                            Text(item.mapValue.fields.title.stringValue)
-                                }
+                            HStack {
+                                AsyncImage(
+                                    url:URL(string: item.mapValue.fields.photo.stringValue)!,
+                                        placeholder: Image("blacksquare"))
+                                        .aspectRatio(contentMode: .fit)
+                                Text(item.mapValue.fields.title.stringValue)
+                            }
                         }
                     }
                 }.onTapGesture {
@@ -75,6 +72,8 @@ struct StepsView: View {
         }
     }
 }
+
+/*
 struct InstructionView: View{
     @ObservedObject var model: StepsModel
     //@ObservedObject var InstructModel: InstructionsStep
@@ -113,17 +112,18 @@ struct InstructionView: View{
         }
     }
 }
-
+*/
 
 struct GoalList: View {
-    @State var data = [Value]()
-    @ObservedObject var model: StepsModel
+    @State private var data = [Value]()
+    var DayDateObj = DayDate()
+    var notific = NotificationHandler()
     
     var body: some View {
         GeometryReader { geo in
             VStack {
                 VStack {
-                    Text("\(DayDateObj.day[DayDateObj.weekday]), \(DayDateObj.dueDate, formatter: DayDateObj.taskDateFormat)")
+                    Text("\(self.DayDateObj.day[self.DayDateObj.weekday]), \(self.DayDateObj.dueDate, formatter: self.DayDateObj.taskDateFormat)")
                         .font(.system(size: 15.0, design: .rounded))
                 }.frame(maxWidth: geo.size.width, alignment: .leading)
                     
@@ -142,17 +142,45 @@ struct GoalList: View {
                                                     placeholder: Image("blacksquare")
                                                         ).aspectRatio(contentMode: .fit)
                                                     Text(item.mapValue.fields.title.stringValue)
+                                            Text(String(self.DayDateObj.getTimeLeft(givenDate: item.mapValue.fields.startDayAndTime.stringValue)))
                                         }
-                                    }
+                                    }.frame(height: 60)
                                 }
+                            }
+                        }
+                        .onAppear {
+                            //User - Before
+                            if (item.mapValue.fields.userNotifications.mapValue.fields.before.mapValue.fields.isEnabled.booleanValue){
+                                self.notific.setBeforeNotification(
+                                    message: item.mapValue.fields.userNotifications.mapValue.fields.before.mapValue.fields.message.stringValue,
+                                    time:  item.mapValue.fields.userNotifications.mapValue.fields.before.mapValue.fields.time.stringValue,
+                                    title: item.mapValue.fields.title.stringValue,
+                                    startTime: item.mapValue.fields.startDayAndTime.stringValue)
+                            }
+                            //User - After
+                            if (item.mapValue.fields.userNotifications.mapValue.fields.after.mapValue.fields.isEnabled.booleanValue){
+                                self.notific.setAfterNotification(
+                                    message: item.mapValue.fields.userNotifications.mapValue.fields.after.mapValue.fields.message.stringValue,
+                                    time:  item.mapValue.fields.userNotifications.mapValue.fields.after.mapValue.fields.time.stringValue,
+                                    title: item.mapValue.fields.title.stringValue,
+                                    endTime: item.mapValue.fields.endDayAndTime.stringValue)
+                            }
+                            //User - During
+                            if (item.mapValue.fields.userNotifications.mapValue.fields.during.mapValue.fields.isEnabled.booleanValue){
+                                self.notific.setDuringNotification(
+                                    message: item.mapValue.fields.userNotifications.mapValue.fields.during.mapValue.fields.message.stringValue,
+                                    time:  item.mapValue.fields.userNotifications.mapValue.fields.during.mapValue.fields.time.stringValue,
+                                    title: item.mapValue.fields.title.stringValue,
+                                    startTime: item.mapValue.fields.startDayAndTime.stringValue)
                             }
                         }
                     }
                 }.onAppear {
-                    FirebaseServices().getFirebaseData() {
+                    FirebaseServices().getFirebaseData	() {
                         (data) in self.data = data
                     }
-                }
+                }.listStyle(CarouselListStyle())
+                
                 PersistentView(goal: false, event: true, routine: true, help: true)
             }.edgesIgnoringSafeArea(.bottom).padding(0)
         }
@@ -161,6 +189,6 @@ struct GoalList: View {
 
 struct GoalList_Previews: PreviewProvider {
     static var previews: some View {
-        GoalList(model: StepsModel())
+        GoalList()
     }
 }

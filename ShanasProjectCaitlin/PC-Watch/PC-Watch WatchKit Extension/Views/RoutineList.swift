@@ -12,12 +12,13 @@ import SwiftUI
 struct RoutineList: View {
     
     @State var data = [Value]()
+    @State var DayDateObj = DayDate()
     
     var body: some View {
         GeometryReader{ geo in
             VStack{
                 VStack {
-                    Text("\(DayDateObj.day[DayDateObj.weekday]), \(DayDateObj.dueDate, formatter: DayDateObj.taskDateFormat)")
+                    Text("\(self.DayDateObj.day[self.DayDateObj.weekday]), \(self.DayDateObj.dueDate, formatter: self.DayDateObj.taskDateFormat)")
                         .font(.system(size: 15.0, design: .rounded))
                 }.frame(maxWidth: geo.size.width, alignment: .leading)
                     

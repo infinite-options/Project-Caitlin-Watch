@@ -7,11 +7,32 @@
 //
 
 import WatchKit
+import UserNotifications
 
-class ExtensionDelegate: NSObject, WKExtensionDelegate {
+class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenterDelegate {
 
     func applicationDidFinishLaunching() {
-        // Perform any final initialization of your application.
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+            if granted {
+                print("User granted permission.")
+            }
+            else {
+                print("Permission not granted")
+            }
+            
+        }
+    }
+    /*
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print("here1")
+        completionHandler()
+    }*/
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        print("here2")
+        completionHandler([.alert, .sound, .badge])
     }
 
     func applicationDidBecomeActive() {
