@@ -10,82 +10,43 @@ import Foundation
 import UserNotifications
 
 class NotificationHandler : NSObject, UNUserNotificationCenterDelegate {
+    
     var Obj = DayDate()
     let center = UNUserNotificationCenter.current()
     let content = UNMutableNotificationContent()
     
-    func setBeforeNotification(message: String, time: String, title: String, startTime: String) {
+    func setNotification(message: String, time: String, title: String, startOrEndTime: String, id: String, tag: Int) {
      
-        let start = Obj.timeLeft.date(from: startTime)
+        let start = Obj.timeLeft.date(from: startOrEndTime)
         let timeComp = time.components(separatedBy: ":")
         let minutes = Int(timeComp[1])!
+        var identifier = id
         
         content.title = "\(title) about to start!"
         content.body = message
+        var notificTriggerDate = Date()
         
-        let notificTriggerDate = Calendar.current.date(byAdding: .minute, value: -minutes, to: start!)!
-        let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: notificTriggerDate)
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
-        var identifier = title
-        identifier.append("user-before")
-        
-        print("BEFORE :: IDENTIFIER = \(identifier) :: TIME = \(notificTriggerDate)")
-        
-        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-        center.add(request) { (err) in
-            if let error = err {
-                print(error.localizedDescription)
-            }
-            else {
-                print("successful notification")
-            }
+        //0 - Before (StartTime - TimeBeforeStart)
+        if tag == 0{
+            notificTriggerDate = Calendar.current.date(byAdding: .minute, value: -minutes, to: start!)!
+            identifier.append("before")
         }
-    }
-    
-    func setAfterNotification(message: String, time: String, title: String, endTime: String) {
-        let start = Obj.timeLeft.date(from: endTime)
-        let timeComp = time.components(separatedBy: ":")
-        let minutes = Int(timeComp[1])!
-        
-        content.title = "Just Finished \(title)"
-        content.body = message
-        
-        let notificTriggerDate = Calendar.current.date(byAdding: .minute, value: minutes, to: start!)!
-        let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: notificTriggerDate)
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
-        var identifier = title
-        identifier.append("user-after")
-        
-        print("AFTER :: IDENTIFIER = \(identifier) :: TIME = \(notificTriggerDate)")
-        
-        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-        center.add(request) { (err) in
-            if let error = err {
-                print(error.localizedDescription)
-            }
-            else {
-                print("successful notification")
-            }
+        // 1 - During (TimeAfterStart + StartTime)
+        else if tag == 1
+        {
+            notificTriggerDate = Calendar.current.date(byAdding: .minute, value: minutes, to: start!)!
+            identifier.append("during")
         }
-    }
-    
-    func setDuringNotification(message: String, time: String, title: String, startTime: String) {
-        let start = Obj.timeLeft.date(from: startTime)
-        let timeComp = time.components(separatedBy: ":")
-        let minutes = Int(timeComp[1])!
+        //2 - After (EndTime + TimeAfterEnd)
+        else if tag == 2{
+            notificTriggerDate = Calendar.current.date(byAdding: .minute, value: minutes, to: start!)!
+            identifier.append("after")
+        }
         
-        content.title = "Currently working on: \(title)"
-        content.body = message
-        
-        let notificTriggerDate = Calendar.current.date(byAdding: .minute, value: minutes, to: start!)!
         let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: notificTriggerDate)
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
-        var identifier = title
-        identifier.append("user-during")
-        
-        print("DURING :: IDENTIFIER = \(identifier) :: TIME = \(notificTriggerDate)")
-        
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+        
         center.add(request) { (err) in
             if let error = err {
                 print(error.localizedDescription)
@@ -97,51 +58,86 @@ class NotificationHandler : NSObject, UNUserNotificationCenterDelegate {
     }
 }
 
-class FirebaseServices{
+class FirebaseServices: ObservableObject {
     
-    func getFirebaseData(completion: @escaping ([Value]) -> ()) {
+    static let shared = FirebaseServices()
+    
+    @Published var data: [Value]?
+    
+    private var task: [ValueTask]?
+    private var step: [ValueTask]?
+    @Published var goalsSubtasks = [String: [ValueTask]?]()
+    @Published var taskSteps = [String: [ValueTask]?]()
+    
+    private init() {
+        getFirebaseData(){
+            (data) in self.data = data
+            
+            if let data = data {
+                for goal in data {
+                    self.getFirebaseTasks(goalID: goal.mapValue.fields.id.stringValue){
+                        (task) in self.task = task
+                        
+                        if let task = task {
+                            self.goalsSubtasks[goal.mapValue.fields.id
+                                .stringValue] = task
+                        
+                            for step in task {
+                                self.getFirebaseStep(stepID: step.mapValue.fields.id.stringValue,                  goalID: goal.mapValue.fields.id.stringValue){
+                                    
+                                    (task) in self.task = task
+                                    if let task = task{
+                                        self.taskSteps[step.mapValue.fields.id.stringValue] = task
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func getFirebaseData(completion: @escaping ([Value]?) -> ()) {
             guard let url = URL(string: "https://firestore.googleapis.com/v1/projects/project-caitlin-c71a9/databases/(default)/documents/users/anaqPz2mmo3tSGU4lgB4") else { return }
             
             URLSession.shared.dataTask(with: url) { (data, _, _) in
-                let data = try! JSONDecoder().decode(Firebase.self, from: data!)
+                let data = try? JSONDecoder().decode(Firebase.self, from: data!)
                 DispatchQueue.main.async {
-                    completion(data.fields.goalsRoutines.arrayValue.values)
+                    completion(data?.fields.goalsRoutines.arrayValue.values ?? nil)
                 }
             }
         .resume()
     }
     
-    func getFirebaseTasks(goalID: String, completion: @escaping ([ValueTask]) -> ()) {
+    func getFirebaseTasks(goalID: String, completion: @escaping ([ValueTask]?) -> ()) {
         var TaskUrl = "https://firestore.googleapis.com/v1/projects/project-caitlin-c71a9/databases/(default)/documents/users/anaqPz2mmo3tSGU4lgB4/goals&routines/"
         TaskUrl.append(goalID)
         print(TaskUrl)
         guard let url = URL(string: TaskUrl) else { return }
             
             URLSession.shared.dataTask(with: url) { (data, _, _) in
-                let data = try! JSONDecoder().decode(FirebaseTask.self, from: data!)
+                let data = try? JSONDecoder().decode(FirebaseTask.self, from: data!)
                 DispatchQueue.main.async {
-                    completion(data.fields.actionsTasks.arrayValue.values)
+                    completion(data?.fields.actionsTasks.arrayValue.values ?? nil)
                 }
             }
         .resume()
     }
     
-    func getFirebaseStep(stepID: String, goalID: String, completion: @escaping ([ValueTask]) -> ()) {
-        var StepUrl =
-        "https://firestore.googleapis.com/v1/projects/project-caitlin-c71a9/databases/(default)/documents/users/anaqPz2mmo3tSGU4lgB4/goals&routines/"
+    func getFirebaseStep(stepID: String, goalID: String, completion: @escaping ([ValueTask]?) -> ()) {
+        var StepUrl = "https://firestore.googleapis.com/v1/projects/project-caitlin-c71a9/databases/(default)/documents/users/anaqPz2mmo3tSGU4lgB4/goals&routines/"
         StepUrl.append(goalID)
         StepUrl.append("/actions&tasks/")
         StepUrl.append(stepID)
         print(StepUrl)
         guard let url = URL(string: StepUrl) else { return }
-            
             URLSession.shared.dataTask(with: url) { (data, _, _) in
-                let data = try! JSONDecoder().decode(FirebaseStep.self, from: data!)
+                let data = try? JSONDecoder().decode(FirebaseStep.self, from: data!)
                 DispatchQueue.main.async {
-                    completion(data.fields.instructionsSteps.arrayValue.values)
+                    completion(data?.fields.instructionsSteps.arrayValue.values ?? nil)
                 }
             }
         .resume()
     }
-    
 }

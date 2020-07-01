@@ -11,8 +11,7 @@
             "mapValue": {
                 "fields": {
                     "important_people": {
-                        "arrayValue": {
-                            "values": [
+                        "arrayValue": {                            "values": [
                                 {
                                     "referenceValue": "projects/project-caitlin-c71a9/databases/(default)/documents/users/7R6hAVmDrNutRkG3sVRy/people/HlSOdjoS2IWU99W9LKjtdRyk732Hqs6qqUxgUDeR"
                                 }
