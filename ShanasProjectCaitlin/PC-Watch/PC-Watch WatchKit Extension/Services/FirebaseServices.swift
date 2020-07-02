@@ -22,25 +22,29 @@ class NotificationHandler : NSObject, UNUserNotificationCenterDelegate {
         let minutes = Int(timeComp[1])!
         var identifier = id
         
-        content.title = "\(title) about to start!"
-        content.body = message
         var notificTriggerDate = Date()
         
         //0 - Before (StartTime - TimeBeforeStart)
         if tag == 0{
             notificTriggerDate = Calendar.current.date(byAdding: .minute, value: -minutes, to: start!)!
             identifier.append("before")
+            content.title = "About to start! \(title)"
+            content.body = message
         }
         // 1 - During (TimeAfterStart + StartTime)
         else if tag == 1
         {
             notificTriggerDate = Calendar.current.date(byAdding: .minute, value: minutes, to: start!)!
             identifier.append("during")
+            content.title = "Currently going on: \(title)"
+            content.body = message
         }
         //2 - After (EndTime + TimeAfterEnd)
         else if tag == 2{
             notificTriggerDate = Calendar.current.date(byAdding: .minute, value: minutes, to: start!)!
             identifier.append("after")
+            content.title = "Just finished: \(title)"
+            content.body = message
         }
         
         let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: notificTriggerDate)

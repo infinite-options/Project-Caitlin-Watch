@@ -185,6 +185,7 @@ struct GoalList: View {
                             .onAppear {
                                 //User - Before
                                 if (item.mapValue.fields.userNotifications.mapValue.fields.before.mapValue.fields.isEnabled.booleanValue){
+                                   
                                     self.notific.setNotification(
                                         message: item.mapValue.fields.userNotifications.mapValue.fields.before.mapValue.fields.message.stringValue,
                                         time:  item.mapValue.fields.userNotifications.mapValue.fields.before.mapValue.fields.time.stringValue,
