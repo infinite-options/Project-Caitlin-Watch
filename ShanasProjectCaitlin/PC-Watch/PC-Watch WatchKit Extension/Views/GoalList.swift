@@ -16,11 +16,6 @@ struct TasksView: View {
     var body: some View {
         GeometryReader { geo in
             VStack {
-                VStack {
-                    Text("\(DayDateObj.day[DayDateObj.weekday]), \(DayDateObj.dueDate, formatter: DayDateObj.taskDateFormat)")
-                        .font(.system(size: 15.0, design: .rounded))
-                }.frame(maxWidth: geo.size.width, alignment: .leading)
-                
                 Text("Tasks and Actions").foregroundColor(Color.red)
                                    .font(.system(.headline, design: .rounded))
                 Spacer()
@@ -42,14 +37,13 @@ struct TasksView: View {
                                                             ).aspectRatio(contentMode: .fit)
                                                         Text(item.mapValue.fields.title.stringValue)
                                             }
-                                        }
+                                        }.frame(height: 60)
                                     }
                                 }
                             }
                         }
                     }
                 }
-                PersistentView(goal: false, event: true, routine: true, help: true)
             }.edgesIgnoringSafeArea(.bottom)
         }
     }
@@ -63,11 +57,6 @@ struct StepsView: View {
     var body: some View {
         GeometryReader { geo in
             VStack {
-                VStack {
-                    Text("\(DayDateObj.day[DayDateObj.weekday]), \(DayDateObj.dueDate, formatter: DayDateObj.taskDateFormat)")
-                        .font(.system(size: 15.0, design: .rounded))
-                }.frame(maxWidth: geo.size.width, alignment: .leading)
-            
                 Text("Tasks and Actions").foregroundColor(Color.red)
                     .font(.system(.headline, design: .rounded))
                 Spacer()
@@ -150,11 +139,6 @@ struct GoalList: View {
     var body: some View {
         GeometryReader { geo in
             VStack {
-                VStack {
-                    Text("\(DayDateObj.day[DayDateObj.weekday]), \(DayDateObj.dueDate, formatter: DayDateObj.taskDateFormat)")
-                        .font(.system(size: 15.0, design: .rounded))
-                }.frame(maxWidth: geo.size.width, alignment: .leading)
-                    
                 Text("Current Goals").foregroundColor(Color.red)
                     .font(.system(.headline, design: .rounded))
                 Spacer()
@@ -178,7 +162,7 @@ struct GoalList: View {
                                                         Text(item.mapValue.fields.title.stringValue)
                                                 //Text(String(self.DayDateObj.getTimeLeft(givenDate: item.mapValue.fields.startDayAndTime.stringValue)))
                                             }
-                                        }.frame(height: 60)
+                                        }.frame(height: 100)
                                     }
                                 }
                             }
@@ -217,8 +201,7 @@ struct GoalList: View {
                         }
                     }.listStyle(CarouselListStyle())
                 }
-            PersistentView(goal: false, event: true, routine: true, help: true)
-            }.edgesIgnoringSafeArea(.bottom).padding(0)
+          }.edgesIgnoringSafeArea(.bottom).padding(0)
         }
     }
 }
