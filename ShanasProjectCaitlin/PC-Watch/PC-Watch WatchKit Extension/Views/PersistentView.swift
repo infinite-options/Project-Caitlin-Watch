@@ -41,7 +41,6 @@ struct PersistentView: View {
             if(self.help){
                 Image("help").resizable().clipShape(Circle()).frame(width:38, height:38)
                     .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)).onTapGesture {
-                            //self.viewRouter.currentPage = "goal"
                         print("in help")
                     }
                 Spacer()

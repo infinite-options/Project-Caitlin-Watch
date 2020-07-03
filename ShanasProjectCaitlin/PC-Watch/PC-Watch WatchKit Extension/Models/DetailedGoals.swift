@@ -31,11 +31,11 @@ class StepsModel: ObservableObject{
     
     @Published var rowColor: Color = Color.gray
     
-    @Published var completed = 0{
-        willSet{
+    @Published var completed = 0 {
+        willSet {
             print("Old color: \(rowColor)")
         }
-        didSet{
+        didSet {
             //print("New value: \(completed)")
             //print("hello..")
             if completed == 1 && completed < 2 {
@@ -52,7 +52,7 @@ class StepsModel: ObservableObject{
     }
 }
 
-struct Instruction{
+struct Instruction {
     var img: Image
     var done: Bool
 }
