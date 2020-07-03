@@ -21,7 +21,7 @@ struct TasksView: View {
                         .font(.system(size: 15.0, design: .rounded))
                 }.frame(maxWidth: geo.size.width, alignment: .leading)
                 
-                Text("Tasks and Actions").foregroundColor(Color.red)
+                Text("Tasks").foregroundColor(Color.red)
                                    .font(.system(.headline, design: .rounded))
                 Spacer()
                 if (self.model.goalsSubtasks[self.goalID] == nil) {
@@ -35,6 +35,7 @@ struct TasksView: View {
                                 if item.mapValue.fields.isAvailable.booleanValue {
                                     if item.mapValue.fields.photo.stringValue != "" {
                                         NavigationLink(destination: StepsView(taskID: item.mapValue.fields.id.stringValue, goalID: self.goalID)){
+                                            
                                             HStack {
                                                 AsyncImage(
                                                     url: URL(string: item.mapValue.fields.photo.stringValue)!,
@@ -68,10 +69,10 @@ struct StepsView: View {
                         .font(.system(size: 15.0, design: .rounded))
                 }.frame(maxWidth: geo.size.width, alignment: .leading)
             
-                Text("Tasks and Actions").foregroundColor(Color.red)
+                Text("Instructions.").foregroundColor(Color.red)
                     .font(.system(.headline, design: .rounded))
                 Spacer()
-                if (self.model.goalsSubtasks[self.goalID] == nil) {
+                if (self.self.model.taskSteps[self.taskID] == nil) {
                     Text("No instructions and steps found!")
                     Spacer()
                 }
@@ -145,14 +146,14 @@ struct InstructionView: View{
 
 struct GoalList: View {
     @ObservedObject private var model = FirebaseServices.shared
-    var notific = NotificationHandler()
+    var notificationHandler = NotificationHandler()
     
     var body: some View {
         GeometryReader { geo in
             VStack {
                 VStack {
                     Text("\(DayDateObj.day[DayDateObj.weekday]), \(DayDateObj.dueDate, formatter: DayDateObj.taskDateFormat)")
-                        .font(.system(size: 15.0, design: .rounded))
+                      .font(.system(size: 15.0, design: .rounded))
                 }.frame(maxWidth: geo.size.width, alignment: .leading)
                     
                 Text("Current Goals").foregroundColor(Color.red)
@@ -170,6 +171,7 @@ struct GoalList: View {
                                 if item.mapValue.fields.isAvailable.booleanValue {
                                     if item.mapValue.fields.photo.stringValue != "" {
                                         NavigationLink(destination: TasksView(goalID: item.mapValue.fields.id.stringValue)){
+                                            ScrollView(.horizontal){
                                             HStack {
                                                 AsyncImage(
                                                     url: URL(string: item.mapValue.fields.photo.stringValue)!,
@@ -178,48 +180,17 @@ struct GoalList: View {
                                                         Text(item.mapValue.fields.title.stringValue)
                                                 //Text(String(self.DayDateObj.getTimeLeft(givenDate: item.mapValue.fields.startDayAndTime.stringValue)))
                                             }
+                                            }
                                         }.frame(height: 60)
+                                        
                                     }
-                                }
-                            }
-                            .onAppear {
-                                //User - Before
-                                if (item.mapValue.fields.userNotifications.mapValue.fields.before.mapValue.fields.isEnabled.booleanValue){
-                                   
-                                    self.notific.setNotification(
-                                        message: item.mapValue.fields.userNotifications.mapValue.fields.before.mapValue.fields.message.stringValue,
-                                        time:  item.mapValue.fields.userNotifications.mapValue.fields.before.mapValue.fields.time.stringValue,
-                                        title: item.mapValue.fields.title.stringValue,
-                                        startOrEndTime: item.mapValue.fields.startDayAndTime.stringValue,
-                                        id: item.mapValue.fields.id.stringValue,
-                                        tag: 0)
-                                }
-                                //User - During
-                                if (item.mapValue.fields.userNotifications.mapValue.fields.during.mapValue.fields.isEnabled.booleanValue){
-                                    self.notific.setNotification(
-                                        message: item.mapValue.fields.userNotifications.mapValue.fields.during.mapValue.fields.message.stringValue,
-                                        time:  item.mapValue.fields.userNotifications.mapValue.fields.during.mapValue.fields.time.stringValue,
-                                        title: item.mapValue.fields.title.stringValue,
-                                        startOrEndTime: item.mapValue.fields.startDayAndTime.stringValue,
-                                        id: item.mapValue.fields.id.stringValue,
-                                        tag: 1)
-                                }
-                                //User - After
-                                if (item.mapValue.fields.userNotifications.mapValue.fields.after.mapValue.fields.isEnabled.booleanValue){
-                                    self.notific.setNotification(
-                                        message: item.mapValue.fields.userNotifications.mapValue.fields.after.mapValue.fields.message.stringValue,
-                                        time:  item.mapValue.fields.userNotifications.mapValue.fields.after.mapValue.fields.time.stringValue,
-                                        title: item.mapValue.fields.title.stringValue,
-                                        startOrEndTime: item.mapValue.fields.endDayAndTime.stringValue,
-                                        id: item.mapValue.fields.id.stringValue,
-                                        tag: 2)
                                 }
                             }
                         }
                     }.listStyle(CarouselListStyle())
                 }
             PersistentView(goal: false, event: true, routine: true, help: true)
-            }.edgesIgnoringSafeArea(.bottom).padding(0)
+            }.edgesIgnoringSafeArea(.bottom).padding(0).navigationBarTitle("Goals")
         }
     }
 }
