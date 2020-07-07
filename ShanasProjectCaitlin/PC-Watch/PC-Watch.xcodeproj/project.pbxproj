@@ -27,7 +27,10 @@
 		27E475A9244240B200D380FA /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E475A8244240B200D380FA /* ImageLoader.swift */; };
 		27E475AD2442413700D380FA /* AsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E475AC2442413700D380FA /* AsyncImage.swift */; };
 		2B258E3524A7839100C6DD2E /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B258E3424A7839100C6DD2E /* ComplicationController.swift */; };
+		2B5A688A24AFBD2000D66FC6 /* StepsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5A688924AFBD2000D66FC6 /* StepsView.swift */; };
+		2B5A688C24AFBD2E00D66FC6 /* TasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5A688B24AFBD2E00D66FC6 /* TasksView.swift */; };
 		2B706DB324ADE791001AEABE /* NotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B706DB224ADE791001AEABE /* NotificationHandler.swift */; };
+		2BDEE39024B3698900FCFE14 /* BackgroundServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDEE38F24B3698900FCFE14 /* BackgroundServices.swift */; };
 		2BF4E09C24AC015300215138 /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF4E09B24AC015300215138 /* Formatters.swift */; };
 		552E9B9B2467345E00D6E20B /* FirebaseServ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552E9B9A2467345E00D6E20B /* FirebaseServ.swift */; };
 		552E9B9F2467417C00D6E20B /* FB2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552E9B9E2467417C00D6E20B /* FB2.swift */; };
@@ -102,7 +105,10 @@
 		27E475A8244240B200D380FA /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		27E475AC2442413700D380FA /* AsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImage.swift; sourceTree = "<group>"; };
 		2B258E3424A7839100C6DD2E /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
+		2B5A688924AFBD2000D66FC6 /* StepsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepsView.swift; sourceTree = "<group>"; };
+		2B5A688B24AFBD2E00D66FC6 /* TasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksView.swift; sourceTree = "<group>"; };
 		2B706DB224ADE791001AEABE /* NotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHandler.swift; sourceTree = "<group>"; };
+		2BDEE38F24B3698900FCFE14 /* BackgroundServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundServices.swift; sourceTree = "<group>"; };
 		2BF4E09B24AC015300215138 /* Formatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatters.swift; sourceTree = "<group>"; };
 		552E9B9A2467345E00D6E20B /* FirebaseServ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseServ.swift; sourceTree = "<group>"; };
 		552E9B9E2467417C00D6E20B /* FB2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FB2.swift; sourceTree = "<group>"; };
@@ -205,6 +211,7 @@
 				27E475A8244240B200D380FA /* ImageLoader.swift */,
 				27E475AC2442413700D380FA /* AsyncImage.swift */,
 				2B706DB224ADE791001AEABE /* NotificationHandler.swift */,
+				2BDEE38F24B3698900FCFE14 /* BackgroundServices.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -217,6 +224,8 @@
 				27BF9E04243E783A006A5466 /* GoalList.swift */,
 				27BF9E06243E78A1006A5466 /* EventsList.swift */,
 				84E7EBDD2494742300E13DDF /* PersistentView.swift */,
+				2B5A688924AFBD2000D66FC6 /* StepsView.swift */,
+				2B5A688B24AFBD2E00D66FC6 /* TasksView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -357,8 +366,11 @@
 				2B258E3524A7839100C6DD2E /* ComplicationController.swift in Sources */,
 				27BF9DD0243BD389006A5466 /* NotificationController.swift in Sources */,
 				27E475AD2442413700D380FA /* AsyncImage.swift in Sources */,
+				2BDEE39024B3698900FCFE14 /* BackgroundServices.swift in Sources */,
 				27BF9E07243E78A1006A5466 /* EventsList.swift in Sources */,
+				2B5A688A24AFBD2000D66FC6 /* StepsView.swift in Sources */,
 				27E475A9244240B200D380FA /* ImageLoader.swift in Sources */,
+				2B5A688C24AFBD2E00D66FC6 /* TasksView.swift in Sources */,
 				27BF9DCE243BD389006A5466 /* ExtensionDelegate.swift in Sources */,
 				84E7EBE424953BF500E13DDF /* DetailedGoals.swift in Sources */,
 				552E9B9B2467345E00D6E20B /* FirebaseServ.swift in Sources */,
