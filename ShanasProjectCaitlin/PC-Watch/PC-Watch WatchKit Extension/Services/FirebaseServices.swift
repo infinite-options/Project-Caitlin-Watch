@@ -10,7 +10,6 @@ import Foundation
 
 class FirebaseServices: ObservableObject {
     
-    let group = DispatchGroup()
     static let shared = FirebaseServices()
     private let notificationHandler = NotificationHandler()
     
@@ -22,10 +21,9 @@ class FirebaseServices: ObservableObject {
     private init() {
         updateDataModel {
             print("waiting.. done!")
-            //User - Before
             
-            if let data = self.data{
-                print(data)
+            if self.data != nil{
+                //print(data)
                 print("App initialized.. now setting notifications")
             }
         }
@@ -41,7 +39,6 @@ class FirebaseServices: ObservableObject {
                 for goal in data {
                     self.getFirebaseTasks(goalID: goal.mapValue.fields.id.stringValue){
                         (task) in self.task = task
-                        
                         if let task = task {
                             self.goalsSubtasks[goal.mapValue.fields.id
                                 .stringValue] = task
@@ -65,12 +62,10 @@ class FirebaseServices: ObservableObject {
     
     func getFirebaseData(completion: @escaping ([Value]?) -> ()) {
         guard let url = URL(string: "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/VzYNSZMGGRrtzm74zPmM") else { return }
-        self.group.enter()
         URLSession.shared.dataTask(with: url) { (data, _, _) in
             let data = try? JSONDecoder().decode(Firebase.self, from: data!)
             DispatchQueue.main.async {
                 completion(data?.fields.goalsRoutines.arrayValue.values ?? nil)
-                self.group.leave()
             }
         }
         .resume()
@@ -81,12 +76,10 @@ class FirebaseServices: ObservableObject {
         TaskUrl.append(goalID)
         print(TaskUrl)
         guard let url = URL(string: TaskUrl) else { return }
-        self.group.enter()
             URLSession.shared.dataTask(with: url) { (data, _, _) in
                 let data = try? JSONDecoder().decode(FirebaseTask.self, from: data!)
                 DispatchQueue.main.async {
                     completion(data?.fields.actionsTasks.arrayValue.values ?? nil)
-                    self.group.leave()
                 }
             }
         .resume()
@@ -99,12 +92,10 @@ class FirebaseServices: ObservableObject {
         StepUrl.append(stepID)
         //print(StepUrl)
         guard let url = URL(string: StepUrl) else { return }
-        self.group.enter()
             URLSession.shared.dataTask(with: url) { (data, _, _) in
                 let data = try? JSONDecoder().decode(FirebaseStep.self, from: data!)
                 DispatchQueue.main.async {
                     completion(data?.fields.instructionsSteps.arrayValue.values ?? nil)
-                    self.group.leave()
                 }
             }
         .resume()

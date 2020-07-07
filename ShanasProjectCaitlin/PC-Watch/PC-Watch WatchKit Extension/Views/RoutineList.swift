@@ -15,6 +15,7 @@ struct RoutineList: View {
     var body: some View {
         GeometryReader{ geo in
             VStack{
+                /*
                 VStack {
                     Text("\(DayDateObj.day[DayDateObj.weekday]), \(DayDateObj.dueDate, formatter: DayDateObj.taskDateFormat)")
                         .font(.system(size: 15.0, design: .rounded))
@@ -23,7 +24,7 @@ struct RoutineList: View {
                 Text("Routines").foregroundColor(Color.red)
                     .font(.system(.headline, design: .rounded))
                 Spacer()
-                
+                */
                 if(self.model.data == nil){
                     Text("No Routines found!")
                     Spacer()
@@ -61,7 +62,7 @@ struct RoutineList: View {
                             }
                         }
                 }
-                PersistentView(goal: true, event: true, routine: false, help: true)
+                //PersistentView(goal: true, event: true, routine: false, help: true)
             }.edgesIgnoringSafeArea(.bottom).padding(0)
         }
     }

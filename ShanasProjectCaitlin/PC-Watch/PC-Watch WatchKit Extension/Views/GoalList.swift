@@ -9,100 +9,6 @@
 
 import SwiftUI
 
-struct TasksView: View {
-    @ObservedObject private var model = FirebaseServices.shared
-    var goalID: String
-    
-    var body: some View {
-        GeometryReader { geo in
-            VStack {
-                VStack {
-                    Text("\(DayDateObj.day[DayDateObj.weekday]), \(DayDateObj.dueDate, formatter: DayDateObj.taskDateFormat)")
-                        .font(.system(size: 15.0, design: .rounded))
-                }.frame(maxWidth: geo.size.width, alignment: .leading)
-                
-                Text("Tasks").foregroundColor(Color.red)
-                                   .font(.system(.headline, design: .rounded))
-                Spacer()
-                if (self.model.goalsSubtasks[self.goalID] == nil) {
-                    Text("No actions and tasks found!")
-                    Spacer()
-                }
-                else{
-                    List {
-                        ForEach(self.model.goalsSubtasks[self.goalID]!!, id: \.mapValue.fields.id.stringValue) { item in
-                            VStack(alignment: .leading) {
-                                if item.mapValue.fields.isAvailable.booleanValue {
-                                    if item.mapValue.fields.photo.stringValue != "" {
-                                        NavigationLink(destination: StepsView(taskID: item.mapValue.fields.id.stringValue, goalID: self.goalID)){
-                                            
-                                            HStack {
-                                                AsyncImage(
-                                                    url: URL(string: item.mapValue.fields.photo.stringValue)!,
-                                                        placeholder: Image("blacksquare")
-                                                            ).aspectRatio(contentMode: .fit)
-                                                        Text(item.mapValue.fields.title.stringValue)
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                PersistentView(goal: false, event: true, routine: true, help: true)
-            }.edgesIgnoringSafeArea(.bottom)
-        }
-    }
-}
-
-struct StepsView: View {
-    @ObservedObject private var model = FirebaseServices.shared
-    var taskID: String
-    var goalID: String
-    
-    var body: some View {
-        GeometryReader { geo in
-            VStack {
-                VStack {
-                    Text("\(DayDateObj.day[DayDateObj.weekday]), \(DayDateObj.dueDate, formatter: DayDateObj.taskDateFormat)")
-                        .font(.system(size: 15.0, design: .rounded))
-                }.frame(maxWidth: geo.size.width, alignment: .leading)
-            
-                Text("Instructions.").foregroundColor(Color.red)
-                    .font(.system(.headline, design: .rounded))
-                Spacer()
-                if (self.self.model.taskSteps[self.taskID] == nil) {
-                    Text("No instructions and steps found!")
-                    Spacer()
-                }
-                else {
-                    List {
-                        ForEach(self.model.taskSteps[self.taskID]!!, id: \.mapValue.fields.title.stringValue) { item in
-                            VStack(alignment: .leading) {
-                                if item.mapValue.fields.isAvailable.booleanValue {
-                                    if item.mapValue.fields.photo.stringValue != "" {
-                                        HStack {
-                                            AsyncImage(
-                                                url:URL(string: item.mapValue.fields.photo.stringValue)!,
-                                                    placeholder: Image("blacksquare"))
-                                                    .aspectRatio(contentMode: .fit)
-                                            Text(item.mapValue.fields.title.stringValue)
-                                        }
-                                    }
-                                }
-                            }.onTapGesture {
-                                print("Step ID: ")
-                                print(item.mapValue.fields.id.stringValue)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
 /*
 struct InstructionView: View{
     @ObservedObject var model: StepsModel
@@ -151,6 +57,7 @@ struct GoalList: View {
     var body: some View {
         GeometryReader { geo in
             VStack {
+                /*
                 VStack {
                     Text("\(DayDateObj.day[DayDateObj.weekday]), \(DayDateObj.dueDate, formatter: DayDateObj.taskDateFormat)")
                       .font(.system(size: 15.0, design: .rounded))
@@ -159,7 +66,7 @@ struct GoalList: View {
                 Text("Current Goals").foregroundColor(Color.red)
                     .font(.system(.headline, design: .rounded))
                 Spacer()
-                
+                */
                 if (self.model.data == nil){
                     Text("You dont have any Goals to show!")
                     Spacer()
@@ -171,7 +78,6 @@ struct GoalList: View {
                                 if item.mapValue.fields.isAvailable.booleanValue {
                                     if item.mapValue.fields.photo.stringValue != "" {
                                         NavigationLink(destination: TasksView(goalID: item.mapValue.fields.id.stringValue)){
-                                            ScrollView(.horizontal){
                                             HStack {
                                                 AsyncImage(
                                                     url: URL(string: item.mapValue.fields.photo.stringValue)!,
@@ -179,18 +85,17 @@ struct GoalList: View {
                                                             ).aspectRatio(contentMode: .fit)
                                                         Text(item.mapValue.fields.title.stringValue)
                                                 //Text(String(self.DayDateObj.getTimeLeft(givenDate: item.mapValue.fields.startDayAndTime.stringValue)))
-                                            }
-                                            }
-                                        }.frame(height: 60)
-                                        
+                                            }.frame(height: 100)
+                                        }
                                     }
                                 }
                             }
                         }
                     }.listStyle(CarouselListStyle())
                 }
-            PersistentView(goal: false, event: true, routine: true, help: true)
-            }.edgesIgnoringSafeArea(.bottom).padding(0).navigationBarTitle("Goals")
+            //PersistentView(goal: false, event: true, routine: true, help: true)
+            }.edgesIgnoringSafeArea(.bottom).padding(0)
+                .navigationBarTitle("Goals")
         }
     }
 }
