@@ -8,49 +8,59 @@
 
 import SwiftUI
 
+struct TaskItem: View {
+    var taskID: String?
+    var itemID: String?
+    var taskName: String?
+    
+    var body: some View {
+        HStack{
+            NavigationLink(destination: StepsView(taskID: taskID!, itemID: itemID!)){
+                Text(taskName!)
+            }
+            Divider()
+            Text("Start")
+                .foregroundColor(.green)
+                .onTapGesture {
+                    print("Starting...")
+                }
+        }
+    }
+}
+
 struct TasksView: View {
    @ObservedObject private var model = FirebaseServices.shared
     var itemID: String?
+    var time: String?
+    var name: String?
     
     var body: some View {
         GeometryReader { geo in
-            VStack {
+            if (self.model.goalsSubtasks[self.itemID!] == nil) {
                 VStack {
-                    Text("\(DayDateObj.day[DayDateObj.weekday]), \(DayDateObj.dueDate, formatter: DayDateObj.taskDateFormat)")
-                        .font(.system(size: 15.0, design: .rounded))
-                }.frame(maxWidth: geo.size.width, alignment: .leading)
-                
-                Text("Tasks").foregroundColor(Color.red)
-                                   .font(.system(.headline, design: .rounded))
-                Spacer()
-                if (self.model.goalsSubtasks[self.itemID!] == nil) {
                     Text("No actions and tasks found!")
                     Spacer()
                 }
-                else{
+            }
+            else{
+                VStack {
+                    Text(self.name!)
+                    HStack {
+                        Text(self.time!)
+                        Spacer()
+                        Text("Duration")
+                    }
                     List {
                         ForEach(self.model.goalsSubtasks[self.itemID!]!!, id: \.mapValue.fields.id.stringValue) { item in
                             VStack(alignment: .leading) {
                                 if item.mapValue.fields.isAvailable.booleanValue {
-                                    if item.mapValue.fields.photo.stringValue != "" {
-                                        NavigationLink(destination: StepsView(taskID: item.mapValue.fields.id.stringValue, itemID: self.itemID!)){
-                                            
-                                            HStack {
-                                                AsyncImage(
-                                                    url: URL(string: item.mapValue.fields.photo.stringValue)!,
-                                                        placeholder: Image("blacksquare")
-                                                            ).aspectRatio(contentMode: .fit)
-                                                        Text(item.mapValue.fields.title.stringValue)
-                                            }
-                                        }
-                                    }
+                                    TaskItem(taskID: item.mapValue.fields.id.stringValue, itemID: self.itemID!, taskName: item.mapValue.fields.title.stringValue)
                                 }
                             }
                         }
-                    }
-                }
-                PersistentView(goal: false, event: true, routine: true, help: true)
-            }.edgesIgnoringSafeArea(.bottom)
+                    }.navigationBarTitle("Tasks")
+                }.edgesIgnoringSafeArea(.bottom)
+            }
         }
     }
 }

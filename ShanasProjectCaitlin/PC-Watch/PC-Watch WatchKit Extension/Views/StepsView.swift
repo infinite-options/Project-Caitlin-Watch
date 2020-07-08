@@ -8,6 +8,30 @@
 
 import SwiftUI
 
+struct StepView: View {
+    var name = "Step"
+    @State var done = false
+    
+    var body: some View {
+        VStack {
+            HStack {
+                Text(name)
+                Spacer()
+                Divider()
+                if(!self.done){
+                    Text("Done?").foregroundColor(.green).onTapGesture {
+                        print("completed")
+                        self.done = true
+                    }
+                } else {
+                    Text("Done")
+                }
+            }
+            Divider()
+        }
+    }
+}
+
 struct StepsView: View {
      @ObservedObject private var model = FirebaseServices.shared
        var taskID: String?
@@ -16,11 +40,6 @@ struct StepsView: View {
        var body: some View {
            GeometryReader { geo in
                VStack {
-                   VStack {
-                       Text("\(DayDateObj.day[DayDateObj.weekday]), \(DayDateObj.dueDate, formatter: DayDateObj.taskDateFormat)")
-                           .font(.system(size: 15.0, design: .rounded))
-                   }.frame(maxWidth: geo.size.width, alignment: .leading)
-               
                    Text("Instructions.").foregroundColor(Color.red)
                        .font(.system(.headline, design: .rounded))
                    Spacer()
@@ -33,14 +52,8 @@ struct StepsView: View {
                            ForEach(self.model.taskSteps[self.taskID!]!!, id: \.mapValue.fields.title.stringValue) { item in
                                VStack(alignment: .leading) {
                                    if item.mapValue.fields.isAvailable.booleanValue {
-                                       if item.mapValue.fields.photo.stringValue != "" {
-                                           HStack {
-                                               AsyncImage(
-                                                   url:URL(string: item.mapValue.fields.photo.stringValue)!,
-                                                       placeholder: Image("blacksquare"))
-                                                       .aspectRatio(contentMode: .fit)
-                                               Text(item.mapValue.fields.title.stringValue)
-                                           }
+                                       HStack {
+                                           Text(item.mapValue.fields.title.stringValue)
                                        }
                                    }
                                }.onTapGesture {
@@ -57,6 +70,6 @@ struct StepsView: View {
 
 struct StepsView_Previews: PreviewProvider {
     static var previews: some View {
-        StepsView()
+        StepView()
     }
 }
