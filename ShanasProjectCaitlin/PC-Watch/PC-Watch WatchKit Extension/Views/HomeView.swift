@@ -91,7 +91,7 @@ struct RoutineView: View {
                     Text(time!).fontWeight(.light).font(.system(size: 15))
                     Spacer()
                 }
-            }.frame(height: 90).listRowPlatterColor(Color.gray)
+            }.listRowPlatterColor(Color.gray).frame(height: 90)
         }
     }
 }
@@ -151,10 +151,14 @@ struct HomeView: View {
             else {
                 VStack(alignment: .leading) {
                     List {
-                        ForEach(self.model.data!.filter{!($0.mapValue.fields.isPersistent.booleanValue)}, id: \.mapValue.fields.id.stringValue) { item in
+                        ForEach(self.model.data!, id: \.mapValue.fields.id.stringValue) { item in
                             VStack {
                                 if item.mapValue.fields.isAvailable.booleanValue {
-                                    GoalView(itemID:item.mapValue.fields.id.stringValue, name: item.mapValue.fields.title.stringValue, time: self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!), isComplete: false)
+                                    if (!item.mapValue.fields.isPersistent.booleanValue) {
+                                        GoalView(itemID:item.mapValue.fields.id.stringValue, name: item.mapValue.fields.title.stringValue, time: self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!), isComplete: false)
+                                    } else if(item.mapValue.fields.isPersistent.booleanValue) {
+                                        RoutineView(itemID:item.mapValue.fields.id.stringValue, name: item.mapValue.fields.title.stringValue, time: self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!), isComplete: false)
+                                    }
                                 }
                             }
                         }
