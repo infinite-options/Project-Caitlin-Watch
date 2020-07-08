@@ -152,7 +152,7 @@ struct GoalList: View {
                             VStack(alignment: .leading) {
                                 if item.mapValue.fields.isAvailable.booleanValue {
                                     if item.mapValue.fields.photo.stringValue != "" {
-                                        NavigationLink(destination: TasksView(goalID: item.mapValue.fields.id.stringValue)){
+                                        NavigationLink(destination: TasksView(itemID: item.mapValue.fields.id.stringValue)){
                                             HStack {
                                                 AsyncImage(
                                                     url: URL(string: item.mapValue.fields.photo.stringValue)!,

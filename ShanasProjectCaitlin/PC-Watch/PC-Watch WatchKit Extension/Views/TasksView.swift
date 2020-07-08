@@ -10,7 +10,7 @@ import SwiftUI
 
 struct TasksView: View {
    @ObservedObject private var model = FirebaseServices.shared
-    var goalID: String?
+    var itemID: String?
     
     var body: some View {
         GeometryReader { geo in
@@ -23,17 +23,17 @@ struct TasksView: View {
                 Text("Tasks").foregroundColor(Color.red)
                                    .font(.system(.headline, design: .rounded))
                 Spacer()
-                if (self.model.goalsSubtasks[self.goalID!] == nil) {
+                if (self.model.goalsSubtasks[self.itemID!] == nil) {
                     Text("No actions and tasks found!")
                     Spacer()
                 }
                 else{
                     List {
-                        ForEach(self.model.goalsSubtasks[self.goalID!]!!, id: \.mapValue.fields.id.stringValue) { item in
+                        ForEach(self.model.goalsSubtasks[self.itemID!]!!, id: \.mapValue.fields.id.stringValue) { item in
                             VStack(alignment: .leading) {
                                 if item.mapValue.fields.isAvailable.booleanValue {
                                     if item.mapValue.fields.photo.stringValue != "" {
-                                        NavigationLink(destination: StepsView(taskID: item.mapValue.fields.id.stringValue, goalID: self.goalID!)){
+                                        NavigationLink(destination: StepsView(taskID: item.mapValue.fields.id.stringValue, itemID: self.itemID!)){
                                             
                                             HStack {
                                                 AsyncImage(

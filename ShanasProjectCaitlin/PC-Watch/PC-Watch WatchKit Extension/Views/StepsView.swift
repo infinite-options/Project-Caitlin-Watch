@@ -11,7 +11,7 @@ import SwiftUI
 struct StepsView: View {
      @ObservedObject private var model = FirebaseServices.shared
        var taskID: String?
-       var goalID: String?
+       var itemID: String?
        
        var body: some View {
            GeometryReader { geo in
