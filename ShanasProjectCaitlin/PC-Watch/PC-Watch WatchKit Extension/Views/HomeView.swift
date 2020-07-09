@@ -91,8 +91,8 @@ struct RoutineView: View {
                     Text(time!).fontWeight(.light).font(.system(size: 15))
                     Spacer()
                 }
-            }.listRowPlatterColor(Color.gray).frame(height: 90)
-        }
+            }.frame(height: 90)
+        }.listRowBackground(Color.gray)
     }
 }
 
@@ -122,6 +122,7 @@ struct EventView: View {
 }
 
 struct HomeView: View {
+    //TODO: need to have a list containing all the objects: events, goals, routines
     @ObservedObject private var model = FirebaseServices.shared
     
     let timeLeft: DateFormatter = {
@@ -144,7 +145,7 @@ struct HomeView: View {
         GeometryReader { geo in
             if (self.model.data == nil){
                 VStack(alignment: .leading) {
-                    Text("You dont have any Goals to show!")
+                    Text("You dont have anything on your schedule!")
                     Spacer()
                 }
             }
@@ -152,15 +153,28 @@ struct HomeView: View {
                 VStack(alignment: .leading) {
                     List {
                         ForEach(self.model.data!, id: \.mapValue.fields.id.stringValue) { item in
-                            VStack {
-                                if item.mapValue.fields.isAvailable.booleanValue {
-                                    if (!item.mapValue.fields.isPersistent.booleanValue) {
-                                        GoalView(itemID:item.mapValue.fields.id.stringValue, name: item.mapValue.fields.title.stringValue, time: self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!), isComplete: false)
-                                    } else if(item.mapValue.fields.isPersistent.booleanValue) {
-                                        RoutineView(itemID:item.mapValue.fields.id.stringValue, name: item.mapValue.fields.title.stringValue, time: self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!), isComplete: false)
+//                                if item.mapValue.fields.isAvailable.booleanValue {
+//                                    if (!item.mapValue.fields.isPersistent.booleanValue) {
+//                                        GoalView(itemID:item.mapValue.fields.id.stringValue, name: item.mapValue.fields.title.stringValue, time: self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!), isComplete: false)
+//                                    } else if(item.mapValue.fields.isPersistent.booleanValue) {
+//                                        RoutineView(itemID:item.mapValue.fields.id.stringValue, name: item.mapValue.fields.title.stringValue, time: self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!), isComplete: false)
+//                                    }
+//                                }
+                            NavigationLink(destination: TasksView(itemID: item.mapValue.fields.id.stringValue)){
+                                VStack {
+                                    HStack {
+                                        HStack {
+                                            Text(item.mapValue.fields.title.stringValue).fontWeight(.bold).font(.system(size: 20))
+                                            Spacer()
+                                            TaskCompleteImage(isComplete: false)
+                                        }
                                     }
-                                }
-                            }
+                                    HStack {
+                                        Text(self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15))
+                                        Spacer()
+                                    }
+                                }.frame(height: 90)
+                            }.listRowPlatterColor(item.mapValue.fields.isPersistent.booleanValue ? Color.gray : Color.yellow.opacity(0.75))
                         }
                     }.listStyle(CarouselListStyle()).navigationBarTitle("My Day")
                 }.padding(0)
