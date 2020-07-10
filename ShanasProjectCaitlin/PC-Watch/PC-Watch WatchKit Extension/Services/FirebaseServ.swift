@@ -17,7 +17,7 @@ class FirebaseServ: ObservableObject {
     @Published var events: [Value]?
     
     func getFirebaseData(completion: @escaping ([Values]) -> ()) {
-        guard let url = URL(string: "https://firestore.googleapis.com/v1/projects/project-caitlin-c71a9/databases/(default)/documents/users/VzYNSZMGGRrtzm74zPmM/day_events") else { return }
+        guard let url = URL(string: "https://firestore.googleapis.com/v1/projects/project-caitlin-c71a9/databases/(default)/documents/users/e9T8bbOKUv0gOogkGBLe/day_events") else { return }
         
         URLSession.shared.dataTask(with: url) { (data, _, _) in
             let format = try! JSONDecoder().decode(Firebase2.self, from: data!)

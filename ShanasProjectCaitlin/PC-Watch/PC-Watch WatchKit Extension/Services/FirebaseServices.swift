@@ -61,7 +61,7 @@ class FirebaseServices: ObservableObject {
     }
     
     func getFirebaseData(completion: @escaping ([Value]?) -> ()) {
-        guard let url = URL(string: "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/VzYNSZMGGRrtzm74zPmM") else { return }
+        guard let url = URL(string: "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/e9T8bbOKUv0gOogkGBLe") else { return }
         URLSession.shared.dataTask(with: url) { (data, _, _) in
             let data = try? JSONDecoder().decode(Firebase.self, from: data!)
             DispatchQueue.main.async {
@@ -72,7 +72,7 @@ class FirebaseServices: ObservableObject {
     }
     
     func getFirebaseTasks(goalID: String, completion: @escaping ([ValueTask]?) -> ()) {
-        var TaskUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/VzYNSZMGGRrtzm74zPmM/goals&routines/"
+        var TaskUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/e9T8bbOKUv0gOogkGBLe/goals&routines/"
         TaskUrl.append(goalID)
         print(TaskUrl)
         guard let url = URL(string: TaskUrl) else { return }
@@ -86,7 +86,7 @@ class FirebaseServices: ObservableObject {
     }
     
     func getFirebaseStep(stepID: String, goalID: String, completion: @escaping ([ValueTask]?) -> ()) {
-        var StepUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/VzYNSZMGGRrtzm74zPmM/goals&routines/"
+        var StepUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/e9T8bbOKUv0gOogkGBLe/goals&routines/"
         StepUrl.append(goalID)
         StepUrl.append("/actions&tasks/")
         StepUrl.append(stepID)

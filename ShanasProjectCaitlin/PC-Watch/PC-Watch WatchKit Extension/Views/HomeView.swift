@@ -167,7 +167,7 @@ struct HomeView: View {
 //                                        RoutineView(itemID:item.mapValue.fields.id.stringValue, name: item.mapValue.fields.title.stringValue, time: self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!), isComplete: false)
 //                                    }
 //                                }
-                            NavigationLink(destination: TasksView(itemID: item.mapValue.fields.id.stringValue)){
+                            NavigationLink(destination: TasksView(itemID: item.mapValue.fields.id.stringValue, time: self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!), name: item.mapValue.fields.title.stringValue)){
                                 VStack {
                                     HStack {
                                         HStack {
