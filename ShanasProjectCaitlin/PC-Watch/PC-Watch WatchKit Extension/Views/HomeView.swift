@@ -123,7 +123,14 @@ struct EventView: View {
 
 struct HomeView: View {
     //TODO: need to have a list containing all the objects: events, goals, routines
+    // issue: can we display events in same list if in different models?
+    // issue: is events even finsihed?
+    
+    // below has goals and routines
     @ObservedObject private var model = FirebaseServices.shared
+    
+    // below has events
+//    @ObservedObject private var eventModel = FirebaseServ
     
     let timeLeft: DateFormatter = {
         let formatter = DateFormatter()
