@@ -14,10 +14,58 @@
             filePath = "PC-Watch WatchKit Extension/Models/FB.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "176"
-            endingLineNumber = "176"
+            startingLineNumber = "180"
+            endingLineNumber = "180"
             landmarkName = "FluffyFields"
             landmarkType = "14">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2ECE62D8-3033-41B2-9064-AF7CD6A642FB"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PC-Watch WatchKit Extension/Models/FB.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "24"
+            endingLineNumber = "24"
+            landmarkName = "FirebaseTaskFields"
+            landmarkType = "14">
+            <Locations>
+               <Location
+                  uuid = "2ECE62D8-3033-41B2-9064-AF7CD6A642FB - 7a2d0641a11bc320"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PC_Watch_WatchKit_Extension.FirebaseTaskFields.CodingKeys.init(rawValue: Swift.String) -&gt; Swift.Optional&lt;PC_Watch_WatchKit_Extension.FirebaseTaskFields.CodingKeys&gt;"
+                  moduleName = "PC-Watch WatchKit Extension"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/emmaallegrucci/Developer/Project-Caitlin-Watch/ShanasProjectCaitlin/PC-Watch/PC-Watch%20WatchKit%20Extension/Models/FB.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "28"
+                  endingLineNumber = "28"
+                  offsetFromSymbolStart = "135">
+               </Location>
+               <Location
+                  uuid = "2ECE62D8-3033-41B2-9064-AF7CD6A642FB - b5f18d187be2353f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PC_Watch_WatchKit_Extension.FirebaseTaskFields.CodingKeys.rawValue.getter : Swift.String"
+                  moduleName = "PC-Watch WatchKit Extension"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/emmaallegrucci/Developer/Project-Caitlin-Watch/ShanasProjectCaitlin/PC-Watch/PC-Watch%20WatchKit%20Extension/Models/FB.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "28"
+                  endingLineNumber = "28"
+                  offsetFromSymbolStart = "62">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

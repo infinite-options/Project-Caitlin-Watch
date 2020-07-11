@@ -21,7 +21,7 @@ struct FirebaseTask: Codable {
 
 struct FirebaseTaskFields: Codable {
     var actionsTasks: ActionsTasks
-    var completed: HavePic
+    var completed: Status
     var title: EmailID
     
     enum CodingKeys: String, CodingKey {
@@ -92,6 +92,10 @@ struct PurpleFields: Codable {
 // MARK: - HavePic
 struct HavePic: Codable {
     var booleanValue: Bool
+}
+
+struct Status: Codable {
+    var doubleValue: Int
 }
 
 // MARK: - EmailID

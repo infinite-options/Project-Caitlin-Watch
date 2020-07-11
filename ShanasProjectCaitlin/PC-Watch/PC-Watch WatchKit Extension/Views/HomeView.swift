@@ -124,7 +124,6 @@ struct EventView: View {
 struct HomeView: View {
     //TODO: need to have a list containing all the objects: events, goals, routines
     // issue: can we display events in same list if in different models?
-    // issue: is events even finsihed?
     
     // below has goals and routines
     @ObservedObject private var model = FirebaseServices.shared
@@ -160,13 +159,6 @@ struct HomeView: View {
                 VStack(alignment: .leading) {
                     List {
                         ForEach(self.model.data!, id: \.mapValue.fields.id.stringValue) { item in
-//                                if item.mapValue.fields.isAvailable.booleanValue {
-//                                    if (!item.mapValue.fields.isPersistent.booleanValue) {
-//                                        GoalView(itemID:item.mapValue.fields.id.stringValue, name: item.mapValue.fields.title.stringValue, time: self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!), isComplete: false)
-//                                    } else if(item.mapValue.fields.isPersistent.booleanValue) {
-//                                        RoutineView(itemID:item.mapValue.fields.id.stringValue, name: item.mapValue.fields.title.stringValue, time: self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!), isComplete: false)
-//                                    }
-//                                }
                             NavigationLink(destination: TasksView(itemID: item.mapValue.fields.id.stringValue, time: self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!), name: item.mapValue.fields.title.stringValue)){
                                 VStack {
                                     HStack {

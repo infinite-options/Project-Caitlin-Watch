@@ -12,17 +12,21 @@ struct TaskItem: View {
     var taskID: String?
     var itemID: String?
     var taskName: String?
+    var photo: String?
     @State var started = false
     
     var body: some View {
         HStack{
-            NavigationLink(destination: StepsView(taskID: taskID!, itemID: itemID!, taskName: taskName!)){
-                Text(taskName!)
+            NavigationLink(destination: StepsView(taskID: taskID!, itemID: itemID!, taskName: taskName!, photo: photo!)){
+                HStack {
+                    AsyncSmallImage(url: URL(string:self.photo!)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
+                    Text(" " + taskName!)
+                }
             }
             Spacer()
             Divider()
             if (!self.started) {
-                Text("Start")
+                Text("Go")
                     .foregroundColor(.green)
                     .onTapGesture {
                         self.started = true
@@ -70,14 +74,12 @@ struct TasksView: View {
                     Text(self.name!)
                     HStack {
                         Text(self.time!)
-                        Spacer()
-                        Text("Duration")
                     }
                     List {
                         ForEach(self.model.goalsSubtasks[self.itemID!]!!, id: \.mapValue.fields.id.stringValue) { item in
                             VStack(alignment: .leading) {
                                 if item.mapValue.fields.isAvailable.booleanValue {
-                                    TaskItem(taskID: item.mapValue.fields.id.stringValue, itemID: self.itemID!, taskName: item.mapValue.fields.title.stringValue)
+                                    TaskItem(taskID: item.mapValue.fields.id.stringValue, itemID: self.itemID!, taskName: item.mapValue.fields.title.stringValue, photo: item.mapValue.fields.photo.stringValue)
                                 }
                             }
                         }
