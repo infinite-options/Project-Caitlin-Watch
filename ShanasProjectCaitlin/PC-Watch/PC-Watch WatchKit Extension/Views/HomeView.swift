@@ -7,116 +7,71 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct TaskCompleteImage: View {
     var isComplete: Bool
+    var hasTasks: Bool
     
     var body : some View {
         ZStack {
-            if (self.isComplete) {
-                Image("check")
-                .resizable()
-                .frame(width: 20, height: 20)
-                .clipShape(Circle())
-                .overlay(Circle().stroke(Color.white, lineWidth: 0.5))
-                .shadow(radius: 10)
-                    .padding(EdgeInsets(top: 10, leading: 1, bottom: 10, trailing: 1.5))
-            } else {
-                Image("")
-                .resizable()
-                .frame(width: 20, height: 20)
-                .clipShape(Circle())
-                .overlay(Circle().stroke(Color.white, lineWidth: 0.5))
-                .shadow(radius: 10)
-                    .padding(EdgeInsets(top: 10, leading: 1, bottom: 10, trailing: 1.5))
+            VStack(alignment: .center) {
+                if (self.isComplete) {
+                    Image(systemName: "checkmark.circle")
+                        .font(.subheadline)
+                        .imageScale(.large)
+                        .foregroundColor(.green)
+                } else {
+                    Image(systemName: "circle")
+                        .font(.subheadline)
+                        .imageScale(.large)
+                }
+                Spacer()
+                if (hasTasks) {
+                    Image(systemName: "plus.circle")
+                        .font(.subheadline)
+                        .imageScale(.small)
+                        .accentColor(.white)
+                }
             }
         }
     }
 }
 
-struct TaskIncompleteImage: View {
-    var body : some View {
-        Image("")
-        .resizable()
-        .frame(width: 20, height: 20)
-        .clipShape(Circle())
-        .overlay(Circle().stroke(Color.white, lineWidth: 0.5))
-        .shadow(radius: 10)
-            .padding(EdgeInsets(top: 10, leading: 1, bottom: 10, trailing: 1.5))
-    }
-}
+//struct EventView: View {
+//    var itemID: String?
+//    var name: String?
+//    var time: String?
+//    @State var isComplete: Bool
+//
+//    var body: some View {
+//        NavigationLink(destination: TasksView(itemID: itemID)){
+//            VStack {
+//                HStack {
+//                    HStack {
+//                        Text(name!).fontWeight(.bold).font(.system(size: 20))
+//                        Spacer()
+//                        TaskCompleteImage(isComplete: isComplete)
+//                    }
+//                }
+//                HStack {
+//                    Text(time!).fontWeight(.light).font(.system(size: 15))
+//                    Spacer()
+//                }
+//            }.frame(height: 90).listRowPlatterColor(Color.yellow.opacity(0.75))
+//        }
+//    }
+//}
 
-struct GoalView: View {
-    var itemID: String?
+struct infoView: View {
     var name: String?
     var time: String?
-    @State var isComplete: Bool
     
     var body: some View {
-        NavigationLink(destination: TasksView(itemID: itemID)){
-            VStack {
-                HStack {
-                    HStack {
-                        Text(name!).fontWeight(.bold).font(.system(size: 20))
-                        Spacer()
-                        TaskCompleteImage(isComplete: isComplete)
-                    }
-                }
-                HStack {
-                    Text(time!).fontWeight(.light).font(.system(size: 15))
-                    Spacer()
-                }
-            }.frame(height: 90)
-        }
-    }
-}
-
-struct RoutineView: View {
-    var itemID: String?
-    var name: String?
-    var time: String?
-    @State var isComplete: Bool
-    
-    var body: some View {
-        NavigationLink(destination: TasksView(itemID: itemID)){
-            VStack {
-                HStack {
-                    HStack {
-                        Text(name!).fontWeight(.bold).font(.system(size: 20))
-                        Spacer()
-                        TaskCompleteImage(isComplete: isComplete)
-                    }
-                }
-                HStack {
-                    Text(time!).fontWeight(.light).font(.system(size: 15))
-                    Spacer()
-                }
-            }.frame(height: 90)
-        }.listRowBackground(Color.gray)
-    }
-}
-
-struct EventView: View {
-    var itemID: String?
-    var name: String?
-    var time: String?
-    @State var isComplete: Bool
-    
-    var body: some View {
-        NavigationLink(destination: TasksView(itemID: itemID)){
-            VStack {
-                HStack {
-                    HStack {
-                        Text(name!).fontWeight(.bold).font(.system(size: 20))
-                        Spacer()
-                        TaskCompleteImage(isComplete: isComplete)
-                    }
-                }
-                HStack {
-                    Text(time!).fontWeight(.light).font(.system(size: 15))
-                    Spacer()
-                }
-            }.frame(height: 90).listRowPlatterColor(Color.yellow.opacity(0.75))
+        VStack(alignment: .leading) {
+            Text(self.name!).fontWeight(.bold).font(.system(size: 20))
+            Spacer()
+            Text(self.time!).fontWeight(.light).font(.system(size: 15))
         }
     }
 }
@@ -160,19 +115,13 @@ struct HomeView: View {
                     List {
                         ForEach(self.model.data!, id: \.mapValue.fields.id.stringValue) { item in
                             NavigationLink(destination: TasksView(itemID: item.mapValue.fields.id.stringValue, time: self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!), name: item.mapValue.fields.title.stringValue)){
-                                VStack {
-                                    HStack {
-                                        HStack {
-                                            Text(item.mapValue.fields.title.stringValue).fontWeight(.bold).font(.system(size: 20))
-                                            Spacer()
-                                            TaskCompleteImage(isComplete: false)
-                                        }
-                                    }
-                                    HStack {
-                                        Text(self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15))
-                                        Spacer()
-                                    }
-                                }.frame(height: 90)
+                                HStack {
+                                    infoView(name: item.mapValue.fields.title.stringValue, time: self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!))
+                                    Spacer()
+                                    
+                                    //TODO: set isComplete and hasTasks to actual values
+                                    TaskCompleteImage(isComplete: true, hasTasks: true).padding(EdgeInsets(top: 8, leading: 0, bottom: 2, trailing: 0))
+                                }.frame(height: 80).padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
                             }.listRowPlatterColor(item.mapValue.fields.isPersistent.booleanValue ? Color.gray : Color.yellow.opacity(0.75))
                         }
                     }.listStyle(CarouselListStyle()).navigationBarTitle("My Day")

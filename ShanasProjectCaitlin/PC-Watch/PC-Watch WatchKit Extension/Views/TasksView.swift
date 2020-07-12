@@ -48,21 +48,6 @@ struct TasksView: View {
     
     var body: some View {
         GeometryReader { geo in
-//            VStack {
-//                Text("Plant flowers")
-//                HStack {
-//                    Text("10:00 - 11:00")
-//                    Spacer()
-//                    Text("30 min")
-//                }
-//                List {
-//                    TaskItem(taskID: "task1ID", itemID: "Plant flowers", taskName: "Task 1")
-//                    TaskItem(taskID: "task2ID", itemID: "Plant flowers", taskName: "Task 2")
-//                    TaskItem(taskID: "task3ID", itemID: "Plant flowers", taskName: "Task 3")
-//                    TaskItem(taskID: "task4ID", itemID: "Plant flowers", taskName: "Task 4")
-//                    TaskItem(taskID: "task5ID", itemID: "Plant flowers", taskName: "Task 5")
-//                }.navigationBarTitle("Tasks")
-//            }.padding(0)
             if (self.model.goalsSubtasks[self.itemID!] == nil) {
                 VStack {
                     Text("No actions and tasks found!")
