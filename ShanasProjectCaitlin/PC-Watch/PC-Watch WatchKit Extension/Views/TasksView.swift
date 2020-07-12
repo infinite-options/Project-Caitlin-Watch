@@ -78,9 +78,9 @@ struct TasksView: View {
             }
             else{
                 VStack {
-                    Text(self.name!)
+                    Text(self.name!).font(.system(size: 20, design: .rounded))
                     HStack {
-                        Text(self.time!)
+                        Text(self.time!).fontWeight(.light).font(.system(size: 15))
                     }
                     List {
                         ForEach(self.model.goalsSubtasks[self.itemID!]!!, id: \.mapValue.fields.id.stringValue) { item in

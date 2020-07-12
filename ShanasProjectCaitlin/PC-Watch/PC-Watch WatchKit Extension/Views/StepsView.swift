@@ -79,7 +79,7 @@ struct StepsView: View {
                     } else {
                         AsyncImage(url: URL(string:self.photo!)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
                     }
-                    Text(self.taskName!).font(.system(size: 20))
+                    Text(self.taskName!).lineLimit(nil).padding().font(.system(size: 20))
                     Spacer()
                     if(!self.done){
                         Button(action: {
