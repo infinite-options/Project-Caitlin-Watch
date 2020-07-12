@@ -18,7 +18,15 @@ struct StepView: View {
             Divider()
             VStack {
                 HStack {
-                    AsyncImage(url: URL(string:self.photo)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
+                    if (self.done) {
+                        AsyncImage(url: URL(string:self.photo)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
+                            .overlay(Image(systemName: "checkmark.circle")
+                            .font(.system(size:64))
+                            .padding(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 0))
+                            .foregroundColor(.green))
+                    } else {
+                        AsyncImage(url: URL(string:self.photo)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
+                    }
                     Spacer()
                     Text(name)
                 }
@@ -27,13 +35,18 @@ struct StepView: View {
                     Button(action: {
                         buttonAction()
                     }) {
-                        Text("Done?").foregroundColor(.green).onTapGesture {
-                            print("completed")
-                            self.done = true
-                        }
+                        Text("Done?")
+                            .foregroundColor(.green)
+                            .onTapGesture {
+                                print("completed")
+                                self.done = true
+                            }
                     }
                 } else {
-                    Text("Done")
+                    Text("Completed")
+                        .overlay(RoundedRectangle(cornerSize: CGSize(width: 120, height: 30), style: .continuous).stroke(Color.green, lineWidth: 1).frame(width:120, height:25))
+                        .foregroundColor(.green)
+                        .foregroundColor(.green)
                 }
             }
         }
@@ -57,9 +70,16 @@ struct StepsView: View {
         GeometryReader { geo in
             VStack(alignment: .center) {
                 if (self.model.taskSteps[self.taskID!] == nil) {
-                    //problem with image: goes away when "done true"
-                    AsyncImage(url: URL(string:self.photo!)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
-                    Text(self.taskName!)
+                    if (self.done){
+                        AsyncImage(url: URL(string:self.photo!)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit).opacity(0.60)
+                            .overlay(Image(systemName: "checkmark.circle")
+                                .font(.system(size:64))
+                                .padding(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 0))
+                                .foregroundColor(.green))
+                    } else {
+                        AsyncImage(url: URL(string:self.photo!)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
+                    }
+                    Text(self.taskName!).font(.system(size: 20))
                     Spacer()
                     if(!self.done){
                         Button(action: {
@@ -71,7 +91,8 @@ struct StepsView: View {
                             }
                         }
                     } else {
-                        Text("Task Complete")
+                        Text("Task Completed").overlay(RoundedRectangle(cornerSize: CGSize(width: 120, height: 30), style: .continuous).stroke(Color.green, lineWidth: 1).frame(width:140, height:25))
+                            .foregroundColor(.green)
                     }
                 }
                 else {
