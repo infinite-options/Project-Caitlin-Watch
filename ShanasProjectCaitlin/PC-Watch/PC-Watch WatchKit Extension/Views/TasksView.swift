@@ -13,30 +13,52 @@ struct TaskItem: View {
     var itemID: String?
     var taskName: String?
     var photo: String?
+    //TODO: set complete and has steps
+    var complete = false
+    var hasSteps = true
     @State var started = false
     
     var body: some View {
         HStack{
             NavigationLink(destination: StepsView(taskID: taskID!, itemID: itemID!, taskName: taskName!, photo: photo!)){
-                HStack {
+                VStack(alignment: .leading) {
                     AsyncSmallImage(url: URL(string:self.photo!)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
-                    Text(" " + taskName!)
+                    Text(taskName!)
                 }
             }
             Spacer()
-            Divider()
-            if (!self.started) {
-                Text("Go")
-                    .foregroundColor(.green)
-                    .onTapGesture {
-                        self.started = true
-                        print("Starting...")
-                    }
-            } else {
-                Text("Started")
-                .foregroundColor(.yellow)
-            }
-        }
+            VStack {
+                if (!self.started) {
+                    Text("Go")
+                        .overlay(Circle().stroke(Color.green, lineWidth: 1)
+                            .frame(width:27, height:27)
+                            .padding(0)
+                            .foregroundColor(.green))
+                        .foregroundColor(.green)
+                        .onTapGesture {
+                            self.started = true
+                            print("Starting...")
+                        }
+                } else if(self.started && self.complete) {
+                    Image(systemName: "checkmark.circle")
+                        .font(.subheadline)
+                        .imageScale(.large)
+                        .foregroundColor(.green)
+                } else {
+                    Image(systemName: "arrow.2.circlepath.circle")
+                        .font(.subheadline)
+                        .imageScale(.large)
+                        .foregroundColor(.yellow)
+                }
+                Spacer()
+                if (hasSteps) {
+                    Image(systemName: "plus.circle")
+                        .font(.subheadline)
+                        .imageScale(.small)
+                        .accentColor(.white)
+                }
+            }.padding(EdgeInsets(top: 16, leading: 0, bottom: 8, trailing: 8))
+            }.frame(height: 80).padding(EdgeInsets(top: 3, leading: 2, bottom: 8, trailing: 0))
     }
 }
 
