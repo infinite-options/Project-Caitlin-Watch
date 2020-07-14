@@ -38,31 +38,6 @@ struct TaskCompleteImage: View {
     }
 }
 
-//struct EventView: View {
-//    var itemID: String?
-//    var name: String?
-//    var time: String?
-//    @State var isComplete: Bool
-//
-//    var body: some View {
-//        NavigationLink(destination: TasksView(itemID: itemID)){
-//            VStack {
-//                HStack {
-//                    HStack {
-//                        Text(name!).fontWeight(.bold).font(.system(size: 20))
-//                        Spacer()
-//                        TaskCompleteImage(isComplete: isComplete)
-//                    }
-//                }
-//                HStack {
-//                    Text(time!).fontWeight(.light).font(.system(size: 15))
-//                    Spacer()
-//                }
-//            }.frame(height: 90).listRowPlatterColor(Color.yellow.opacity(0.75))
-//        }
-//    }
-//}
-
 struct infoView: View {
     var name: String?
     var time: String?

@@ -107,7 +107,7 @@ struct StepsView: View {
                         }.padding(.bottom, 0)
                         ForEach(self.model.taskSteps[self.taskID!]!!, id: \.mapValue.fields.title.stringValue) { item in
                             VStack(alignment: .leading) {
-                                if item.mapValue.fields.isAvailable.booleanValue {
+                                if item.mapValue.fields.isAvailable?.booleanValue ?? true {
                                     StepView(name: item.mapValue.fields.title.stringValue, photo: item.mapValue.fields.photo.stringValue)
                                 }
                             }

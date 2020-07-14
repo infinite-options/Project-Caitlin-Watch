@@ -57,7 +57,7 @@ struct TaskItem: View {
                         .imageScale(.small)
                         .accentColor(.white)
                 }
-            }.padding(EdgeInsets(top: 16, leading: 0, bottom: 8, trailing: 8))
+            }.padding(EdgeInsets(top: 16, leading: 0, bottom: 4, trailing: 8))
             }.frame(height: 80).padding(EdgeInsets(top: 3, leading: 2, bottom: 8, trailing: 0))
     }
 }
@@ -85,7 +85,7 @@ struct TasksView: View {
                     List {
                         ForEach(self.model.goalsSubtasks[self.itemID!]!!, id: \.mapValue.fields.id.stringValue) { item in
                             VStack(alignment: .leading) {
-                                if item.mapValue.fields.isAvailable.booleanValue {
+                                if item.mapValue.fields.isAvailable?.booleanValue ?? true {
                                     TaskItem(taskID: item.mapValue.fields.id.stringValue, itemID: self.itemID!, taskName: item.mapValue.fields.title.stringValue, photo: item.mapValue.fields.photo.stringValue)
                                 }
                             }
