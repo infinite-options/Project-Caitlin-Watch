@@ -39,27 +39,7 @@ struct TaskCompleteImage: View {
 }
 
 struct infoView: View {
-    var name: String?
-    var time: String?
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text(self.name!).fontWeight(.bold).font(.system(size: 20))
-            Spacer()
-            Text(self.time!).fontWeight(.light).font(.system(size: 15))
-        }
-    }
-}
-
-struct HomeView: View {
-    //TODO: need to have a list containing all the objects: events, goals, routines
-    // issue: can we display events in same list if in different models?
-    
-    // below has goals and routines
-    @ObservedObject private var model = FirebaseServices.shared
-    
-    // below has events
-//    @ObservedObject private var eventModel = FirebaseServ
+    var item: Value?
     
     let timeLeft: DateFormatter = {
         let formatter = DateFormatter()
@@ -75,6 +55,27 @@ struct HomeView: View {
         formatter1.dateFormat = "h:mm a"
         return formatter1
     }()
+//    var name: String?
+//    var time: String?
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(self.item!.mapValue.fields.title.stringValue).fontWeight(.bold).font(.system(size: 20))
+            Spacer()
+            Text(self.formatter.string(from: self.timeLeft.date(from: self.item!.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + self.formatter.string(from: self.timeLeft.date(from: self.item!.mapValue.fields.endDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15))
+        }
+    }
+}
+
+struct HomeView: View {
+    //TODO: need to have a list containing all the objects: events, goals, routines
+    // issue: can we display events in same list if in different models?
+    
+    // below has goals and routines
+    @ObservedObject private var model = FirebaseServices.shared
+    
+    // below has events
+//    @ObservedObject private var eventModel = FirebaseServ
     
     var body: some View {
 
@@ -91,7 +92,7 @@ struct HomeView: View {
                         ForEach(self.model.data!, id: \.mapValue.fields.id.stringValue) { item in
                             NavigationLink(destination: TasksView(itemID: item.mapValue.fields.id.stringValue, time: self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!), name: item.mapValue.fields.title.stringValue)){
                                 HStack {
-                                    infoView(name: item.mapValue.fields.title.stringValue, time: self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!))
+                                    infoView(item: item)
                                     Spacer()
                                     
                                     //TODO: set isComplete and hasTasks to actual values
