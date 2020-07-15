@@ -16,12 +16,12 @@ class DayDate {
     var day = ["","SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
     
     let taskDateFormat: DateFormatter = {
-              let formatter = DateFormatter()
-              formatter.dateStyle = .medium
-              formatter.locale = Locale(identifier: "en_US")
-              formatter.setLocalizedDateFormatFromTemplate("d")
-              return formatter
-      }()
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.locale = Locale(identifier: "en_US")
+        formatter.setLocalizedDateFormatFromTemplate("d")
+        return formatter
+    }()
     
     let timeLeft: DateFormatter = {
         let formatter2 = DateFormatter()

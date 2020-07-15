@@ -63,13 +63,36 @@ struct TaskItem: View {
 struct TasksView: View {
    @ObservedObject private var model = FirebaseServices.shared
     var goalOrRoutine: Value?
+    @State var done = false
     
     var body: some View {
         GeometryReader { geo in
             if (self.model.goalsSubtasks[self.goalOrRoutine!.mapValue.fields.id.stringValue] == nil) {
-                VStack {
-                    Text("No actions and tasks found!")
+                VStack(alignment: .center) {
+                    if (self.done){
+                        AsyncImage(url: URL(string:self.goalOrRoutine!.mapValue.fields.photo.stringValue)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit).opacity(0.60)
+                            .overlay(Image(systemName: "checkmark.circle")
+                                .font(.system(size:64))
+                                .padding(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 0))
+                                .foregroundColor(.green))
+                    } else {
+                        AsyncImage(url: URL(string:self.goalOrRoutine!.mapValue.fields.photo.stringValue)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
+                    }
+                    Text(self.goalOrRoutine!.mapValue.fields.title.stringValue).lineLimit(nil).padding().font(.system(size: 20))
                     Spacer()
+                    if(!self.done){
+                        Button(action: {
+                            buttonAction()
+                        }) {
+                            Text("Done?").foregroundColor(.green).onTapGesture {
+                                print("completed")
+                                self.done = true
+                            }
+                        }
+                    } else {
+                        Text("Task Completed").overlay(RoundedRectangle(cornerSize: CGSize(width: 120, height: 30), style: .continuous).stroke(Color.green, lineWidth: 1).frame(width:140, height:25))
+                            .foregroundColor(.green)
+                    }
                 }
             }
             else{

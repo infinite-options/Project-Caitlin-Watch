@@ -24,6 +24,13 @@ let formatter: DateFormatter = {
     return formatter1
 }()
 
+let durationFormatter: DateFormatter = {
+    let format = DateFormatter()
+    format.timeZone = .current
+    format.dateFormat = "h:mm"
+    return format
+}()
+
 /*
 struct TaskCompleteImage: View {
     var isComplete: Bool
@@ -57,12 +64,29 @@ struct TaskCompleteImage: View {
 
 struct infoView: View {
     var item: Value?
+    @ObservedObject private var model = FirebaseServices.shared
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text(self.item!.mapValue.fields.title.stringValue).fontWeight(.bold).font(.system(size: 20))
+            HStack {
+                Text(self.item!.mapValue.fields.title.stringValue).fontWeight(.bold).font(.system(size: 20))
+                Spacer()
+                if (!(self.model.goalsSubtasks[item!.mapValue.fields.id.stringValue] == nil)) {
+                    Image(systemName: "plus.circle")
+                        .font(.subheadline)
+                        .imageScale(.small)
+                        .accentColor(.white)
+                }
+            }
             Spacer()
-            Text(formatter.string(from: timeLeft.date(from: self.item!.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: self.item!.mapValue.fields.endDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15))
+            HStack {
+                AsyncSmallImage(url: URL(string:self.item!.mapValue.fields.photo.stringValue)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
+                //Text(formatter.string(from: timeLeft.date(from: self.item!.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: self.item!.mapValue.fields.endDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15))
+                VStack(alignment: .leading) {
+                    Text("Takes " + self.item!.mapValue.fields.expectedCompletionTime.stringValue).fontWeight(.light).font(.system(size: 15))
+                    Text("Ends: " + formatter.string(from: timeLeft.date(from: self.item!.mapValue.fields.endDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15))
+                }
+            }
         }
     }
 }
@@ -93,48 +117,48 @@ struct HomeView: View {
                             NavigationLink(destination: TasksView(goalOrRoutine: item)){
                                 HStack {
                                     infoView(item: item)
-                                    Spacer()
-                                    
-                                    //TODO: set isComplete and hasTasks to actual values
-                                    VStack(alignment: .center) {
-                                        Button(action: {
-                                            if(item.mapValue.fields.isComplete!.booleanValue){
-                                                print("Already complete!")
-                                            }
-                                            else{
-                                                self.model.data![index].mapValue.fields.isComplete?.booleanValue = true
-                                                
-                                                self.model.startGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
-                                                                       routineId: item.mapValue.fields.id.stringValue,
-                                                                       taskId: "NA",
-                                                                       taskNumber: index,
-                                                                       stepNumber: -1,
-                                                                       start: "goal")
-                                                
-                                                print("zz")
-                                            }
-                                        }){
-                                            if (item.mapValue.fields.isComplete?.booleanValue ?? false) {
-                                                Image(systemName: "checkmark.circle")
-                                                    .font(.subheadline)
-                                                    .imageScale(.large)
-                                                    .foregroundColor(.green)
-                                            }
-                                            else {
-                                                Image(systemName: "circle")
-                                                    .font(.subheadline)
-                                                    .imageScale(.large)
-                                            }
-                                        }.buttonStyle(PlainButtonStyle())
-                                        
-                                        Spacer()
-                                        if (!(self.model.goalsSubtasks[item.mapValue.fields.id.stringValue] == nil)) {
-                                            Image(systemName: "plus.circle")
-                                                .font(.subheadline)
-                                                .imageScale(.small)
-                                                .accentColor(.white)
-                                        }
-                                    }.padding(EdgeInsets(top: 8, leading: 0, bottom: 2, trailing: 0))
+//                                    Spacer()
+//
+//                                    //TODO: set isComplete and hasTasks to actual values
+//                                    VStack(alignment: .center) {
+//                                        Button(action: {
+//                                            if(item.mapValue.fields.isComplete!.booleanValue){
+//                                                print("Already complete!")
+//                                            }
+//                                            else{
+//                                                self.model.data![index].mapValue.fields.isComplete?.booleanValue = true
+//
+//                                                self.model.startGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
+//                                                                       routineId: item.mapValue.fields.id.stringValue,
+//                                                                       taskId: "NA",
+//                                                                       taskNumber: index,
+//                                                                       stepNumber: -1,
+//                                                                       start: "goal")
+//
+//                                                print("zz")
+//                                            }
+//                                        }){
+//                                            if (item.mapValue.fields.isComplete?.booleanValue ?? false) {
+//                                                Image(systemName: "checkmark.circle")
+//                                                    .font(.subheadline)
+//                                                    .imageScale(.large)
+//                                                    .foregroundColor(.green)
+//                                            }
+//                                            else {
+//                                                Image(systemName: "circle")
+//                                                    .font(.subheadline)
+//                                                    .imageScale(.large)
+//                                            }
+//                                        }.buttonStyle(PlainButtonStyle())
+//
+//                                        Spacer()
+//                                        if (!(self.model.goalsSubtasks[item.mapValue.fields.id.stringValue] == nil)) {
+//                                            Image(systemName: "plus.circle")
+//                                                .font(.subheadline)
+//                                                .imageScale(.small)
+//                                                .accentColor(.white)
+//                                        }
+//                                    }.padding(EdgeInsets(top: 8, leading: 0, bottom: 2, trailing: 0))
                                 }.frame(height: 80).padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
                             }.listRowPlatterColor(item.mapValue.fields.isPersistent.booleanValue ? Color.gray : Color.yellow.opacity(0.75))
                         }
