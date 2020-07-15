@@ -56,7 +56,7 @@ struct TaskItem: View {
                         .accentColor(.white)
                 }
             }.padding(EdgeInsets(top: 16, leading: 0, bottom: 4, trailing: 8))
-            }.frame(height: 80).padding(EdgeInsets(top: 3, leading: 2, bottom: 8, trailing: 0))
+        }.frame(height: 80).padding(EdgeInsets(top: 3, leading: 2, bottom: 8, trailing: 0))
     }
 }
 

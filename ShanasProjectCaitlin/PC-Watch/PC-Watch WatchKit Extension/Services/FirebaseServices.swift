@@ -78,10 +78,6 @@ class FirebaseServices: ObservableObject {
         guard let url = URL(string: TaskUrl) else { return }
             URLSession.shared.dataTask(with: url) { (data, _, _) in
                 let data = try? JSONDecoder().decode(FirebaseTask.self, from: data!)
-                if (goalID == "azwuEBmbzPbUJNPmwFqI"){
-                    print(data!)
-                    print(data?.fields.actionsTasks.arrayValue.values)
-                }
                 DispatchQueue.main.async {
                     completion(data?.fields.actionsTasks.arrayValue.values ?? nil)
                 }

@@ -194,7 +194,6 @@
 				27BF9DEF243BD501006A5466 /* FB.swift */,
 				2B3FB10824BEF8C400CC3D6D /* FBTasksModel.swift */,
 				552E9B9E2467417C00D6E20B /* FB2.swift */,
-				2BF4E09B24AC015300215138 /* Formatters.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -217,6 +216,7 @@
 				2B706DB224ADE791001AEABE /* NotificationHandler.swift */,
 				2BDEE38F24B3698900FCFE14 /* BackgroundServices.swift */,
 				0484C4FD24B90D55002C3F13 /* AsyncSmallImage.swift */,
+				2BF4E09B24AC015300215138 /* Formatters.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
