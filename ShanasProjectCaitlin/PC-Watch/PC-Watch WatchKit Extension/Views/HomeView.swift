@@ -87,7 +87,7 @@ struct HomeView: View {
             else {
                 VStack(alignment: .leading) {
                     List {
-                        ForEach(self.model.data!, id: \.mapValue.fields.id.stringValue) { item in
+                        ForEach(self.model.data!.filter({$0.mapValue.fields.isDisplayedToday.booleanValue}), id: \.mapValue.fields.id.stringValue) { item in
                             NavigationLink(destination: TasksView(goalOrRoutine: item)){
                                 HStack {
                                     infoView(item: item)
