@@ -61,7 +61,6 @@ func buttonAction() -> Void{
 struct StepsView: View {
     @ObservedObject private var model = FirebaseServices.shared
     var taskID: String?
-    var itemID: String?
     var taskName: String?
     var photo: String?
     @State var done = false

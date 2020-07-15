@@ -9,6 +9,21 @@
 import SwiftUI
 import UIKit
 
+let timeLeft: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "E, dd MMM yyyy HH:mm:ss Z"
+    formatter.timeZone = .current
+    print(formatter.timeZone!)
+    return formatter
+}()
+
+let formatter: DateFormatter = {
+    let formatter1 = DateFormatter()
+    formatter1.timeZone = .current
+    formatter1.dateFormat = "h:mm a"
+    return formatter1
+}()
+
 struct TaskCompleteImage: View {
     var isComplete: Bool
     var hasTasks: Bool
@@ -41,28 +56,11 @@ struct TaskCompleteImage: View {
 struct infoView: View {
     var item: Value?
     
-    let timeLeft: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "E, dd MMM yyyy HH:mm:ss Z"
-        formatter.timeZone = .current
-        print(formatter.timeZone!)
-        return formatter
-    }()
-
-    let formatter: DateFormatter = {
-        let formatter1 = DateFormatter()
-        formatter1.timeZone = .current
-        formatter1.dateFormat = "h:mm a"
-        return formatter1
-    }()
-//    var name: String?
-//    var time: String?
-    
     var body: some View {
         VStack(alignment: .leading) {
             Text(self.item!.mapValue.fields.title.stringValue).fontWeight(.bold).font(.system(size: 20))
             Spacer()
-            Text(self.formatter.string(from: self.timeLeft.date(from: self.item!.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + self.formatter.string(from: self.timeLeft.date(from: self.item!.mapValue.fields.endDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15))
+            Text(formatter.string(from: timeLeft.date(from: self.item!.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: self.item!.mapValue.fields.endDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15))
         }
     }
 }
@@ -90,11 +88,10 @@ struct HomeView: View {
                 VStack(alignment: .leading) {
                     List {
                         ForEach(self.model.data!, id: \.mapValue.fields.id.stringValue) { item in
-                            NavigationLink(destination: TasksView(itemID: item.mapValue.fields.id.stringValue, time: self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + self.formatter.string(from: self.timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!), name: item.mapValue.fields.title.stringValue)){
+                            NavigationLink(destination: TasksView(item: item)){
                                 HStack {
                                     infoView(item: item)
                                     Spacer()
-                                    
                                     //TODO: set isComplete and hasTasks to actual values
                                     TaskCompleteImage(isComplete: true, hasTasks: true).padding(EdgeInsets(top: 8, leading: 0, bottom: 2, trailing: 0))
                                 }.frame(height: 80).padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
