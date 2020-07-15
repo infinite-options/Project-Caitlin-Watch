@@ -68,7 +68,6 @@ struct TasksView: View {
         GeometryReader { geo in
             if (self.model.goalsSubtasks[self.goalOrRoutine!.mapValue.fields.id.stringValue] == nil) {
                 VStack {
-                    Text(self.goalOrRoutine!.mapValue.fields.id.stringValue)
                     Text("No actions and tasks found!")
                     Spacer()
                 }
