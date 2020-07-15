@@ -88,7 +88,7 @@ struct HomeView: View {
                 VStack(alignment: .leading) {
                     List {
                         ForEach(self.model.data!, id: \.mapValue.fields.id.stringValue) { item in
-                            NavigationLink(destination: TasksView(item: item)){
+                            NavigationLink(destination: TasksView(goalOrRoutine: item)){
                                 HStack {
                                     infoView(item: item)
                                     Spacer()

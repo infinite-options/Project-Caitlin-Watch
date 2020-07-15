@@ -21,12 +21,12 @@ struct FirebaseTask: Codable {
 
 struct FirebaseTaskFields: Codable {
     var actionsTasks: ActionsTasks
-    var completed: Status?
+    //var completed: Status?
     var title: EmailID
     
     enum CodingKeys: String, CodingKey {
         case actionsTasks = "actions&tasks"
-        case completed
+        //case completed
         case title
     }
 }

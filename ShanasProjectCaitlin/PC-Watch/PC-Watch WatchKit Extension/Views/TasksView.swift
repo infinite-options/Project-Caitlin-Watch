@@ -62,24 +62,25 @@ struct TaskItem: View {
 
 struct TasksView: View {
    @ObservedObject private var model = FirebaseServices.shared
-    var item: Value?
+    var goalOrRoutine: Value?
     
     var body: some View {
         GeometryReader { geo in
-            if (self.model.goalsSubtasks[self.item!.mapValue.fields.id.stringValue] == nil) {
+            if (self.model.goalsSubtasks[self.goalOrRoutine!.mapValue.fields.id.stringValue] == nil) {
                 VStack {
+                    Text(self.goalOrRoutine!.mapValue.fields.id.stringValue)
                     Text("No actions and tasks found!")
                     Spacer()
                 }
             }
             else{
                 VStack {
-                    Text(self.item!.mapValue.fields.title.stringValue).font(.system(size: 20, design: .rounded))
+                    Text(self.goalOrRoutine!.mapValue.fields.title.stringValue).font(.system(size: 20, design: .rounded))
                     HStack {
-                        Text(formatter.string(from: timeLeft.date(from: self.item!.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: self.item!.mapValue.fields.endDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15))
+                        Text(formatter.string(from: timeLeft.date(from: self.goalOrRoutine!.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: self.goalOrRoutine!.mapValue.fields.endDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15))
                     }
                     List {
-                        ForEach(self.model.goalsSubtasks[self.item!.mapValue.fields.id.stringValue]!!, id: \.mapValue.fields.id.stringValue) { item in
+                        ForEach(self.model.goalsSubtasks[self.goalOrRoutine!.mapValue.fields.id.stringValue]!!, id: \.mapValue.fields.id.stringValue) { item in
                             VStack(alignment: .leading) {
                                 if item.mapValue.fields.isAvailable?.booleanValue ?? true {
                                     TaskItem(task: item)

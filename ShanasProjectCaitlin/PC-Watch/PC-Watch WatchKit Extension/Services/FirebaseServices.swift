@@ -78,6 +78,10 @@ class FirebaseServices: ObservableObject {
         guard let url = URL(string: TaskUrl) else { return }
             URLSession.shared.dataTask(with: url) { (data, _, _) in
                 let data = try? JSONDecoder().decode(FirebaseTask.self, from: data!)
+                if (goalID == "azwuEBmbzPbUJNPmwFqI"){
+                    print(data!)
+                    print(data?.fields.actionsTasks.arrayValue.values)
+                }
                 DispatchQueue.main.async {
                     completion(data?.fields.actionsTasks.arrayValue.values ?? nil)
                 }
@@ -116,7 +120,6 @@ class FirebaseServices: ObservableObject {
             url = URL(string: "https://us-central1-project-caitlin-c71a9.cloudfunctions.net/StartInstructionOrStep")
         }
         
-        
         let jsonData = startGRATISbody(data: Fields(userId: userId,
                                                     routineId: routineId,
                                                     taskId: taskId,
@@ -125,7 +128,6 @@ class FirebaseServices: ObservableObject {
                                                     ))
         
         let finalJsonData = try? JSONEncoder().encode(jsonData)
-        
         if let url = url { request = URLRequest(url: url) }
         else { return }
         
@@ -134,8 +136,7 @@ class FirebaseServices: ObservableObject {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         
-        URLSession.shared.dataTask(with: request){(data, _ , error) in
-            
+        URLSession.shared.dataTask(with: request){ (data, _ , error) in
             if let error = error {
                 print("Generic networking error: \(error)")
             }

@@ -9,15 +9,18 @@
 import WatchKit
 import Foundation
 import SwiftUI
-/*
+
 class HostingController: WKHostingController<HomeView> {
     override var body: HomeView {
         return HomeView()
     }
 }
-*/
+
+
+/*
 class HostingController: WKHostingController<Test> {
     override var body: Test {
         return Test()
     }
 }
+*/
