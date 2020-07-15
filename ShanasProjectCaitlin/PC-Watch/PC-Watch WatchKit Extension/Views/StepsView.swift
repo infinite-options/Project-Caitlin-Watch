@@ -9,8 +9,7 @@
 import SwiftUI
 
 struct StepView: View {
-    var name: String
-    var photo: String
+    var step: ValueTask?
     @State var done = false
     
     var body: some View {
@@ -19,16 +18,16 @@ struct StepView: View {
             VStack {
                 HStack {
                     if (self.done) {
-                        AsyncImage(url: URL(string:self.photo)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
+                        AsyncImage(url: URL(string:self.step!.mapValue.fields.photo.stringValue)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
                             .overlay(Image(systemName: "checkmark.circle")
                             .font(.system(size:64))
                             .padding(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 0))
                             .foregroundColor(.green))
                     } else {
-                        AsyncImage(url: URL(string:self.photo)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
+                        AsyncImage(url: URL(string:self.step!.mapValue.fields.photo.stringValue)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
                     }
                     Spacer()
-                    Text(name)
+                    Text(self.step!.mapValue.fields.title.stringValue)
                 }
                 Spacer()
                 if(!self.done){
@@ -107,7 +106,7 @@ struct StepsView: View {
                         ForEach(self.model.taskSteps[self.taskID!]!!, id: \.mapValue.fields.title.stringValue) { item in
                             VStack(alignment: .leading) {
                                 if item.mapValue.fields.isAvailable?.booleanValue ?? true {
-                                    StepView(name: item.mapValue.fields.title.stringValue, photo: item.mapValue.fields.photo.stringValue)
+                                    StepView(step: item)
                                 }
                             }
                         }
