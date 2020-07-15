@@ -102,6 +102,7 @@ struct HomeView: View {
                                             }
                                             else{
                                                 self.model.data![index].mapValue.fields.isComplete?.booleanValue = true
+                                                
                                                 self.model.startGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
                                                                        routineId: item.mapValue.fields.id.stringValue,
                                                                        taskId: "NA",
@@ -124,6 +125,7 @@ struct HomeView: View {
                                                     .imageScale(.large)
                                             }
                                         }.buttonStyle(PlainButtonStyle())
+                                        
                                         Spacer()
                                         if (!(self.model.goalsSubtasks[item.mapValue.fields.id.stringValue] == nil)) {
                                             Image(systemName: "plus.circle")

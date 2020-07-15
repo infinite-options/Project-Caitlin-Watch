@@ -58,10 +58,6 @@ struct HavePic: Codable {
     var booleanValue: Bool
 }
 
-struct Status: Codable {
-    var doubleValue: Int
-}
-
 // MARK: - EmailID
 struct EmailID: Codable {
     var stringValue: String
