@@ -56,7 +56,7 @@ struct TaskItem: View {
                         .accentColor(.white)
                 }
             }.padding(EdgeInsets(top: 16, leading: 0, bottom: 4, trailing: 8))
-            }.frame(height: 80).padding(EdgeInsets(top: 3, leading: 2, bottom: 8, trailing: 0))
+        }.frame(height: 80).padding(EdgeInsets(top: 3, leading: 2, bottom: 8, trailing: 0))
     }
 }
 
@@ -68,7 +68,6 @@ struct TasksView: View {
         GeometryReader { geo in
             if (self.model.goalsSubtasks[self.goalOrRoutine!.mapValue.fields.id.stringValue] == nil) {
                 VStack {
-                    Text(self.goalOrRoutine!.mapValue.fields.id.stringValue)
                     Text("No actions and tasks found!")
                     Spacer()
                 }

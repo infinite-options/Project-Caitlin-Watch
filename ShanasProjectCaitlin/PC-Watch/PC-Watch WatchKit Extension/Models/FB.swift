@@ -12,42 +12,6 @@ struct Firebase: Codable {
     var fields: FirebaseFields
 }
 
-//Tasks Fields:
-struct FirebaseTask: Codable {
-    var name: String?
-    var createTime, updateTime: String?
-    var fields: FirebaseTaskFields
-}
-
-struct FirebaseTaskFields: Codable {
-    var actionsTasks: ActionsTasks
-    //var completed: Status?
-    var title: EmailID
-    
-    enum CodingKeys: String, CodingKey {
-        case actionsTasks = "actions&tasks"
-        //case completed
-        case title
-    }
-}
-
-struct FirebaseStep: Codable {
-    var name: String?
-    var createTime, updateTime: String?
-    var fields: FirebaseStepFields
-}
-
-struct FirebaseStepFields: Codable {
-    var instructionsSteps: ActionsTasks
-    //var completed: HavePic
-    var title: EmailID
-    
-    enum CodingKeys: String, CodingKey {
-        case instructionsSteps = "instructions&steps"
-        //case completed = "completed"
-        case title
-    }
-}
 // MARK: - FirebaseFields
 struct FirebaseFields: Codable {
     var emailID, lastName, firstName: EmailID
@@ -94,10 +58,6 @@ struct HavePic: Codable {
     var booleanValue: Bool
 }
 
-struct Status: Codable {
-    var doubleValue: Int
-}
-
 // MARK: - EmailID
 struct EmailID: Codable {
     var stringValue: String
@@ -121,46 +81,6 @@ struct Value: Codable {
 // MARK: - ValueMapValue
 struct ValueMapValue: Codable {
     var fields: FluffyFields
-}
-
-struct ActionsTasks: Codable {
-    var arrayValue: ActionsTasksArrayValue
-}
-
-// MARK: - ArrayValue
-struct ActionsTasksArrayValue: Codable {
-    var values: [ValueTask]
-}
-
-// MARK: - Value
-struct ValueTask: Codable {
-    var mapValue: TaskValueMapValue
-}
-
-// MARK: - ValueMapValue
-struct TaskValueMapValue: Codable {
-    var fields: TaskFluffyFields
-}
-
-struct TaskFluffyFields: Codable {
-    var availableStartTime, availableEndTime: EmailID
-    var datetimeStarted, datetimeCompleted: EmailID
-    var isAvailable, isComplete: HavePic?
-    //var isMustDo: EmailID
-    //var isSublistAvailable: HavePic
-    var photo, id, title: EmailID
-    
-    enum CodingKeys: String, CodingKey {
-        //case isSublistAvailable = "is_sublist_available"
-        case isComplete = "is_complete"
-        case availableStartTime = "available_start_time"
-        case isAvailable = "is_available"
-        //case isMustDo = "is_must_do"
-        case availableEndTime = "available_end_time"
-        case datetimeCompleted = "datetime_completed"
-        case datetimeStarted = "datetime_started"
-        case photo, id, title
-    }
 }
 
 // MARK: - FluffyFields
