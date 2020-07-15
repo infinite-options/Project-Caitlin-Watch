@@ -9,10 +9,8 @@
 import SwiftUI
 
 struct TaskItem: View {
-    var taskID: String?
-    var itemID: String?
-    var taskName: String?
-    var photo: String?
+    var task: ValueTask?
+    
     //TODO: set complete and has steps
     var complete = false
     var hasSteps = true
@@ -20,10 +18,10 @@ struct TaskItem: View {
     
     var body: some View {
         HStack{
-            NavigationLink(destination: StepsView(taskID: taskID!, itemID: itemID!, taskName: taskName!, photo: photo!)){
+            NavigationLink(destination: StepsView(taskID: self.task!.mapValue.fields.id.stringValue, taskName: self.task!.mapValue.fields.title.stringValue, photo: self.task!.mapValue.fields.photo.stringValue)){
                 VStack(alignment: .leading) {
-                    AsyncSmallImage(url: URL(string:self.photo!)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
-                    Text(taskName!)
+                    AsyncSmallImage(url: URL(string:self.task!.mapValue.fields.photo.stringValue)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
+                    Text(self.task!.mapValue.fields.title.stringValue)
                 }
             }
             Spacer()
@@ -64,13 +62,11 @@ struct TaskItem: View {
 
 struct TasksView: View {
    @ObservedObject private var model = FirebaseServices.shared
-    var itemID: String?
-    var time: String?
-    var name: String?
+    var item: Value?
     
     var body: some View {
         GeometryReader { geo in
-            if (self.model.goalsSubtasks[self.itemID!] == nil) {
+            if (self.model.goalsSubtasks[self.item!.mapValue.fields.id.stringValue] == nil) {
                 VStack {
                     Text("No actions and tasks found!")
                     Spacer()
@@ -78,15 +74,15 @@ struct TasksView: View {
             }
             else{
                 VStack {
-                    Text(self.name!).font(.system(size: 20, design: .rounded))
+                    Text(self.item!.mapValue.fields.title.stringValue).font(.system(size: 20, design: .rounded))
                     HStack {
-                        Text(self.time!).fontWeight(.light).font(.system(size: 15))
+                        Text(formatter.string(from: timeLeft.date(from: self.item!.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: self.item!.mapValue.fields.endDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15))
                     }
                     List {
-                        ForEach(self.model.goalsSubtasks[self.itemID!]!!, id: \.mapValue.fields.id.stringValue) { item in
+                        ForEach(self.model.goalsSubtasks[self.item!.mapValue.fields.id.stringValue]!!, id: \.mapValue.fields.id.stringValue) { item in
                             VStack(alignment: .leading) {
                                 if item.mapValue.fields.isAvailable?.booleanValue ?? true {
-                                    TaskItem(taskID: item.mapValue.fields.id.stringValue, itemID: self.itemID!, taskName: item.mapValue.fields.title.stringValue, photo: item.mapValue.fields.photo.stringValue)
+                                    TaskItem(task: item)
                                 }
                             }
                         }
