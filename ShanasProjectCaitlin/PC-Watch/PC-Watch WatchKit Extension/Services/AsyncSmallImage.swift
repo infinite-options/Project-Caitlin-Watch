@@ -1,14 +1,14 @@
 //
-//  AsyncImage.swift
+//  AsyncSmallImage.swift
 //  PC-Watch WatchKit Extension
 //
-//  Created by Kyle Hoefer on 4/11/20.
+//  Created by Emma Allegrucci on 7/10/20.
 //  Copyright © 2020 Infinite Options. All rights reserved.
 //
 
 import SwiftUI
 
-struct AsyncImage<Placeholder: View>: View {
+struct AsyncSmallImage<Placeholder: View>: View {
     @ObservedObject private var loader: ImageLoader
     private let placeholder: Placeholder?
     
@@ -28,14 +28,14 @@ struct AsyncImage<Placeholder: View>: View {
             if loader.image != nil {
                 Circle()
                     .foregroundColor(Color.yellow.opacity(0.9))
-                    .frame(width: 60, height: 60)
+                    .frame(width: 40, height: 40)
                     .overlay(Image(uiImage: loader.image!)
                         .resizable()
-                        .frame(width:35, height:35)
+                        .frame(width:25, height:25)
                         .padding(0))
                     .overlay(Circle().stroke(Color.red, lineWidth: 1))
                     .shadow(color: .yellow , radius: 4)
-                    .padding(EdgeInsets(top: 8, leading: 2, bottom: 0, trailing: 2))
+                    .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 2))
             } else {
                 placeholder
             }
@@ -43,8 +43,8 @@ struct AsyncImage<Placeholder: View>: View {
     }
 }
 
-//struct AsyncImage_Previews: PreviewProvider {
+//struct AsyncSmallImage_Previews: PreviewProvider {
 //    static var previews: some View {
-//        AsyncImage()
+//        AsyncSmallImage()
 //    }
 //}

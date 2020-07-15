@@ -61,7 +61,7 @@ class FirebaseServices: ObservableObject {
     }
     
     func getFirebaseData(completion: @escaping ([Value]?) -> ()) {
-        guard let url = URL(string: "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/VzYNSZMGGRrtzm74zPmM") else { return }
+        guard let url = URL(string: "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/GdT7CRXUuDXmteS4rQwN/") else { return }
         URLSession.shared.dataTask(with: url) { (data, _, _) in
             let data = try? JSONDecoder().decode(Firebase.self, from: data!)
             DispatchQueue.main.async {
@@ -72,12 +72,16 @@ class FirebaseServices: ObservableObject {
     }
     
     func getFirebaseTasks(goalID: String, completion: @escaping ([ValueTask]?) -> ()) {
-        var TaskUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/VzYNSZMGGRrtzm74zPmM/goals&routines/"
+        var TaskUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/GdT7CRXUuDXmteS4rQwN/goals&routines/"
         TaskUrl.append(goalID)
         print(TaskUrl)
         guard let url = URL(string: TaskUrl) else { return }
             URLSession.shared.dataTask(with: url) { (data, _, _) in
                 let data = try? JSONDecoder().decode(FirebaseTask.self, from: data!)
+                if (goalID == "azwuEBmbzPbUJNPmwFqI"){
+                    print(data!)
+                    print(data?.fields.actionsTasks.arrayValue.values)
+                }
                 DispatchQueue.main.async {
                     completion(data?.fields.actionsTasks.arrayValue.values ?? nil)
                 }
@@ -86,7 +90,7 @@ class FirebaseServices: ObservableObject {
     }
     
     func getFirebaseStep(stepID: String, goalID: String, completion: @escaping ([ValueTask]?) -> ()) {
-        var StepUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/VzYNSZMGGRrtzm74zPmM/goals&routines/"
+        var StepUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/GdT7CRXUuDXmteS4rQwN/goals&routines/"
         StepUrl.append(goalID)
         StepUrl.append("/actions&tasks/")
         StepUrl.append(stepID)
@@ -100,4 +104,70 @@ class FirebaseServices: ObservableObject {
             }
         .resume()
     }
+    
+    func startGRATIS(userId: String, routineId: String, taskId: String?, taskNumber: Int?, stepNumber: Int?, start: String){
+        
+        var url: URL?
+        var request: URLRequest
+        
+        if start == "goal"{
+            url = URL(string: "https://us-central1-project-caitlin-c71a9.cloudfunctions.net/StartGoalOrRoutine")
+        }
+        if start == "task"{
+           url = URL(string: "https://us-central1-project-caitlin-c71a9.cloudfunctions.net/StartActionOrTask")
+        }
+        if start == "step"{
+            url = URL(string: "https://us-central1-project-caitlin-c71a9.cloudfunctions.net/StartInstructionOrStep")
+        }
+        
+        let jsonData = startGRATISbody(data: Fields(userId: userId,
+                                                    routineId: routineId,
+                                                    taskId: taskId,
+                                                    taskNumber: taskNumber,
+                                                    stepNumber: stepNumber
+                                                    ))
+        
+        let finalJsonData = try? JSONEncoder().encode(jsonData)
+        if let url = url { request = URLRequest(url: url) }
+        else { return }
+        
+        request.httpMethod = "POST"
+        request.httpBody = finalJsonData
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        
+        URLSession.shared.dataTask(with: request){ (data, _ , error) in
+            if let error = error {
+                print("Generic networking error: \(error)")
+            }
+            
+            if let data = data {
+                do{
+                    let finalRespData = try JSONDecoder().decode(cloudFuncResp.self, from: data)
+                    print(finalRespData)
+                }
+                catch let jsonParseError {
+                    print("Error in parsing JSON response: \(jsonParseError)")
+                }
+            }
+            else { return }
+        }.resume()
+    }
+    
+    struct startGRATISbody: Codable {
+        var data: Fields
+    }
+    
+    struct Fields: Codable {
+        var userId: String
+        var routineId: String
+        var taskId: String?
+        var taskNumber: Int?
+        var stepNumber: Int?
+    }
+    
+    struct cloudFuncResp: Decodable {
+        var result: Int
+    }
+    
 }

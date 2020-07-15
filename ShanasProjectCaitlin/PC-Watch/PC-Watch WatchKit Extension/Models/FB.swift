@@ -21,12 +21,12 @@ struct FirebaseTask: Codable {
 
 struct FirebaseTaskFields: Codable {
     var actionsTasks: ActionsTasks
-    var completed: HavePic
+    //var completed: Status?
     var title: EmailID
     
     enum CodingKeys: String, CodingKey {
         case actionsTasks = "actions&tasks"
-        case completed
+        //case completed
         case title
     }
 }
@@ -51,7 +51,7 @@ struct FirebaseStepFields: Codable {
 // MARK: - FirebaseFields
 struct FirebaseFields: Codable {
     var emailID, lastName, firstName: EmailID
-    var aboutMe: AboutMe
+    var aboutMe: AboutMe?
     var goalsRoutines: GoalsRoutines
     var googleAuthToken, googleRefreshToken: EmailID
 
@@ -92,6 +92,10 @@ struct PurpleFields: Codable {
 // MARK: - HavePic
 struct HavePic: Codable {
     var booleanValue: Bool
+}
+
+struct Status: Codable {
+    var doubleValue: Int
 }
 
 // MARK: - EmailID
@@ -141,7 +145,7 @@ struct TaskValueMapValue: Codable {
 struct TaskFluffyFields: Codable {
     var availableStartTime, availableEndTime: EmailID
     var datetimeStarted, datetimeCompleted: EmailID
-    var isAvailable, isComplete: HavePic
+    var isAvailable, isComplete: HavePic?
     //var isMustDo: EmailID
     //var isSublistAvailable: HavePic
     var photo, id, title: EmailID
@@ -161,7 +165,7 @@ struct TaskFluffyFields: Codable {
 
 // MARK: - FluffyFields
 struct FluffyFields: Codable {
-    var isSublistAvailable, isComplete: HavePic
+    var isSublistAvailable, isComplete: HavePic?
     var availableStartTime: EmailID
     var isPersistent: HavePic
     var datetimeCompleted, expectedCompletionTime: EmailID

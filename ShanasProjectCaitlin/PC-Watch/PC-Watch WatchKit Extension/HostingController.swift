@@ -15,3 +15,12 @@ class HostingController: WKHostingController<HomeView> {
         return HomeView()
     }
 }
+
+
+/*
+class HostingController: WKHostingController<Test> {
+    override var body: Test {
+        return Test()
+    }
+}
+*/
