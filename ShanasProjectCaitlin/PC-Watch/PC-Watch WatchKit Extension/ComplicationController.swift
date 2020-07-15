@@ -171,8 +171,9 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                 }
             }
             handler(timeLineEntries)
+        } else {
+            handler(nil)
         }
-        handler(nil)
     }
     
     // MARK: - Placeholder Templates
@@ -189,7 +190,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             let modularLarge = CLKComplicationTemplateModularLargeStandardBody()
             modularLarge.headerTextProvider = CLKSimpleTextProvider(text: "Goal/Routine")
             modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "Status")
-            modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "Time - Time")
+            modularLarge.body2TextProvider = CLKSimpleTextProvider(text: "Time - Time")
             handler(modularLarge)
         }
         else {
