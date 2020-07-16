@@ -18,14 +18,25 @@ struct TaskItem: View {
     
     var body: some View {
         HStack{
-            NavigationLink(destination: StepsView(taskID: self.task!.mapValue.fields.id.stringValue, taskName: self.task!.mapValue.fields.title.stringValue, photo: self.task!.mapValue.fields.photo.stringValue)){
+            NavigationLink(destination: StepsView(taskID: self.task!.mapValue.fields.id.stringValue, taskName: self.task!.mapValue.fields.title.stringValue, photo: self.task!.mapValue.fields.photo.stringValue, time: self.task!.mapValue.fields.expectedCompletionTime!.stringValue)){
                 VStack(alignment: .leading) {
-                    AsyncSmallImage(url: URL(string:self.task!.mapValue.fields.photo.stringValue)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
-                    Text(self.task!.mapValue.fields.title.stringValue)
-                }
+                    Text(self.task!.mapValue.fields.title.stringValue).fontWeight(.bold).font(.system(size: 20))
+                    Spacer()
+                    HStack {
+                        AsyncSmallImage(url: URL(string:self.task!.mapValue.fields.photo.stringValue)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
+                        Text("Takes " + self.task!.mapValue.fields.expectedCompletionTime!.stringValue).fontWeight(.light).font(.system(size: 15))
+                    }
+                }.padding(EdgeInsets(top: 8, leading: 0, bottom: 0, trailing: 0))
             }
             Spacer()
             VStack {
+                if (hasSteps) {
+                    Image(systemName: "plus.circle")
+                        .font(.subheadline)
+                        .imageScale(.small)
+                        .accentColor(.white)
+                }
+                Spacer()
                 if (!self.started) {
                     Text("Go")
                         .overlay(Circle().stroke(Color.green, lineWidth: 1)
@@ -48,15 +59,15 @@ struct TaskItem: View {
                         .imageScale(.large)
                         .foregroundColor(.yellow)
                 }
-                Spacer()
-                if (hasSteps) {
-                    Image(systemName: "plus.circle")
-                        .font(.subheadline)
-                        .imageScale(.small)
-                        .accentColor(.white)
-                }
-            }.padding(EdgeInsets(top: 16, leading: 0, bottom: 4, trailing: 8))
-        }.frame(height: 80).padding(EdgeInsets(top: 3, leading: 2, bottom: 8, trailing: 0))
+//                Spacer()
+//                if (hasSteps) {
+//                    Image(systemName: "plus.circle")
+//                        .font(.subheadline)
+//                        .imageScale(.small)
+//                        .accentColor(.white)
+//                }
+            }.padding(EdgeInsets(top: 14, leading: 0, bottom: 16, trailing: 0))
+        }.padding(EdgeInsets(top: 3, leading: 2, bottom: 4, trailing: 0))
     }
 }
 
@@ -99,7 +110,8 @@ struct TasksView: View {
                 VStack {
                     Text(self.goalOrRoutine!.mapValue.fields.title.stringValue).font(.system(size: 20, design: .rounded))
                     HStack {
-                        Text(formatter.string(from: timeLeft.date(from: self.goalOrRoutine!.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: self.goalOrRoutine!.mapValue.fields.endDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15))
+                        Text("Duration: " + self.goalOrRoutine!.mapValue.fields.expectedCompletionTime.stringValue).fontWeight(.light).font(.system(size: 15))
+//                        Text(formatter.string(from: timeLeft.date(from: self.goalOrRoutine!.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: self.goalOrRoutine!.mapValue.fields.endDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15))
                     }
                     List {
                         ForEach(self.model.goalsSubtasks[self.goalOrRoutine!.mapValue.fields.id.stringValue]!!, id: \.mapValue.fields.id.stringValue) { item in
@@ -110,7 +122,7 @@ struct TasksView: View {
                             }
                         }
                     }.navigationBarTitle("Tasks")
-                }.edgesIgnoringSafeArea(.bottom)
+                }
             }
         }
     }

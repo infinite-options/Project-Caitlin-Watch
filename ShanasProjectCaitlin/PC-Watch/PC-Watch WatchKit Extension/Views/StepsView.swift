@@ -62,6 +62,7 @@ struct StepsView: View {
     var taskID: String?
     var taskName: String?
     var photo: String?
+    var time: String?
     @State var done = false
     
     var body: some View {
@@ -72,12 +73,15 @@ struct StepsView: View {
                         AsyncImage(url: URL(string:self.photo!)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit).opacity(0.60)
                             .overlay(Image(systemName: "checkmark.circle")
                                 .font(.system(size:64))
-                                .padding(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 0))
+                                .padding(EdgeInsets(top: 11, leading: 0, bottom: 0, trailing: 0))
                                 .foregroundColor(.green))
                     } else {
                         AsyncImage(url: URL(string:self.photo!)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
                     }
-                    Text(self.taskName!).lineLimit(nil).padding().font(.system(size: 20))
+                    VStack {
+                        Text(self.taskName!).lineLimit(nil).font(.system(size: 20))
+                        Text("Takes " + self.time!).fontWeight(.light).font(.system(size: 15))
+                    }
                     Spacer()
                     if(!self.done){
                         Button(action: {

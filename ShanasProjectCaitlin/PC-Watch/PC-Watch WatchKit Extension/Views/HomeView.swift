@@ -80,7 +80,22 @@ struct infoView: View {
             }
             Spacer()
             HStack {
-                AsyncSmallImage(url: URL(string:self.item!.mapValue.fields.photo.stringValue)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
+                if ((self.item!.mapValue.fields.isComplete?.booleanValue) == true){
+                    AsyncSmallImage(url: URL(string:self.item!.mapValue.fields.photo.stringValue)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit).opacity(0.40)
+                        .overlay(Image(systemName: "checkmark.circle")
+                            .font(.system(size:44))
+                            .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
+                            .foregroundColor(.green))
+                } else if (self.item!.mapValue.fields.isInProgress?.booleanValue == true) {
+                    AsyncSmallImage(url: URL(string:self.item!.mapValue.fields.photo.stringValue)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
+                        .opacity(0.40)
+                        .overlay(Image(systemName: "arrow.2.circlepath.circle")
+                            .font(.system(size:44))
+                            .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
+                            .foregroundColor(.yellow))
+                } else {
+                    AsyncSmallImage(url: URL(string:self.item!.mapValue.fields.photo.stringValue)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
+                }
                 //Text(formatter.string(from: timeLeft.date(from: self.item!.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: self.item!.mapValue.fields.endDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15))
                 VStack(alignment: .leading) {
                     Text("Takes " + self.item!.mapValue.fields.expectedCompletionTime.stringValue).fontWeight(.light).font(.system(size: 15))
