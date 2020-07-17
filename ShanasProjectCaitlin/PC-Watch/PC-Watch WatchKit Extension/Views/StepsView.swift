@@ -18,16 +18,22 @@ struct StepView: View {
             VStack {
                 HStack {
                     if (self.done) {
-                        AsyncImage(url: URL(string:self.step!.mapValue.fields.photo.stringValue)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
+                        AsyncImage(url: URL(string:self.step!.mapValue.fields.photo.stringValue)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit).opacity(0.60)
                             .overlay(Image(systemName: "checkmark.circle")
-                            .font(.system(size:64))
-                            .padding(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 0))
+                            .font(.system(size:65))
+                            .padding(EdgeInsets(top: 12, leading: 0, bottom: 0, trailing: 0))
                             .foregroundColor(.green))
                     } else {
                         AsyncImage(url: URL(string:self.step!.mapValue.fields.photo.stringValue)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
                     }
-                    Spacer()
-                    Text(self.step!.mapValue.fields.title.stringValue)
+//                    Spacer()
+                    VStack(alignment: .leading) {
+                        Text(self.step!.mapValue.fields.title.stringValue)
+                            .frame(width: 110)
+                            .font(.system(size: 15, design: .rounded))
+                            .lineLimit(2)
+                        Text("Takes: " + self.step!.mapValue.fields.expectedCompletionTime!.stringValue).frame(width: 110).font(.system(size: 10))
+                    }
                 }
                 Spacer()
                 if(!self.done){
@@ -72,8 +78,8 @@ struct StepsView: View {
                     if (self.done){
                         AsyncImage(url: URL(string:self.photo!)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit).opacity(0.60)
                             .overlay(Image(systemName: "checkmark.circle")
-                                .font(.system(size:64))
-                                .padding(EdgeInsets(top: 11, leading: 0, bottom: 0, trailing: 0))
+                                .font(.system(size:65))
+                                .padding(EdgeInsets(top: 12, leading: 0, bottom: 0, trailing: 0))
                                 .foregroundColor(.green))
                     } else {
                         AsyncImage(url: URL(string:self.photo!)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
@@ -106,6 +112,7 @@ struct StepsView: View {
                                 .lineLimit(2)
                                 .fixedSize(horizontal: false, vertical: true)
                                 .padding(EdgeInsets(top: 8, leading: 2, bottom: 0, trailing: 2))
+                            Text("Takes " + self.time!).fontWeight(.light).font(.system(size: 15))
                         }.padding(.bottom, 0)
                         ForEach(self.model.taskSteps[self.taskID!]!!, id: \.mapValue.fields.title.stringValue) { item in
                             VStack(alignment: .leading) {
@@ -116,7 +123,7 @@ struct StepsView: View {
                         }
                     }.frame(height: geo.size.height).padding(0)
                 }
-            }.navigationBarTitle("Instructions")
+            }.navigationBarTitle("Steps")
         }
     }
 }

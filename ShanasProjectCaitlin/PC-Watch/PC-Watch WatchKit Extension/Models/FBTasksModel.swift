@@ -36,11 +36,13 @@ struct FirebaseStep: Codable {
 
 struct FirebaseStepFields: Codable {
     var instructionsSteps: ActionsTasks
+    var expectedCompletionTime: EmailID?
     //var completed: HavePic
     var title: EmailID
     
     enum CodingKeys: String, CodingKey {
         case instructionsSteps = "instructions&steps"
+        case expectedCompletionTime = "expected_completion_time"
         //case completed = "completed"
         case title
     }
@@ -71,6 +73,7 @@ struct TaskFluffyFields: Codable {
     var datetimeStarted, datetimeCompleted: EmailID
     var isAvailable, isComplete: HavePic?
     var expectedCompletionTime: EmailID?
+    var isInProgress: HavePic?
     //var isMustDo: EmailID
     //var isSublistAvailable: HavePic
     var photo, id, title: EmailID
@@ -80,6 +83,7 @@ struct TaskFluffyFields: Codable {
         case availableStartTime = "available_start_time"
         case isAvailable = "is_available"
         case expectedCompletionTime = "expected_completion_time"
+        case isInProgress = "is_in_progress"
         //case isMustDo = "is_must_do"
         //case isSublistAvailable = "is_sublist_available"
         case availableEndTime = "available_end_time"

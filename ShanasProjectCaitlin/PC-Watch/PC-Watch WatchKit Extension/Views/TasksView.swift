@@ -10,17 +10,49 @@ import SwiftUI
 
 struct TaskItem: View {
     var task: ValueTask?
+    @ObservedObject private var model = FirebaseServices.shared
     
-    //TODO: set complete and has steps
-    var complete = false
-    var hasSteps = true
+    //TODO: change to isInProgress
     @State var started = false
     
     var body: some View {
         HStack{
             NavigationLink(destination: StepsView(taskID: self.task!.mapValue.fields.id.stringValue, taskName: self.task!.mapValue.fields.title.stringValue, photo: self.task!.mapValue.fields.photo.stringValue, time: self.task!.mapValue.fields.expectedCompletionTime!.stringValue)){
                 VStack(alignment: .leading) {
-                    Text(self.task!.mapValue.fields.title.stringValue).fontWeight(.bold).font(.system(size: 20))
+                    HStack {
+                        Text(self.task!.mapValue.fields.title.stringValue).fontWeight(.bold).font(.system(size: 20))
+                        Spacer()
+                        if (!(self.model.taskSteps[task!.mapValue.fields.id.stringValue] == nil)) {
+                            
+                            Image(systemName: "plus.circle")
+                                .font(.subheadline)
+                                .imageScale(.small)
+                                .accentColor(.white)
+                        } else {
+                            if (task!.mapValue.fields.isComplete!.booleanValue) {
+                                Text("Go")
+                                    .overlay(Circle().stroke(Color.green, lineWidth: 1)
+                                        .frame(width:27, height:27)
+                                        .padding(0)
+                                        .foregroundColor(.green))
+                                    .foregroundColor(.green)
+                                    .onTapGesture {
+                                        self.started = true
+                                        print("Starting...")
+                                    }
+                            } else if(self.started && task!.mapValue.fields.isComplete!.booleanValue) {
+                                Image(systemName: "checkmark.circle")
+                                    .font(.subheadline)
+                                    .imageScale(.large)
+                                    .foregroundColor(.green)
+                            } else {
+                                Image(systemName: "arrow.2.circlepath.circle")
+                                    .font(.subheadline)
+                                    .imageScale(.large)
+                                    .foregroundColor(.yellow)
+                            }
+                        }
+                    }
                     Spacer()
                     HStack {
                         AsyncSmallImage(url: URL(string:self.task!.mapValue.fields.photo.stringValue)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
@@ -28,45 +60,6 @@ struct TaskItem: View {
                     }
                 }.padding(EdgeInsets(top: 8, leading: 0, bottom: 0, trailing: 0))
             }
-            Spacer()
-            VStack {
-                if (hasSteps) {
-                    Image(systemName: "plus.circle")
-                        .font(.subheadline)
-                        .imageScale(.small)
-                        .accentColor(.white)
-                }
-                Spacer()
-                if (!self.started) {
-                    Text("Go")
-                        .overlay(Circle().stroke(Color.green, lineWidth: 1)
-                            .frame(width:27, height:27)
-                            .padding(0)
-                            .foregroundColor(.green))
-                        .foregroundColor(.green)
-                        .onTapGesture {
-                            self.started = true
-                            print("Starting...")
-                        }
-                } else if(self.started && self.complete) {
-                    Image(systemName: "checkmark.circle")
-                        .font(.subheadline)
-                        .imageScale(.large)
-                        .foregroundColor(.green)
-                } else {
-                    Image(systemName: "arrow.2.circlepath.circle")
-                        .font(.subheadline)
-                        .imageScale(.large)
-                        .foregroundColor(.yellow)
-                }
-//                Spacer()
-//                if (hasSteps) {
-//                    Image(systemName: "plus.circle")
-//                        .font(.subheadline)
-//                        .imageScale(.small)
-//                        .accentColor(.white)
-//                }
-            }.padding(EdgeInsets(top: 14, leading: 0, bottom: 16, trailing: 0))
         }.padding(EdgeInsets(top: 3, leading: 2, bottom: 4, trailing: 0))
     }
 }
@@ -83,8 +76,8 @@ struct TasksView: View {
                     if (self.done){
                         AsyncImage(url: URL(string:self.goalOrRoutine!.mapValue.fields.photo.stringValue)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit).opacity(0.60)
                             .overlay(Image(systemName: "checkmark.circle")
-                                .font(.system(size:64))
-                                .padding(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 0))
+                                .font(.system(size:65))
+                                .padding(EdgeInsets(top: 12, leading: 0, bottom: 0, trailing: 0))
                                 .foregroundColor(.green))
                     } else {
                         AsyncImage(url: URL(string:self.goalOrRoutine!.mapValue.fields.photo.stringValue)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
