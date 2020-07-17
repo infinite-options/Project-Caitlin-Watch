@@ -129,7 +129,7 @@ struct HomeView: View {
                     List {
                         //ForEach(self.model.data!.filter({$0.mapValue.fields.isDisplayedToday.booleanValue}), id: \.mapValue.fields.id.stringValue) { item in
                         ForEach(Array(self.model.data!.enumerated()), id: \.offset) { index, item in
-                            NavigationLink(destination: TasksView(goalOrRoutine: item)){
+                            NavigationLink(destination: TasksView(goalOrRoutine: item, goalOrRoutineIndex: index)){
                                 HStack {
                                     infoView(item: item)
 //                                    Spacer()

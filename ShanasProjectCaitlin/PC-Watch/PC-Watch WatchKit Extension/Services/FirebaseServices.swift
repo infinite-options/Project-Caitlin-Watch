@@ -154,6 +154,10 @@ class FirebaseServices: ObservableObject {
         var data: Fields
     }
     
+    struct completeGRATISbody: Codable {
+        var data: Fields
+    }
+    
     struct Fields: Codable {
         var userId: String
         var routineId: String
@@ -164,6 +168,55 @@ class FirebaseServices: ObservableObject {
     
     struct cloudFuncResp: Decodable {
         var result: Int
+    }
+    
+    func completeGRATIS(userId: String, routineId: String, taskId: String?, taskNumber: Int?, stepNumber: Int?, start: String){
+        
+        var url: URL?
+        var request: URLRequest
+        
+        if start == "goal"{
+            url = URL(string: "https://us-central1-project-caitlin-c71a9.cloudfunctions.net/CompleteGoalOrRoutine")
+        }
+        if start == "task"{
+           url = URL(string: "https://us-central1-project-caitlin-c71a9.cloudfunctions.net/CompleteActionOrTask")
+        }
+        if start == "step"{
+            url = URL(string: "https://us-central1-project-caitlin-c71a9.cloudfunctions.net/CompleteInstructionOrStep")
+        }
+        
+        let jsonData = completeGRATISbody(data: Fields(userId: userId,
+                                                    routineId: routineId,
+                                                    taskId: taskId,
+                                                    taskNumber: taskNumber,
+                                                    stepNumber: stepNumber
+                                                    ))
+        
+        let finalJsonData = try? JSONEncoder().encode(jsonData)
+        if let url = url { request = URLRequest(url: url) }
+        else { return }
+        
+        request.httpMethod = "POST"
+        request.httpBody = finalJsonData
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        
+        URLSession.shared.dataTask(with: request){ (data, _ , error) in
+            if let error = error {
+                print("Generic networking error: \(error)")
+            }
+            
+            if let data = data {
+                do{
+                    let finalRespData = try JSONDecoder().decode(cloudFuncResp.self, from: data)
+                    print(finalRespData)
+                }
+                catch let jsonParseError {
+                    print("Error in parsing JSON response: \(jsonParseError)")
+                }
+            }
+            else { return }
+        }.resume()
     }
     
 }

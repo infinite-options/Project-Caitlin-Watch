@@ -10,6 +10,8 @@ import SwiftUI
 
 struct TaskItem: View {
     var task: ValueTask?
+    var index: Int?
+    var goalOrRoutineID: String?
     @ObservedObject private var model = FirebaseServices.shared
     
     //TODO: change to isInProgress
@@ -29,7 +31,18 @@ struct TaskItem: View {
                                 .imageScale(.small)
                                 .accentColor(.white)
                         } else {
-                            if (task!.mapValue.fields.isComplete!.booleanValue) {
+                            if ((self.started == true) && task!.mapValue.fields.isInProgress!.booleanValue) {
+                                Image(systemName: "arrow.2.circlepath.circle")
+                                    .font(.subheadline)
+                                    .imageScale(.large)
+                                    .foregroundColor(.yellow)
+                            } else if ((self.started == true) && task!.mapValue.fields.isComplete!.booleanValue) {
+                                Image(systemName: "checkmark.circle")
+                                    .font(.subheadline)
+                                    .imageScale(.large)
+                                    .foregroundColor(.green)
+                                
+                            } else {
                                 Text("Go")
                                     .overlay(Circle().stroke(Color.green, lineWidth: 1)
                                         .frame(width:27, height:27)
@@ -39,17 +52,13 @@ struct TaskItem: View {
                                     .onTapGesture {
                                         self.started = true
                                         print("Starting...")
+                                        self.model.startGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
+                                                               routineId: self.goalOrRoutineID!,
+                                                               taskId: self.task!.mapValue.fields.id.stringValue,
+                                                               taskNumber: self.index!,
+                                                               stepNumber: self.index!,
+                                                               start: "task")
                                     }
-                            } else if(self.started && task!.mapValue.fields.isComplete!.booleanValue) {
-                                Image(systemName: "checkmark.circle")
-                                    .font(.subheadline)
-                                    .imageScale(.large)
-                                    .foregroundColor(.green)
-                            } else {
-                                Image(systemName: "arrow.2.circlepath.circle")
-                                    .font(.subheadline)
-                                    .imageScale(.large)
-                                    .foregroundColor(.yellow)
                             }
                         }
                     }
@@ -67,6 +76,7 @@ struct TaskItem: View {
 struct TasksView: View {
    @ObservedObject private var model = FirebaseServices.shared
     var goalOrRoutine: Value?
+    var goalOrRoutineIndex: Int?
     @State var done = false
     
     var body: some View {
@@ -86,7 +96,12 @@ struct TasksView: View {
                     Spacer()
                     if(!self.done){
                         Button(action: {
-                            buttonAction()
+                            self.model.completeGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
+                                routineId: self.goalOrRoutine!.mapValue.fields.id.stringValue,
+                                taskId: "NA",
+                                taskNumber: self.goalOrRoutineIndex!,
+                                stepNumber: -1,
+                                start: "goal")
                         }) {
                             Text("Done?").foregroundColor(.green).onTapGesture {
                                 print("completed")
@@ -107,10 +122,11 @@ struct TasksView: View {
 //                        Text(formatter.string(from: timeLeft.date(from: self.goalOrRoutine!.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: self.goalOrRoutine!.mapValue.fields.endDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15))
                     }
                     List {
-                        ForEach(self.model.goalsSubtasks[self.goalOrRoutine!.mapValue.fields.id.stringValue]!!, id: \.mapValue.fields.id.stringValue) { item in
+                        ForEach(Array(self.model.goalsSubtasks[self.goalOrRoutine!.mapValue.fields.id.stringValue]!!.enumerated()), id: \.offset) { index, item in
+//                        ForEach(self.model.goalsSubtasks[self.goalOrRoutine!.mapValue.fields.id.stringValue]!!, id: \.mapValue.fields.id.stringValue) { item in
                             VStack(alignment: .leading) {
                                 if item.mapValue.fields.isAvailable?.booleanValue ?? true {
-                                    TaskItem(task: item)
+                                    TaskItem(task: item, index: index, goalOrRoutineID: self.goalOrRoutine!.mapValue.fields.id.stringValue)
                                 }
                             }
                         }
