@@ -42,6 +42,7 @@ struct TaskItem: View {
                                     .foregroundColor(.green)
                                 
                             } else if (!(task!.mapValue.fields.isComplete!.booleanValue) && !(task!.mapValue.fields.isInProgress!.booleanValue) && !self.started) {
+                                //TODO: fix this being displayed
                                 Text("Go")
                                     .overlay(Circle().stroke(Color.green, lineWidth: 1)
                                         .frame(width:27, height:27)
@@ -106,10 +107,7 @@ struct TasksView: View {
                             print("completed")
                             self.done = true
                         }) {
-                            Text("Done?").foregroundColor(.green)//.onTapGesture {
-//                                print("completed")
-//                                self.done = true
-//                            }
+                            Text("Done?").foregroundColor(.green)
                         }
                     } else {
                         Text("Task Completed").overlay(RoundedRectangle(cornerSize: CGSize(width: 120, height: 30), style: .continuous).stroke(Color.green, lineWidth: 1).frame(width:140, height:25))

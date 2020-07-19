@@ -21,7 +21,7 @@ struct StepView: View {
             Divider()
             VStack {
                 HStack {
-                    if (self.done) {
+                    if (self.done && (self.step!.mapValue.fields.isComplete!.booleanValue == true)) {
                         AsyncImage(url: URL(string:self.step!.mapValue.fields.photo.stringValue)!, placeholder: Image("")).aspectRatio(contentMode: .fit).opacity(0.60)
                             .overlay(Image(systemName: "checkmark.circle")
                             .font(.system(size:65))
@@ -30,7 +30,6 @@ struct StepView: View {
                     } else {
                         AsyncImage(url: URL(string:self.step!.mapValue.fields.photo.stringValue)!, placeholder: Image("")).aspectRatio(contentMode: .fit)
                     }
-//                    Spacer()
                     VStack(alignment: .leading) {
                         Text(self.step!.mapValue.fields.title.stringValue)
                             .frame(width: 110)
@@ -40,7 +39,7 @@ struct StepView: View {
                     }
                 }
                 Spacer()
-                if(!self.done){
+                if(!self.done && (self.step!.mapValue.fields.isComplete!.booleanValue == false)){
                     Button(action: {
                         //TODO: below not working
                         self.model.completeGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
@@ -50,13 +49,10 @@ struct StepView: View {
                                                   taskNumber: -1,
                                                   stepNumber: self.index!,
                                                   start: "step")
+                        print("completed")
+                        self.done = true
                     }) {
-                        Text("Done?")
-                            .foregroundColor(.green)
-                            .onTapGesture {
-                                print("completed")
-                                self.done = true
-                            }
+                        Text("Done?").foregroundColor(.green)
                     }
                 } else {
                     Text("Completed")
@@ -111,11 +107,10 @@ struct StepsView: View {
                                                       taskNumber: self.taskIndex!,
                                                       stepNumber: -1,
                                                       start: "task")
+                            print("completed")
+                            self.done = true
                         }) {
-                            Text("Done?").foregroundColor(.green).onTapGesture {
-                                print("completed")
-                                self.done = true
-                            }
+                            Text("Done?").foregroundColor(.green)
                         }
                     } else {
                         Text("Task Completed").overlay(RoundedRectangle(cornerSize: CGSize(width: 120, height: 30), style: .continuous).stroke(Color.green, lineWidth: 1).frame(width:140, height:25))
@@ -134,7 +129,6 @@ struct StepsView: View {
                             Text("Takes " + self.time!).fontWeight(.light).font(.system(size: 15))
                         }.padding(.bottom, 0)
                         ForEach(Array(self.model.taskSteps[self.taskID!]!!.enumerated()), id: \.offset) { index, item in
-//                        ForEach(self.model.taskSteps[self.taskID]!!, id: \.mapValue.fields.title.stringValue) { item in
                             VStack(alignment: .leading) {
                                 if item.mapValue.fields.isAvailable?.booleanValue ?? true {
                                     StepView(step: item, index: index, taskID: self.taskID!, goalOrRoutineID: self.goalID!)
