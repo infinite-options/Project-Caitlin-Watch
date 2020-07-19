@@ -156,7 +156,7 @@ struct GoalList: View {
                                             HStack {
                                                 AsyncImage(
                                                     url: URL(string: item.mapValue.fields.photo.stringValue)!,
-                                                        placeholder: Image("blacksquare")
+                                                        placeholder: Image("")
                                                             ).aspectRatio(contentMode: .fit)
                                                         Text(item.mapValue.fields.title.stringValue)
                                                 //Text(String(self.DayDateObj.getTimeLeft(givenDate: item.mapValue.fields.startDayAndTime.stringValue)))

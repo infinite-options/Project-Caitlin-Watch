@@ -38,7 +38,7 @@ struct RoutineList: View {
                                         HStack {
                                             AsyncImage(
                                                 url: URL(string: item.mapValue.fields.photo.stringValue)!,
-                                                placeholder: Image("blacksquare")
+                                                placeholder: Image("")
                                                 ).aspectRatio(contentMode: .fit)
                                             Text(item.mapValue.fields.title.stringValue)
                                         }

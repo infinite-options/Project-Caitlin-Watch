@@ -19,30 +19,29 @@ struct TaskItem: View {
     
     var body: some View {
         HStack{
-            NavigationLink(destination: StepsView(taskID: self.task!.mapValue.fields.id.stringValue, taskName: self.task!.mapValue.fields.title.stringValue, photo: self.task!.mapValue.fields.photo.stringValue, time: self.task!.mapValue.fields.expectedCompletionTime!.stringValue)){
+            NavigationLink(destination: StepsView(goalID: goalOrRoutineID, taskID: self.task!.mapValue.fields.id.stringValue, taskIndex: index, taskName: self.task!.mapValue.fields.title.stringValue, photo: self.task!.mapValue.fields.photo.stringValue, time: self.task!.mapValue.fields.expectedCompletionTime!.stringValue)){
                 VStack(alignment: .leading) {
                     HStack {
                         Text(self.task!.mapValue.fields.title.stringValue).fontWeight(.bold).font(.system(size: 20))
                         Spacer()
                         if (!(self.model.taskSteps[task!.mapValue.fields.id.stringValue] == nil)) {
-                            
                             Image(systemName: "plus.circle")
                                 .font(.subheadline)
                                 .imageScale(.small)
                                 .accentColor(.white)
                         } else {
-                            if ((self.started == true) && task!.mapValue.fields.isInProgress!.booleanValue) {
+                            if (self.started && task!.mapValue.fields.isInProgress!.booleanValue) {
                                 Image(systemName: "arrow.2.circlepath.circle")
                                     .font(.subheadline)
                                     .imageScale(.large)
                                     .foregroundColor(.yellow)
-                            } else if ((self.started == true) && task!.mapValue.fields.isComplete!.booleanValue) {
+                            } else if (self.started && task!.mapValue.fields.isComplete!.booleanValue) {
                                 Image(systemName: "checkmark.circle")
                                     .font(.subheadline)
                                     .imageScale(.large)
                                     .foregroundColor(.green)
                                 
-                            } else {
+                            } else if (!(task!.mapValue.fields.isComplete!.booleanValue) && !(task!.mapValue.fields.isInProgress!.booleanValue) && !self.started) {
                                 Text("Go")
                                     .overlay(Circle().stroke(Color.green, lineWidth: 1)
                                         .frame(width:27, height:27)
@@ -64,7 +63,7 @@ struct TaskItem: View {
                     }
                     Spacer()
                     HStack {
-                        AsyncSmallImage(url: URL(string:self.task!.mapValue.fields.photo.stringValue)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
+                        AsyncSmallImage(url: URL(string:self.task!.mapValue.fields.photo.stringValue)!, placeholder: Image("")).aspectRatio(contentMode: .fit)
                         Text("Takes " + self.task!.mapValue.fields.expectedCompletionTime!.stringValue).fontWeight(.light).font(.system(size: 15))
                     }
                 }.padding(EdgeInsets(top: 8, leading: 0, bottom: 0, trailing: 0))
@@ -84,29 +83,33 @@ struct TasksView: View {
             if (self.model.goalsSubtasks[self.goalOrRoutine!.mapValue.fields.id.stringValue] == nil) {
                 VStack(alignment: .center) {
                     if (self.done){
-                        AsyncImage(url: URL(string:self.goalOrRoutine!.mapValue.fields.photo.stringValue)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit).opacity(0.60)
+                        AsyncImage(url: URL(string:self.goalOrRoutine!.mapValue.fields.photo.stringValue)!, placeholder: Image("")).aspectRatio(contentMode: .fit).opacity(0.60)
                             .overlay(Image(systemName: "checkmark.circle")
                                 .font(.system(size:65))
                                 .padding(EdgeInsets(top: 12, leading: 0, bottom: 0, trailing: 0))
                                 .foregroundColor(.green))
                     } else {
-                        AsyncImage(url: URL(string:self.goalOrRoutine!.mapValue.fields.photo.stringValue)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
+                        AsyncImage(url: URL(string:self.goalOrRoutine!.mapValue.fields.photo.stringValue)!, placeholder: Image("")).aspectRatio(contentMode: .fit)
                     }
                     Text(self.goalOrRoutine!.mapValue.fields.title.stringValue).lineLimit(nil).padding().font(.system(size: 20))
                     Spacer()
                     if(!self.done){
                         Button(action: {
+                            print("done button clicked")
                             self.model.completeGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
-                                routineId: self.goalOrRoutine!.mapValue.fields.id.stringValue,
-                                taskId: "NA",
-                                taskNumber: self.goalOrRoutineIndex!,
-                                stepNumber: -1,
-                                start: "goal")
+                                                      routineId: self.goalOrRoutine!.mapValue.fields.id.stringValue,
+                                                      taskId: "NA",
+                                                      routineNumber: self.goalOrRoutineIndex!,
+                                                      taskNumber: -1,
+                                                      stepNumber: -1,
+                                                      start: "goal")
+                            print("completed")
+                            self.done = true
                         }) {
-                            Text("Done?").foregroundColor(.green).onTapGesture {
-                                print("completed")
-                                self.done = true
-                            }
+                            Text("Done?").foregroundColor(.green)//.onTapGesture {
+//                                print("completed")
+//                                self.done = true
+//                            }
                         }
                     } else {
                         Text("Task Completed").overlay(RoundedRectangle(cornerSize: CGSize(width: 120, height: 30), style: .continuous).stroke(Color.green, lineWidth: 1).frame(width:140, height:25))
@@ -123,7 +126,6 @@ struct TasksView: View {
                     }
                     List {
                         ForEach(Array(self.model.goalsSubtasks[self.goalOrRoutine!.mapValue.fields.id.stringValue]!!.enumerated()), id: \.offset) { index, item in
-//                        ForEach(self.model.goalsSubtasks[self.goalOrRoutine!.mapValue.fields.id.stringValue]!!, id: \.mapValue.fields.id.stringValue) { item in
                             VStack(alignment: .leading) {
                                 if item.mapValue.fields.isAvailable?.booleanValue ?? true {
                                     TaskItem(task: item, index: index, goalOrRoutineID: self.goalOrRoutine!.mapValue.fields.id.stringValue)

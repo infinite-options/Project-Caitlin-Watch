@@ -9,7 +9,11 @@
 import SwiftUI
 
 struct StepView: View {
+    @ObservedObject private var model = FirebaseServices.shared
     var step: ValueTask?
+    var index: Int?
+    var taskID: String?
+    var goalOrRoutineID: String?
     @State var done = false
     
     var body: some View {
@@ -18,13 +22,13 @@ struct StepView: View {
             VStack {
                 HStack {
                     if (self.done) {
-                        AsyncImage(url: URL(string:self.step!.mapValue.fields.photo.stringValue)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit).opacity(0.60)
+                        AsyncImage(url: URL(string:self.step!.mapValue.fields.photo.stringValue)!, placeholder: Image("")).aspectRatio(contentMode: .fit).opacity(0.60)
                             .overlay(Image(systemName: "checkmark.circle")
                             .font(.system(size:65))
                             .padding(EdgeInsets(top: 12, leading: 0, bottom: 0, trailing: 0))
                             .foregroundColor(.green))
                     } else {
-                        AsyncImage(url: URL(string:self.step!.mapValue.fields.photo.stringValue)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
+                        AsyncImage(url: URL(string:self.step!.mapValue.fields.photo.stringValue)!, placeholder: Image("")).aspectRatio(contentMode: .fit)
                     }
 //                    Spacer()
                     VStack(alignment: .leading) {
@@ -38,7 +42,14 @@ struct StepView: View {
                 Spacer()
                 if(!self.done){
                     Button(action: {
-                        buttonAction()
+                        //TODO: below not working
+                        self.model.completeGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
+                                                  routineId: self.goalOrRoutineID!,
+                                                  taskId: self.taskID!,
+                                                  routineNumber: -1,
+                                                  taskNumber: -1,
+                                                  stepNumber: self.index!,
+                                                  start: "step")
                     }) {
                         Text("Done?")
                             .foregroundColor(.green)
@@ -65,7 +76,9 @@ func buttonAction() -> Void{
 
 struct StepsView: View {
     @ObservedObject private var model = FirebaseServices.shared
+    var goalID: String?
     var taskID: String?
+    var taskIndex: Int?
     var taskName: String?
     var photo: String?
     var time: String?
@@ -76,13 +89,13 @@ struct StepsView: View {
             VStack(alignment: .center) {
                 if (self.model.taskSteps[self.taskID!] == nil) {
                     if (self.done){
-                        AsyncImage(url: URL(string:self.photo!)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit).opacity(0.60)
+                        AsyncImage(url: URL(string:self.photo!)!, placeholder: Image("")).aspectRatio(contentMode: .fit).opacity(0.60)
                             .overlay(Image(systemName: "checkmark.circle")
                                 .font(.system(size:65))
                                 .padding(EdgeInsets(top: 12, leading: 0, bottom: 0, trailing: 0))
                                 .foregroundColor(.green))
                     } else {
-                        AsyncImage(url: URL(string:self.photo!)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
+                        AsyncImage(url: URL(string:self.photo!)!, placeholder: Image("")).aspectRatio(contentMode: .fit)
                     }
                     VStack {
                         Text(self.taskName!).lineLimit(nil).font(.system(size: 20))
@@ -91,7 +104,13 @@ struct StepsView: View {
                     Spacer()
                     if(!self.done){
                         Button(action: {
-                            buttonAction()
+                            self.model.completeGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
+                                                      routineId: self.goalID!,
+                                                      taskId: self.taskID!,
+                                                      routineNumber: -1,
+                                                      taskNumber: self.taskIndex!,
+                                                      stepNumber: -1,
+                                                      start: "task")
                         }) {
                             Text("Done?").foregroundColor(.green).onTapGesture {
                                 print("completed")
@@ -106,7 +125,7 @@ struct StepsView: View {
                 else {
                     ScrollView([.vertical]) {
                         VStack(alignment: .center) {
-                            AsyncImage(url: URL(string:self.photo!)!, placeholder: Image("blacksquare")).aspectRatio(contentMode: .fit)
+                            AsyncImage(url: URL(string:self.photo!)!, placeholder: Image("")).aspectRatio(contentMode: .fit)
                             Text(self.taskName!)
                                 .font(.system(size: 20, design: .rounded))
                                 .lineLimit(2)
@@ -114,10 +133,11 @@ struct StepsView: View {
                                 .padding(EdgeInsets(top: 8, leading: 2, bottom: 0, trailing: 2))
                             Text("Takes " + self.time!).fontWeight(.light).font(.system(size: 15))
                         }.padding(.bottom, 0)
-                        ForEach(self.model.taskSteps[self.taskID!]!!, id: \.mapValue.fields.title.stringValue) { item in
+                        ForEach(Array(self.model.taskSteps[self.taskID!]!!.enumerated()), id: \.offset) { index, item in
+//                        ForEach(self.model.taskSteps[self.taskID]!!, id: \.mapValue.fields.title.stringValue) { item in
                             VStack(alignment: .leading) {
                                 if item.mapValue.fields.isAvailable?.booleanValue ?? true {
-                                    StepView(step: item)
+                                    StepView(step: item, index: index, taskID: self.taskID!, goalOrRoutineID: self.goalID!)
                                 }
                             }
                         }

@@ -154,10 +154,6 @@ class FirebaseServices: ObservableObject {
         var data: Fields
     }
     
-    struct completeGRATISbody: Codable {
-        var data: Fields
-    }
-    
     struct Fields: Codable {
         var userId: String
         var routineId: String
@@ -170,7 +166,7 @@ class FirebaseServices: ObservableObject {
         var result: Int
     }
     
-    func completeGRATIS(userId: String, routineId: String, taskId: String?, taskNumber: Int?, stepNumber: Int?, start: String){
+    func completeGRATIS(userId: String, routineId: String, taskId: String?, routineNumber: Int?, taskNumber: Int?, stepNumber: Int?, start: String){
         
         var url: URL?
         var request: URLRequest
@@ -185,9 +181,10 @@ class FirebaseServices: ObservableObject {
             url = URL(string: "https://us-central1-project-caitlin-c71a9.cloudfunctions.net/CompleteInstructionOrStep")
         }
         
-        let jsonData = completeGRATISbody(data: Fields(userId: userId,
+        let jsonData = completeGRATISbody(data: CompleteFields(userId: userId,
                                                     routineId: routineId,
                                                     taskId: taskId,
+                                                    routineNumber: routineNumber,
                                                     taskNumber: taskNumber,
                                                     stepNumber: stepNumber
                                                     ))
@@ -219,4 +216,16 @@ class FirebaseServices: ObservableObject {
         }.resume()
     }
     
+    struct completeGRATISbody: Codable {
+        var data: CompleteFields
+    }
+    
+    struct CompleteFields: Codable {
+        var userId: String
+        var routineId: String
+        var taskId: String?
+        var routineNumber: Int?
+        var taskNumber: Int?
+        var stepNumber: Int?
+    }
 }
