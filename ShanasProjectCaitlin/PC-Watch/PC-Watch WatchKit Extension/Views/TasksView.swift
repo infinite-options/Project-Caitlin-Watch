@@ -19,7 +19,7 @@ struct TaskItem: View {
     
     var body: some View {
         HStack{
-            NavigationLink(destination: StepsView(goalID: goalOrRoutineID, taskID: self.task!.mapValue.fields.id.stringValue, taskIndex: index, taskName: self.task!.mapValue.fields.title.stringValue, photo: self.task!.mapValue.fields.photo.stringValue, time: self.task!.mapValue.fields.expectedCompletionTime!.stringValue)){
+            NavigationLink(destination: StepsView(goalID: goalOrRoutineID, task: self.task, taskIndex: index)){
                 VStack(alignment: .leading) {
                     HStack {
                         Text(self.task!.mapValue.fields.title.stringValue).fontWeight(.bold).font(.system(size: 20))
@@ -41,7 +41,7 @@ struct TaskItem: View {
                                     .imageScale(.large)
                                     .foregroundColor(.green)
                                 
-                            } else if (!(task!.mapValue.fields.isComplete!.booleanValue) && !(task!.mapValue.fields.isInProgress!.booleanValue) && !self.started) {
+                            } else if ((!(task!.mapValue.fields.isComplete!.booleanValue) && !(task!.mapValue.fields.isInProgress!.booleanValue)) || !self.started) {
                                 //TODO: fix this being displayed
                                 Text("Go")
                                     .overlay(Circle().stroke(Color.green, lineWidth: 1)

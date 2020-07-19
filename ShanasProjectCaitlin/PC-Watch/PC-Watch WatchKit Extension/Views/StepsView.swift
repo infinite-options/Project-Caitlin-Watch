@@ -21,21 +21,26 @@ struct StepView: View {
             Divider()
             VStack {
                 HStack {
-                    if (self.done && (self.step!.mapValue.fields.isComplete!.booleanValue == true)) {
-                        AsyncImage(url: URL(string:self.step!.mapValue.fields.photo.stringValue)!, placeholder: Image("")).aspectRatio(contentMode: .fit).opacity(0.60)
+                    if (self.done || (self.step!.mapValue.fields.isComplete!.booleanValue == true)) {
+                        AsyncImage(url: URL(string:self.step!.mapValue.fields.photo.stringValue)!, placeholder: Image(""))
+                            .aspectRatio(contentMode: .fit)
+                            .opacity(0.60)
                             .overlay(Image(systemName: "checkmark.circle")
-                            .font(.system(size:65))
-                            .padding(EdgeInsets(top: 12, leading: 0, bottom: 0, trailing: 0))
-                            .foregroundColor(.green))
+                                .font(.system(size:65))
+                                .padding(EdgeInsets(top: 12, leading: 0, bottom: 0, trailing: 0))
+                                .foregroundColor(.green))
                     } else {
-                        AsyncImage(url: URL(string:self.step!.mapValue.fields.photo.stringValue)!, placeholder: Image("")).aspectRatio(contentMode: .fit)
+                        AsyncImage(url: URL(string:self.step!.mapValue.fields.photo.stringValue)!, placeholder: Image(""))
+                            .aspectRatio(contentMode: .fit)
                     }
                     VStack(alignment: .leading) {
                         Text(self.step!.mapValue.fields.title.stringValue)
                             .frame(width: 110)
                             .font(.system(size: 15, design: .rounded))
                             .lineLimit(2)
-                        Text("Takes: " + self.step!.mapValue.fields.expectedCompletionTime!.stringValue).frame(width: 110).font(.system(size: 10))
+                        Text("Takes: " + self.step!.mapValue.fields.expectedCompletionTime!.stringValue)
+                            .frame(width: 110)
+                            .font(.system(size: 10))
                     }
                 }
                 Spacer()
@@ -52,11 +57,14 @@ struct StepView: View {
                         print("completed")
                         self.done = true
                     }) {
-                        Text("Done?").foregroundColor(.green)
+                        Text("Done?")
+                            .foregroundColor(.green)
                     }
                 } else {
                     Text("Completed")
-                        .overlay(RoundedRectangle(cornerSize: CGSize(width: 120, height: 30), style: .continuous).stroke(Color.green, lineWidth: 1).frame(width:120, height:25))
+                        .overlay(RoundedRectangle(cornerSize: CGSize(width: 120, height: 30), style: .continuous)
+                            .stroke(Color.green, lineWidth: 1)
+                            .frame(width:120, height:25))
                         .foregroundColor(.green)
                         .foregroundColor(.green)
                 }
@@ -73,36 +81,41 @@ func buttonAction() -> Void{
 struct StepsView: View {
     @ObservedObject private var model = FirebaseServices.shared
     var goalID: String?
-    var taskID: String?
+    var task: ValueTask?
     var taskIndex: Int?
-    var taskName: String?
-    var photo: String?
-    var time: String?
     @State var done = false
     
     var body: some View {
         GeometryReader { geo in
+            
             VStack(alignment: .center) {
-                if (self.model.taskSteps[self.taskID!] == nil) {
-                    if (self.done){
-                        AsyncImage(url: URL(string:self.photo!)!, placeholder: Image("")).aspectRatio(contentMode: .fit).opacity(0.60)
+                if (self.model.taskSteps[self.task!.mapValue.fields.id.stringValue] == nil) {
+                    if (self.done || (self.task!.mapValue.fields.isComplete!.booleanValue == true)){
+                        AsyncImage(url: URL(string:self.task!.mapValue.fields.photo.stringValue)!, placeholder: Image(""))
+                            .aspectRatio(contentMode: .fit)
+                            .opacity(0.60)
                             .overlay(Image(systemName: "checkmark.circle")
                                 .font(.system(size:65))
                                 .padding(EdgeInsets(top: 12, leading: 0, bottom: 0, trailing: 0))
                                 .foregroundColor(.green))
                     } else {
-                        AsyncImage(url: URL(string:self.photo!)!, placeholder: Image("")).aspectRatio(contentMode: .fit)
+                        AsyncImage(url: URL(string:self.task!.mapValue.fields.photo.stringValue)!, placeholder: Image(""))
+                            .aspectRatio(contentMode: .fit)
                     }
                     VStack {
-                        Text(self.taskName!).lineLimit(nil).font(.system(size: 20))
-                        Text("Takes " + self.time!).fontWeight(.light).font(.system(size: 15))
+                        Text(self.task!.mapValue.fields.title.stringValue)
+                            .lineLimit(nil)
+                            .font(.system(size: 20))
+                        Text("Takes " + self.task!.mapValue.fields.expectedCompletionTime!.stringValue)
+                            .fontWeight(.light)
+                            .font(.system(size: 15))
                     }
                     Spacer()
-                    if(!self.done){
+                    if(!self.done && (self.task!.mapValue.fields.isComplete!.booleanValue == false)){
                         Button(action: {
                             self.model.completeGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
                                                       routineId: self.goalID!,
-                                                      taskId: self.taskID!,
+                                                      taskId: self.task!.mapValue.fields.id.stringValue,
                                                       routineNumber: -1,
                                                       taskNumber: self.taskIndex!,
                                                       stepNumber: -1,
@@ -113,29 +126,36 @@ struct StepsView: View {
                             Text("Done?").foregroundColor(.green)
                         }
                     } else {
-                        Text("Task Completed").overlay(RoundedRectangle(cornerSize: CGSize(width: 120, height: 30), style: .continuous).stroke(Color.green, lineWidth: 1).frame(width:140, height:25))
+                        Text("Task Completed")
+                            .overlay(RoundedRectangle(cornerSize: CGSize(width: 120, height: 30), style: .continuous)
+                                .stroke(Color.green, lineWidth: 1)
+                                .frame(width:140, height:25))
                             .foregroundColor(.green)
                     }
                 }
                 else {
                     ScrollView([.vertical]) {
                         VStack(alignment: .center) {
-                            AsyncImage(url: URL(string:self.photo!)!, placeholder: Image("")).aspectRatio(contentMode: .fit)
-                            Text(self.taskName!)
+                            AsyncImage(url: URL(string:self.task!.mapValue.fields.photo.stringValue)!, placeholder: Image(""))
+                                .aspectRatio(contentMode: .fit)
+                            Text(self.task!.mapValue.fields.title.stringValue)
                                 .font(.system(size: 20, design: .rounded))
                                 .lineLimit(2)
                                 .fixedSize(horizontal: false, vertical: true)
                                 .padding(EdgeInsets(top: 8, leading: 2, bottom: 0, trailing: 2))
-                            Text("Takes " + self.time!).fontWeight(.light).font(.system(size: 15))
+                            Text("Takes " + self.task!.mapValue.fields.expectedCompletionTime!.stringValue)
+                                .fontWeight(.light)
+                                .font(.system(size: 15))
                         }.padding(.bottom, 0)
-                        ForEach(Array(self.model.taskSteps[self.taskID!]!!.enumerated()), id: \.offset) { index, item in
+                        ForEach(Array(self.model.taskSteps[self.task!.mapValue.fields.id.stringValue]!!.enumerated()), id: \.offset) { index, item in
                             VStack(alignment: .leading) {
                                 if item.mapValue.fields.isAvailable?.booleanValue ?? true {
-                                    StepView(step: item, index: index, taskID: self.taskID!, goalOrRoutineID: self.goalID!)
+                                    StepView(step: item, index: index, taskID: self.task!.mapValue.fields.id.stringValue, goalOrRoutineID: self.goalID!)
                                 }
                             }
                         }
-                    }.frame(height: geo.size.height).padding(0)
+                    }.frame(height: geo.size.height)
+                        .padding(0)
                 }
             }.navigationBarTitle("Steps")
         }
