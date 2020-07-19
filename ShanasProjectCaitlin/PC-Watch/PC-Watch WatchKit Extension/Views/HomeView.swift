@@ -31,37 +31,6 @@ let durationFormatter: DateFormatter = {
     return format
 }()
 
-/*
-struct TaskCompleteImage: View {
-    var isComplete: Bool
-    var hasTasks: Bool
-    
-    var body : some View {
-        ZStack {
-            VStack(alignment: .center) {
-                if (self.isComplete) {
-                    Image(systemName: "checkmark.circle")
-                        .font(.subheadline)
-                        .imageScale(.large)
-                        .foregroundColor(.green)
-                } else {
-                    Image(systemName: "circle")
-                        .font(.subheadline)
-                        .imageScale(.large)
-                }
-                Spacer()
-                if (hasTasks) {
-                    Image(systemName: "plus.circle")
-                        .font(.subheadline)
-                        .imageScale(.small)
-                        .accentColor(.white)
-                }
-            }
-        }
-    }
-}
-*/
-
 struct infoView: View {
     var item: Value?
     @ObservedObject private var model = FirebaseServices.shared
@@ -129,7 +98,7 @@ struct HomeView: View {
                     List {
                         //ForEach(self.model.data!.filter({$0.mapValue.fields.isDisplayedToday.booleanValue}), id: \.mapValue.fields.id.stringValue) { item in
                         ForEach(Array(self.model.data!.enumerated()), id: \.offset) { index, item in
-                            NavigationLink(destination: TasksView(goalOrRoutine: item, goalOrRoutineIndex: index)){
+                            NavigationLink(destination: TasksView(goalOrRoutine: item, goalOrRoutineIndex: index)) {
                                 HStack {
                                     infoView(item: item)
 //                                    Spacer()

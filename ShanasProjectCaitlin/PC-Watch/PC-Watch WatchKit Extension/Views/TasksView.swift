@@ -98,7 +98,7 @@ struct TasksView: View {
         GeometryReader { geo in
             if (self.model.goalsSubtasks[self.goalOrRoutine!.mapValue.fields.id.stringValue] == nil) {
                 VStack(alignment: .center) {
-                    if (self.done){
+                    if (self.done || (self.goalOrRoutine!.mapValue.fields.isComplete!.booleanValue == true)){
                         AsyncImage(url: URL(string:self.goalOrRoutine!.mapValue.fields.photo.stringValue)!, placeholder: Image(""))
                             .aspectRatio(contentMode: .fit)
                             .opacity(0.60)
@@ -112,7 +112,7 @@ struct TasksView: View {
                     }
                     Text(self.goalOrRoutine!.mapValue.fields.title.stringValue).lineLimit(nil).padding().font(.system(size: 20))
                     Spacer()
-                    if(!self.done){
+                    if(!self.done && (self.goalOrRoutine!.mapValue.fields.isComplete!.booleanValue == false)){
                         Button(action: {
                             print("done button clicked")
                             self.model.completeGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
