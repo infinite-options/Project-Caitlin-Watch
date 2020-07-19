@@ -22,7 +22,9 @@ struct TaskItem: View {
             NavigationLink(destination: StepsView(goalID: goalOrRoutineID, task: self.task, taskIndex: index)){
                 VStack(alignment: .leading) {
                     HStack {
-                        Text(self.task!.mapValue.fields.title.stringValue).fontWeight(.bold).font(.system(size: 20))
+                        Text(self.task!.mapValue.fields.title.stringValue)
+                            .fontWeight(.bold)
+                            .font(.system(size: 20))
                         Spacer()
                         if (!(self.model.taskSteps[task!.mapValue.fields.id.stringValue] == nil)) {
                             Image(systemName: "plus.circle")
@@ -30,21 +32,11 @@ struct TaskItem: View {
                                 .imageScale(.small)
                                 .accentColor(.white)
                         } else {
-                            if (self.started && task!.mapValue.fields.isInProgress!.booleanValue) {
-                                Image(systemName: "arrow.2.circlepath.circle")
-                                    .font(.subheadline)
-                                    .imageScale(.large)
-                                    .foregroundColor(.yellow)
-                            } else if (self.started && task!.mapValue.fields.isComplete!.booleanValue) {
-                                Image(systemName: "checkmark.circle")
-                                    .font(.subheadline)
-                                    .imageScale(.large)
-                                    .foregroundColor(.green)
-                                
-                            } else if ((!(task!.mapValue.fields.isComplete!.booleanValue) && !(task!.mapValue.fields.isInProgress!.booleanValue)) || !self.started) {
+                            if (!(task!.mapValue.fields.isComplete!.booleanValue) && !(task!.mapValue.fields.isInProgress!.booleanValue)) {
                                 //TODO: fix this being displayed
                                 Text("Go")
-                                    .overlay(Circle().stroke(Color.green, lineWidth: 1)
+                                    .overlay(Circle()
+                                        .stroke(Color.green, lineWidth: 1)
                                         .frame(width:27, height:27)
                                         .padding(0)
                                         .foregroundColor(.green))
@@ -59,13 +51,36 @@ struct TaskItem: View {
                                                                stepNumber: self.index!,
                                                                start: "task")
                                     }
+                            } else if (self.started || task!.mapValue.fields.isInProgress!.booleanValue) {
+                                Image(systemName: "arrow.2.circlepath.circle")
+                                    .font(.subheadline)
+                                    .imageScale(.large)
+                                    .foregroundColor(.yellow)
+                            } else if (task!.mapValue.fields.isComplete!.booleanValue) {
+                                Image(systemName: "checkmark.circle")
+                                    .font(.subheadline)
+                                    .imageScale(.large)
+                                    .foregroundColor(.green)
                             }
                         }
                     }
                     Spacer()
                     HStack {
-                        AsyncSmallImage(url: URL(string:self.task!.mapValue.fields.photo.stringValue)!, placeholder: Image("")).aspectRatio(contentMode: .fit)
-                        Text("Takes " + self.task!.mapValue.fields.expectedCompletionTime!.stringValue).fontWeight(.light).font(.system(size: 15))
+                        if (self.task!.mapValue.fields.isComplete!.booleanValue == true){
+                           AsyncSmallImage(url: URL(string:self.task!.mapValue.fields.photo.stringValue)!, placeholder: Image(""))
+                               .aspectRatio(contentMode: .fit)
+                               .opacity(0.60)
+                               .overlay(Image(systemName: "checkmark.circle")
+                                   .font(.system(size:44))
+                                   .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
+                                   .foregroundColor(.green))
+                        } else {
+                            AsyncSmallImage(url: URL(string:self.task!.mapValue.fields.photo.stringValue)!, placeholder: Image(""))
+                                .aspectRatio(contentMode: .fit)
+                        }
+                        Text("Takes " + self.task!.mapValue.fields.expectedCompletionTime!.stringValue)
+                            .fontWeight(.light)
+                            .font(.system(size: 15))
                     }
                 }.padding(EdgeInsets(top: 8, leading: 0, bottom: 0, trailing: 0))
             }
@@ -84,13 +99,16 @@ struct TasksView: View {
             if (self.model.goalsSubtasks[self.goalOrRoutine!.mapValue.fields.id.stringValue] == nil) {
                 VStack(alignment: .center) {
                     if (self.done){
-                        AsyncImage(url: URL(string:self.goalOrRoutine!.mapValue.fields.photo.stringValue)!, placeholder: Image("")).aspectRatio(contentMode: .fit).opacity(0.60)
+                        AsyncImage(url: URL(string:self.goalOrRoutine!.mapValue.fields.photo.stringValue)!, placeholder: Image(""))
+                            .aspectRatio(contentMode: .fit)
+                            .opacity(0.60)
                             .overlay(Image(systemName: "checkmark.circle")
                                 .font(.system(size:65))
                                 .padding(EdgeInsets(top: 12, leading: 0, bottom: 0, trailing: 0))
                                 .foregroundColor(.green))
                     } else {
-                        AsyncImage(url: URL(string:self.goalOrRoutine!.mapValue.fields.photo.stringValue)!, placeholder: Image("")).aspectRatio(contentMode: .fit)
+                        AsyncImage(url: URL(string:self.goalOrRoutine!.mapValue.fields.photo.stringValue)!, placeholder: Image(""))
+                            .aspectRatio(contentMode: .fit)
                     }
                     Text(self.goalOrRoutine!.mapValue.fields.title.stringValue).lineLimit(nil).padding().font(.system(size: 20))
                     Spacer()
@@ -107,19 +125,26 @@ struct TasksView: View {
                             print("completed")
                             self.done = true
                         }) {
-                            Text("Done?").foregroundColor(.green)
+                            Text("Done?")
+                                .foregroundColor(.green)
                         }
                     } else {
-                        Text("Task Completed").overlay(RoundedRectangle(cornerSize: CGSize(width: 120, height: 30), style: .continuous).stroke(Color.green, lineWidth: 1).frame(width:140, height:25))
+                        Text("Task Completed")
+                            .overlay(RoundedRectangle(cornerSize: CGSize(width: 120, height: 30), style: .continuous)
+                                .stroke(Color.green, lineWidth: 1)
+                                .frame(width:140, height:25))
                             .foregroundColor(.green)
                     }
                 }
             }
             else{
                 VStack {
-                    Text(self.goalOrRoutine!.mapValue.fields.title.stringValue).font(.system(size: 20, design: .rounded))
+                    Text(self.goalOrRoutine!.mapValue.fields.title.stringValue)
+                        .font(.system(size: 20, design: .rounded))
                     HStack {
-                        Text("Duration: " + self.goalOrRoutine!.mapValue.fields.expectedCompletionTime.stringValue).fontWeight(.light).font(.system(size: 15))
+                        Text("Duration: " + self.goalOrRoutine!.mapValue.fields.expectedCompletionTime.stringValue)
+                            .fontWeight(.light)
+                            .font(.system(size: 15))
 //                        Text(formatter.string(from: timeLeft.date(from: self.goalOrRoutine!.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: self.goalOrRoutine!.mapValue.fields.endDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15))
                     }
                     List {

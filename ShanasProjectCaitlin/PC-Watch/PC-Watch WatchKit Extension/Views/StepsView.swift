@@ -136,8 +136,18 @@ struct StepsView: View {
                 else {
                     ScrollView([.vertical]) {
                         VStack(alignment: .center) {
-                            AsyncImage(url: URL(string:self.task!.mapValue.fields.photo.stringValue)!, placeholder: Image(""))
-                                .aspectRatio(contentMode: .fit)
+                            if (self.task!.mapValue.fields.isComplete!.booleanValue == true){
+                                AsyncImage(url: URL(string:self.task!.mapValue.fields.photo.stringValue)!, placeholder: Image(""))
+                                    .aspectRatio(contentMode: .fit)
+                                    .opacity(0.60)
+                                    .overlay(Image(systemName: "checkmark.circle")
+                                        .font(.system(size:65))
+                                        .padding(EdgeInsets(top: 12, leading: 0, bottom: 0, trailing: 0))
+                                        .foregroundColor(.green))
+                            } else {
+                                AsyncImage(url: URL(string:self.task!.mapValue.fields.photo.stringValue)!, placeholder: Image(""))
+                                    .aspectRatio(contentMode: .fit)
+                            }
                             Text(self.task!.mapValue.fields.title.stringValue)
                                 .font(.system(size: 20, design: .rounded))
                                 .lineLimit(2)
