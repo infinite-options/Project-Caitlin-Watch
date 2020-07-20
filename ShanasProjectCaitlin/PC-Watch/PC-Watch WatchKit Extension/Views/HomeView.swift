@@ -162,7 +162,7 @@ struct HomeView: View {
                                                 Text("Takes " + item.mapValue.fields.expectedCompletionTime.stringValue)
                                                     .fontWeight(.light)
                                                     .font(.system(size: 15))
-                                                Text("Ends: " + formatter.string(from: timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!))
+                                                Text("Ends: " + DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!))
                                                     .fontWeight(.light)
                                                     .font(.system(size: 15))
                                             }
