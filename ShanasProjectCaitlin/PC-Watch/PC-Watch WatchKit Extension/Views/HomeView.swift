@@ -9,21 +9,6 @@
 import SwiftUI
 import UIKit
 
-let timeLeft: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "E, dd MMM yyyy HH:mm:ss Z"
-    formatter.timeZone = .current
-    print(formatter.timeZone!)
-    return formatter
-}()
-
-let formatter: DateFormatter = {
-    let formatter1 = DateFormatter()
-    formatter1.timeZone = .current
-    formatter1.dateFormat = "h:mm a"
-    return formatter1
-}()
-
 let durationFormatter: DateFormatter = {
     let format = DateFormatter()
     format.timeZone = .current
@@ -103,7 +88,7 @@ struct infoView: View {
                 //Text(formatter.string(from: timeLeft.date(from: self.item!.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: self.item!.mapValue.fields.endDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15))
                 VStack(alignment: .leading) {
                     Text("Takes " + self.item!.mapValue.fields.expectedCompletionTime.stringValue).fontWeight(.light).font(.system(size: 15))
-                    Text("Ends: " + formatter.string(from: timeLeft.date(from: self.item!.mapValue.fields.endDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15))
+                    Text("Ends: " + DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: self.item!.mapValue.fields.endDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15))
                 }
             }
         }
@@ -177,7 +162,7 @@ struct HomeView: View {
                                                 Text("Takes " + item.mapValue.fields.expectedCompletionTime.stringValue)
                                                     .fontWeight(.light)
                                                     .font(.system(size: 15))
-                                                Text("Ends: " + formatter.string(from: timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!))
+                                                Text("Ends: " + DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!))
                                                     .fontWeight(.light)
                                                     .font(.system(size: 15))
                                             }

@@ -114,6 +114,7 @@
 		2B258E3424A7839100C6DD2E /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
 		2B3FB10624BEB8B200CC3D6D /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 		2B3FB10824BEF8C400CC3D6D /* FBTasksModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBTasksModel.swift; sourceTree = "<group>"; };
+		2B48F24524C4FDD900EA2CBE /* PC-Watch WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "PC-Watch WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		2B5A688924AFBD2000D66FC6 /* StepsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepsView.swift; sourceTree = "<group>"; };
 		2B5A688B24AFBD2E00D66FC6 /* TasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksView.swift; sourceTree = "<group>"; };
 		2B706DB224ADE791001AEABE /* NotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHandler.swift; sourceTree = "<group>"; };
@@ -167,6 +168,7 @@
 		27BF9DC8243BD389006A5466 /* PC-Watch WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
+				2B48F24524C4FDD900EA2CBE /* PC-Watch WatchKit Extension.entitlements */,
 				27BF9DFA243BD5CB006A5466 /* Views */,
 				27BF9DF2243BD583006A5466 /* Resources */,
 				27BF9DF5243BD5A3006A5466 /* Services */,
@@ -543,6 +545,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_ENTITLEMENTS = "PC-Watch WatchKit Extension/PC-Watch WatchKit Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"PC-Watch WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 8V66NC2T37;
@@ -567,6 +570,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_ENTITLEMENTS = "PC-Watch WatchKit Extension/PC-Watch WatchKit Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"PC-Watch WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 8V66NC2T37;

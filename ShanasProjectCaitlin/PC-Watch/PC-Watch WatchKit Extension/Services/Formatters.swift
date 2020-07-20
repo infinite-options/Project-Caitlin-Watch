@@ -24,25 +24,25 @@ class DayDate {
     }()
     
     let timeLeft: DateFormatter = {
-        let formatter2 = DateFormatter()
-        formatter2.dateFormat = "E, dd MMM yyyy HH:mm:ss Z"
-        //formatter2.dateFormat = "dd MM yyyy'T'HH:mm:ss'Z'"
-        return formatter2
+        let formatter = DateFormatter()
+        formatter.dateFormat = "E, dd MMM yyyy HH:mm:ss Z"
+        formatter.timeZone = .current
+        print(formatter.timeZone!)
+        return formatter
     }()
     
-    func getTimeLeft(givenDate:String) -> TimeInterval{
-        let fromDate = timeLeft.date(from: timeLeft.string(from: Date()))!
-        let toDate = timeLeft.date(from: givenDate)!
-        print(toDate)
-        print(fromDate)
-        var delta = toDate.timeIntervalSince(fromDate)
-        print(delta)
-        if delta < 0.0{
-            return 0.0
-        }
-        else{
-            delta = delta/60
-            return delta
-        }
-    }
+    let formatter: DateFormatter = {
+        let format = DateFormatter()
+        format.timeZone = .current
+        format.dateFormat = "h:mm a"
+        return format
+    }()
+
+    let durationFormatter: DateFormatter = {
+        let format = DateFormatter()
+        format.timeZone = .current
+        format.dateFormat = "h:mm"
+        return format
+    }()
+    
 }
