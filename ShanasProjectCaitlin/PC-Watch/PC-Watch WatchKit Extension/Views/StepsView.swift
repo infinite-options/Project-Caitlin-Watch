@@ -54,6 +54,8 @@ struct StepView: View {
                                                   taskNumber: -1,
                                                   stepNumber: self.index!,
                                                   start: "step")
+                        self.model.taskSteps[self.taskID!]!![self.index!].mapValue.fields.isComplete!.booleanValue = true
+                        print(self.model.taskSteps[self.taskID!]!![self.index!].mapValue.fields.isComplete!.booleanValue)
                         print("completed")
                         self.done = true
                     }) {
@@ -120,7 +122,8 @@ struct StepsView: View {
                                                       taskNumber: self.taskIndex!,
                                                       stepNumber: -1,
                                                       start: "task")
-                            print("completed")
+                            self.model.goalsSubtasks[self.goalID!]!![self.taskIndex!].mapValue.fields.isComplete?.booleanValue = true
+                            print(self.model.goalsSubtasks[self.goalID!]!![self.taskIndex!].mapValue.fields.isComplete!.booleanValue)
                             self.done = true
                         }) {
                             Text("Done?").foregroundColor(.green)
