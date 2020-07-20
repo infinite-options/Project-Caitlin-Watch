@@ -22,7 +22,7 @@ struct StepView: View {
             VStack {
                 HStack {
                     if (self.done || (self.step!.mapValue.fields.isComplete!.booleanValue == true)) {
-                        AsyncImage(url: URL(string:self.step!.mapValue.fields.photo.stringValue)!, placeholder: Image(""))
+                        AssetImage(urlName: self.step!.mapValue.fields.photo.stringValue, placeholder: Image("default-step"))
                             .aspectRatio(contentMode: .fit)
                             .opacity(0.60)
                             .overlay(Image(systemName: "checkmark.circle")
@@ -30,7 +30,7 @@ struct StepView: View {
                                 .padding(EdgeInsets(top: 12, leading: 0, bottom: 0, trailing: 0))
                                 .foregroundColor(.green))
                     } else {
-                        AsyncImage(url: URL(string:self.step!.mapValue.fields.photo.stringValue)!, placeholder: Image(""))
+                        AssetImage(urlName: self.step!.mapValue.fields.photo.stringValue, placeholder: Image("default-step"))
                             .aspectRatio(contentMode: .fit)
                     }
                     VStack(alignment: .leading) {
@@ -91,7 +91,7 @@ struct StepsView: View {
             VStack(alignment: .center) {
                 if (self.model.taskSteps[self.task!.mapValue.fields.id.stringValue] == nil) {
                     if (self.done || (self.task!.mapValue.fields.isComplete!.booleanValue == true)){
-                        AsyncImage(url: URL(string:self.task!.mapValue.fields.photo.stringValue)!, placeholder: Image(""))
+                        AssetImage(urlName: self.task!.mapValue.fields.photo.stringValue, placeholder: Image("default-task"))
                             .aspectRatio(contentMode: .fit)
                             .opacity(0.60)
                             .overlay(Image(systemName: "checkmark.circle")
@@ -99,7 +99,7 @@ struct StepsView: View {
                                 .padding(EdgeInsets(top: 12, leading: 0, bottom: 0, trailing: 0))
                                 .foregroundColor(.green))
                     } else {
-                        AsyncImage(url: URL(string:self.task!.mapValue.fields.photo.stringValue)!, placeholder: Image(""))
+                        AssetImage(urlName: self.task!.mapValue.fields.photo.stringValue, placeholder: Image("default-task"))
                             .aspectRatio(contentMode: .fit)
                     }
                     VStack {
@@ -137,7 +137,7 @@ struct StepsView: View {
                     ScrollView([.vertical]) {
                         VStack(alignment: .center) {
                             if (self.task!.mapValue.fields.isComplete!.booleanValue == true){
-                                AsyncImage(url: URL(string:self.task!.mapValue.fields.photo.stringValue)!, placeholder: Image(""))
+                                AssetImage(urlName: self.task!.mapValue.fields.photo.stringValue, placeholder: Image("default-task"))
                                     .aspectRatio(contentMode: .fit)
                                     .opacity(0.60)
                                     .overlay(Image(systemName: "checkmark.circle")
@@ -145,7 +145,7 @@ struct StepsView: View {
                                         .padding(EdgeInsets(top: 12, leading: 0, bottom: 0, trailing: 0))
                                         .foregroundColor(.green))
                             } else {
-                                AsyncImage(url: URL(string:self.task!.mapValue.fields.photo.stringValue)!, placeholder: Image(""))
+                                AssetImage(urlName:self.task!.mapValue.fields.photo.stringValue, placeholder: Image("default-task"))
                                     .aspectRatio(contentMode: .fit)
                             }
                             Text(self.task!.mapValue.fields.title.stringValue)

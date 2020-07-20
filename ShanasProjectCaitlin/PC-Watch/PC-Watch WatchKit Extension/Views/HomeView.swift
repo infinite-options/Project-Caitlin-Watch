@@ -31,6 +31,37 @@ let durationFormatter: DateFormatter = {
     return format
 }()
 
+struct itemImage: View {
+    var photo: String
+    var isComplete: Bool
+    var isInProgress: Bool
+    
+    var body: some View {
+        HStack {
+            if (isComplete == true){
+                SmallAssetImage(urlName: photo, placeholder: Image("default-goal"))
+                    .aspectRatio(contentMode: .fit)
+                    .opacity(0.40)
+                    .overlay(Image(systemName: "checkmark.circle")
+                        .font(.system(size:44))
+                        .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
+                        .foregroundColor(.green))
+            } else if (isInProgress == true) {
+                SmallAssetImage(urlName: photo, placeholder: Image("default-goal"))
+                    .aspectRatio(contentMode: .fit)
+                    .opacity(0.40)
+                    .overlay(Image(systemName: "arrow.2.circlepath.circle")
+                        .font(.system(size:44))
+                        .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
+                        .foregroundColor(.yellow))
+            } else {
+                SmallAssetImage(urlName: photo, placeholder: Image("default-goal"))
+                    .aspectRatio(contentMode: .fit)
+            }
+        }
+    }
+}
+
 struct infoView: View {
     var item: Value?
     @ObservedObject private var model = FirebaseServices.shared
@@ -50,20 +81,24 @@ struct infoView: View {
             Spacer()
             HStack {
                 if ((self.item!.mapValue.fields.isComplete?.booleanValue) == true){
-                    AsyncSmallImage(url: URL(string:self.item!.mapValue.fields.photo.stringValue)!, placeholder: Image("")).aspectRatio(contentMode: .fit).opacity(0.40)
+                    SmallAssetImage(urlName: self.item!.mapValue.fields.photo.stringValue, placeholder: Image("default-goal"))
+                        .aspectRatio(contentMode: .fit)
+                        .opacity(0.40)
                         .overlay(Image(systemName: "checkmark.circle")
                             .font(.system(size:44))
                             .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
                             .foregroundColor(.green))
                 } else if (self.item!.mapValue.fields.isInProgress?.booleanValue == true) {
-                    AsyncSmallImage(url: URL(string:self.item!.mapValue.fields.photo.stringValue)!, placeholder: Image("")).aspectRatio(contentMode: .fit)
+                    SmallAssetImage(urlName: self.item!.mapValue.fields.photo.stringValue, placeholder: Image("default-goal"))
+                        .aspectRatio(contentMode: .fit)
                         .opacity(0.40)
                         .overlay(Image(systemName: "arrow.2.circlepath.circle")
                             .font(.system(size:44))
                             .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
                             .foregroundColor(.yellow))
                 } else {
-                    AsyncSmallImage(url: URL(string:self.item!.mapValue.fields.photo.stringValue)!, placeholder: Image("")).aspectRatio(contentMode: .fit)
+                    SmallAssetImage(urlName: self.item!.mapValue.fields.photo.stringValue, placeholder: Image("default-goal"))
+                        .aspectRatio(contentMode: .fit)
                 }
                 //Text(formatter.string(from: timeLeft.date(from: self.item!.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: self.item!.mapValue.fields.endDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15))
                 VStack(alignment: .leading) {
@@ -96,54 +131,60 @@ struct HomeView: View {
             else {
                 VStack(alignment: .leading) {
                     List {
-                        //ForEach(self.model.data!.filter({$0.mapValue.fields.isDisplayedToday.booleanValue}), id: \.mapValue.fields.id.stringValue) { item in
                         ForEach(Array(self.model.data!.enumerated()), id: \.offset) { index, item in
                             NavigationLink(destination: TasksView(goalOrRoutine: item, goalOrRoutineIndex: index)) {
                                 HStack {
-                                    infoView(item: item)
-//                                    Spacer()
-//
-//                                    //TODO: set isComplete and hasTasks to actual values
-//                                    VStack(alignment: .center) {
-//                                        Button(action: {
-//                                            if(item.mapValue.fields.isComplete!.booleanValue){
-//                                                print("Already complete!")
+//                                    infoView(item: item)
+                                    VStack(alignment: .leading) {
+                                        HStack {
+                                            Text(item.mapValue.fields.title.stringValue)
+                                                .fontWeight(.bold)
+                                                .font(.system(size: 20))
+                                            Spacer()
+                                            if (!(self.model.goalsSubtasks[item.mapValue.fields.id.stringValue] == nil)) {
+                                                Image(systemName: "plus.circle")
+                                                    .font(.subheadline)
+                                                    .imageScale(.small)
+                                                    .accentColor(.white)
+                                            }
+                                        }
+                                        Spacer()
+                                        HStack {
+                                            //TODO: tell harshit there were too many conditionals
+                                            itemImage(photo: item.mapValue.fields.photo.stringValue, isComplete: item.mapValue.fields.isComplete!.booleanValue, isInProgress: item.mapValue.fields.isInProgress!.booleanValue)
+//                                            if ((item.mapValue.fields.isComplete?.booleanValue) == true){
+//                                                SmallAssetImage(urlName: item.mapValue.fields.photo.stringValue, placeholder: Image("default-goal"))
+//                                                    .aspectRatio(contentMode: .fit)
+//                                                    .opacity(0.40)
+//                                                    .overlay(Image(systemName: "checkmark.circle")
+//                                                        .font(.system(size:44))
+//                                                        .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
+//                                                        .foregroundColor(.green))
+//                                            } else if (item.mapValue.fields.isInProgress?.booleanValue == true) {
+//                                                SmallAssetImage(urlName: item.mapValue.fields.photo.stringValue, placeholder: Image("default-goal"))
+//                                                    .aspectRatio(contentMode: .fit)
+//                                                    .opacity(0.40)
+//                                                    .overlay(Image(systemName: "arrow.2.circlepath.circle")
+//                                                        .font(.system(size:44))
+//                                                        .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
+//                                                        .foregroundColor(.yellow))
+//                                            } else {
+//                                                SmallAssetImage(urlName: item.mapValue.fields.photo.stringValue, placeholder: Image("default-goal"))
+//                                                    .aspectRatio(contentMode: .fit)
 //                                            }
-//                                            else{
-//                                                self.model.data![index].mapValue.fields.isComplete?.booleanValue = true
-//
-//                                                self.model.startGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
-//                                                                       routineId: item.mapValue.fields.id.stringValue,
-//                                                                       taskId: "NA",
-//                                                                       taskNumber: index,
-//                                                                       stepNumber: -1,
-//                                                                       start: "goal")
-//
-//                                                print("zz")
-//                                            }
-//                                        }){
-//                                            if (item.mapValue.fields.isComplete?.booleanValue ?? false) {
-//                                                Image(systemName: "checkmark.circle")
-//                                                    .font(.subheadline)
-//                                                    .imageScale(.large)
-//                                                    .foregroundColor(.green)
-//                                            }
-//                                            else {
-//                                                Image(systemName: "circle")
-//                                                    .font(.subheadline)
-//                                                    .imageScale(.large)
-//                                            }
-//                                        }.buttonStyle(PlainButtonStyle())
-//
-//                                        Spacer()
-//                                        if (!(self.model.goalsSubtasks[item.mapValue.fields.id.stringValue] == nil)) {
-//                                            Image(systemName: "plus.circle")
-//                                                .font(.subheadline)
-//                                                .imageScale(.small)
-//                                                .accentColor(.white)
-//                                        }
-//                                    }.padding(EdgeInsets(top: 8, leading: 0, bottom: 2, trailing: 0))
-                                }.frame(height: 80).padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
+                                            //Text(formatter.string(from: timeLeft.date(from: self.item!.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: self.item!.mapValue.fields.endDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15))
+                                            VStack(alignment: .leading) {
+                                                Text("Takes " + item.mapValue.fields.expectedCompletionTime.stringValue)
+                                                    .fontWeight(.light)
+                                                    .font(.system(size: 15))
+                                                Text("Ends: " + formatter.string(from: timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!))
+                                                    .fontWeight(.light)
+                                                    .font(.system(size: 15))
+                                            }
+                                        }
+                                    }
+                                }.frame(height: 80)
+                                    .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
                             }.listRowPlatterColor(item.mapValue.fields.isPersistent.booleanValue ? Color.gray : Color.yellow.opacity(0.75))
                         }
                     }.listStyle(CarouselListStyle()).navigationBarTitle("My Day")

@@ -123,7 +123,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                     
                         let percentage: Float = 25/60
                         let time = timeLeft.date(from: model.data![index].mapValue.fields.startDayAndTime.stringValue)
-                        let times = formatter.string(from: timeLeft.date(from: model.data![index].mapValue.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: model.data![index].mapValue.fields.endDayAndTime.stringValue)!)//.fontWeight(.light).font(.system(size: 15)
+                        //let times = formatter.string(from: timeLeft.date(from: model.data![index].mapValue.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: model.data![index].mapValue.fields.endDayAndTime.stringValue)!)//.fontWeight(.light).font(.system(size: 15)
                         let timeString = formatter.string(from: time!)
                         let scheduledDate = formatter.date(from: timeString)
                         

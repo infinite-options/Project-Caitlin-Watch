@@ -67,7 +67,7 @@ struct TaskItem: View {
                     Spacer()
                     HStack {
                         if (self.task!.mapValue.fields.isComplete!.booleanValue == true){
-                           AsyncSmallImage(url: URL(string:self.task!.mapValue.fields.photo.stringValue)!, placeholder: Image(""))
+                            SmallAssetImage(urlName: self.task!.mapValue.fields.photo.stringValue, placeholder: Image("default-task"))
                                .aspectRatio(contentMode: .fit)
                                .opacity(0.60)
                                .overlay(Image(systemName: "checkmark.circle")
@@ -75,7 +75,7 @@ struct TaskItem: View {
                                    .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
                                    .foregroundColor(.green))
                         } else {
-                            AsyncSmallImage(url: URL(string:self.task!.mapValue.fields.photo.stringValue)!, placeholder: Image(""))
+                            SmallAssetImage(urlName: self.task!.mapValue.fields.photo.stringValue, placeholder: Image("default-task"))
                                 .aspectRatio(contentMode: .fit)
                         }
                         Text("Takes " + self.task!.mapValue.fields.expectedCompletionTime!.stringValue)
@@ -99,7 +99,7 @@ struct TasksView: View {
             if (self.model.goalsSubtasks[self.goalOrRoutine!.mapValue.fields.id.stringValue] == nil) {
                 VStack(alignment: .center) {
                     if (self.done || (self.goalOrRoutine!.mapValue.fields.isComplete!.booleanValue == true)){
-                        AsyncImage(url: URL(string:self.goalOrRoutine!.mapValue.fields.photo.stringValue)!, placeholder: Image(""))
+                        AssetImage(urlName: self.goalOrRoutine!.mapValue.fields.photo.stringValue, placeholder: Image("default-goal"))
                             .aspectRatio(contentMode: .fit)
                             .opacity(0.60)
                             .overlay(Image(systemName: "checkmark.circle")
@@ -107,7 +107,7 @@ struct TasksView: View {
                                 .padding(EdgeInsets(top: 12, leading: 0, bottom: 0, trailing: 0))
                                 .foregroundColor(.green))
                     } else {
-                        AsyncImage(url: URL(string:self.goalOrRoutine!.mapValue.fields.photo.stringValue)!, placeholder: Image(""))
+                        AssetImage(urlName: self.goalOrRoutine!.mapValue.fields.photo.stringValue, placeholder: Image("default-goal"))
                             .aspectRatio(contentMode: .fit)
                     }
                     Text(self.goalOrRoutine!.mapValue.fields.title.stringValue).lineLimit(nil).padding().font(.system(size: 20))
@@ -115,6 +115,7 @@ struct TasksView: View {
                     if(!self.done && (self.goalOrRoutine!.mapValue.fields.isComplete!.booleanValue == false)){
                         Button(action: {
                             print("done button clicked")
+                            //TODO: Update model
                             self.model.completeGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
                                                       routineId: self.goalOrRoutine!.mapValue.fields.id.stringValue,
                                                       taskId: "NA",
@@ -122,6 +123,7 @@ struct TasksView: View {
                                                       taskNumber: -1,
                                                       stepNumber: -1,
                                                       start: "goal")
+//                            self.model.data!.
                             print("completed")
                             self.done = true
                         }) {
