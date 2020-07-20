@@ -50,6 +50,8 @@ struct TaskItem: View {
                                                                taskNumber: self.index!,
                                                                stepNumber: self.index!,
                                                                start: "task")
+                                        self.model.goalsSubtasks[self.goalOrRoutineID!]!![self.index!].mapValue.fields.isInProgress?.booleanValue = true
+                                        print(self.model.goalsSubtasks[self.goalOrRoutineID!]!![self.index!].mapValue.fields.isInProgress!.booleanValue)
                                     }
                             } else if (self.started || task!.mapValue.fields.isInProgress!.booleanValue) {
                                 Image(systemName: "arrow.2.circlepath.circle")
@@ -123,8 +125,8 @@ struct TasksView: View {
                                                       taskNumber: -1,
                                                       stepNumber: -1,
                                                       start: "goal")
-//                            self.model.data!.
-                            print("completed")
+                            self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isComplete?.booleanValue = true
+                            print(self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isComplete!.booleanValue)
                             self.done = true
                         }) {
                             Text("Done?")
