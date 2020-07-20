@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0484C4FE24B90D55002C3F13 /* AsyncSmallImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0484C4FD24B90D55002C3F13 /* AsyncSmallImage.swift */; };
+		04957BB424C5350C0031D253 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04957BB324C5350C0031D253 /* Enums.swift */; };
+		04957BB624C5D8D10031D253 /* UrlToAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04957BB524C5D8D10031D253 /* UrlToAsset.swift */; };
 		27BF9DB6243BD385006A5466 /* PC-Watch WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 27BF9DB5243BD385006A5466 /* PC-Watch WatchKit App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		27BF9DBC243BD385006A5466 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27BF9DBA243BD385006A5466 /* Interface.storyboard */; };
 		27BF9DBE243BD389006A5466 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27BF9DBD243BD389006A5466 /* Assets.xcassets */; };
@@ -84,6 +86,8 @@
 
 /* Begin PBXFileReference section */
 		0484C4FD24B90D55002C3F13 /* AsyncSmallImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncSmallImage.swift; sourceTree = "<group>"; };
+		04957BB324C5350C0031D253 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		04957BB524C5D8D10031D253 /* UrlToAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlToAsset.swift; sourceTree = "<group>"; };
 		27BF9DB1243BD385006A5466 /* PC-Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PC-Watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		27BF9DB5243BD385006A5466 /* PC-Watch WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PC-Watch WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		27BF9DBB243BD385006A5466 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
@@ -219,6 +223,8 @@
 				2BDEE38F24B3698900FCFE14 /* BackgroundServices.swift */,
 				0484C4FD24B90D55002C3F13 /* AsyncSmallImage.swift */,
 				2BF4E09B24AC015300215138 /* Formatters.swift */,
+				04957BB324C5350C0031D253 /* Enums.swift */,
+				04957BB524C5D8D10031D253 /* UrlToAsset.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -369,6 +375,7 @@
 			files = (
 				552E9B9F2467417C00D6E20B /* FB2.swift in Sources */,
 				27BF9E05243E783A006A5466 /* GoalList.swift in Sources */,
+				04957BB424C5350C0031D253 /* Enums.swift in Sources */,
 				27BF9DCC243BD389006A5466 /* HostingController.swift in Sources */,
 				27BF9E02243E774F006A5466 /* RoutineList.swift in Sources */,
 				2B258E3524A7839100C6DD2E /* ComplicationController.swift in Sources */,
@@ -389,6 +396,7 @@
 				84E7EBDE2494742300E13DDF /* PersistentView.swift in Sources */,
 				27BF9DFE243BD600006A5466 /* HomeView.swift in Sources */,
 				27BF9DD2243BD389006A5466 /* NotificationView.swift in Sources */,
+				04957BB624C5D8D10031D253 /* UrlToAsset.swift in Sources */,
 				2B706DB324ADE791001AEABE /* NotificationHandler.swift in Sources */,
 				27BF9DF9243BD5A3006A5466 /* FirebaseServices.swift in Sources */,
 			);
@@ -554,7 +562,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 6.1;
+				WATCHOS_DEPLOYMENT_TARGET = 6.2;
 			};
 			name = Debug;
 		};
@@ -579,7 +587,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 6.1;
+				WATCHOS_DEPLOYMENT_TARGET = 6.2;
 			};
 			name = Release;
 		};
@@ -589,7 +597,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5295ZK7BNB;
+				DEVELOPMENT_TEAM = 8V66NC2T37;
 				IBSC_MODULE = PC_Watch_WatchKit_Extension;
 				INFOPLIST_FILE = "PC-Watch WatchKit App/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.infiniteoptions.PC-Watch.watchkitapp";
@@ -598,7 +606,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 6.1;
+				WATCHOS_DEPLOYMENT_TARGET = 6.2;
 			};
 			name = Debug;
 		};
@@ -608,7 +616,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5295ZK7BNB;
+				DEVELOPMENT_TEAM = 8V66NC2T37;
 				IBSC_MODULE = PC_Watch_WatchKit_Extension;
 				INFOPLIST_FILE = "PC-Watch WatchKit App/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.infiniteoptions.PC-Watch.watchkitapp";
@@ -617,7 +625,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 6.1;
+				WATCHOS_DEPLOYMENT_TARGET = 6.2;
 			};
 			name = Release;
 		};
