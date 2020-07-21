@@ -82,6 +82,8 @@ func buttonAction() -> Void{
 
 struct StepsView: View {
     @ObservedObject private var model = FirebaseServices.shared
+//    @Binding var showTasks: Bool
+    @Binding var showSteps: Bool
     var goalID: String?
     var task: ValueTask?
     var taskIndex: Int?
@@ -125,6 +127,7 @@ struct StepsView: View {
                             self.model.goalsSubtasks[self.goalID!]!![self.taskIndex!].mapValue.fields.isComplete?.booleanValue = true
                             print(self.model.goalsSubtasks[self.goalID!]!![self.taskIndex!].mapValue.fields.isComplete!.booleanValue)
                             self.done = true
+                            self.showSteps = false
                         }) {
                             Text("Done?").foregroundColor(.green)
                         }
@@ -172,6 +175,7 @@ struct StepsView: View {
                                     self.model.goalsSubtasks[self.goalID!]!![self.taskIndex!].mapValue.fields.isComplete?.booleanValue = true
                                     print(self.model.goalsSubtasks[self.goalID!]!![self.taskIndex!].mapValue.fields.isComplete!.booleanValue)
                                     self.done = true
+                                    self.showSteps = false
                                 }) {
                                     Text("Done?").foregroundColor(.green)
                                 }
@@ -222,8 +226,8 @@ struct StepsView: View {
     }
 }
 
-struct StepsView_Previews: PreviewProvider {
-    static var previews: some View {
-        StepsView()
-    }
-}
+//struct StepsView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        StepsView()
+//    }
+//}

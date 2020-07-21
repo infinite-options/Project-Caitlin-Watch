@@ -9,6 +9,8 @@
 import SwiftUI
 
 struct TaskItem: View {
+//    @Binding var showTasks: Bool
+    @State var showSteps: Bool = false
     var task: ValueTask?
     var index: Int?
     var goalOrRoutineID: String?
@@ -19,7 +21,7 @@ struct TaskItem: View {
     
     var body: some View {
         HStack{
-            NavigationLink(destination: StepsView(goalID: goalOrRoutineID, task: self.task, taskIndex: index)){
+            NavigationLink(destination: StepsView(showSteps: $showSteps, goalID: goalOrRoutineID, task: self.task, taskIndex: index), isActive: $showSteps){
                 VStack(alignment: .leading) {
                     HStack {
                         Text(self.task!.mapValue.fields.title.stringValue)
@@ -92,6 +94,7 @@ struct TaskItem: View {
 
 struct TasksView: View {
    @ObservedObject private var model = FirebaseServices.shared
+//    @Binding var showTasks: Bool
     var goalOrRoutine: Value?
     var goalOrRoutineIndex: Int?
     @State var done = false
@@ -128,6 +131,7 @@ struct TasksView: View {
                             self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isComplete?.booleanValue = true
                             print(self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isComplete!.booleanValue)
                             self.done = true
+//                            self.showTasks = false
                         }) {
                             Text("Done?")
                                 .foregroundColor(.green)
@@ -166,8 +170,8 @@ struct TasksView: View {
     }
 }
 
-struct TasksView_Previews: PreviewProvider {
-    static var previews: some View {
-        TasksView()
-    }
-}
+//struct TasksView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        TasksView()
+//    }
+//}

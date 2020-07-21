@@ -101,6 +101,7 @@ struct HomeView: View {
     
     // below has goals and routines
     @ObservedObject private var model = FirebaseServices.shared
+//    @State var showTasks: Bool = false
     
     // below has events
     // @ObservedObject private var eventModel = FirebaseServ
@@ -116,36 +117,37 @@ struct HomeView: View {
             else {
                 VStack(alignment: .leading) {
                     List {
-                        ForEach(Array(self.model.data!.enumerated()), id: \.offset) { index, item in
+                        ForEach(Array(self.model.data!.filter{ $0.mapValue.fields.isDisplayedToday.booleanValue == true }.enumerated()), id: \.offset) { index, item in
                             NavigationLink(destination: TasksView(goalOrRoutine: item, goalOrRoutineIndex: index)) {
                                 HStack {
-//                                    infoView(item: item)
-                                    VStack(alignment: .leading) {
-                                        HStack {
-                                            Text(item.mapValue.fields.title.stringValue)
-                                                .fontWeight(.bold)
-                                                .font(.system(size: 20))
-                                            Spacer()
-                                            if (!(self.model.goalsSubtasks[item.mapValue.fields.id.stringValue] == nil)) {
-                                                Image(systemName: "plus.circle")
-                                                    .font(.subheadline)
-                                                    .imageScale(.small)
-                                                    .accentColor(.white)
-                                            }
-                                        }
-                                        Spacer()
-                                        HStack {
-                                            itemImage(photo: item.mapValue.fields.photo.stringValue, isComplete: item.mapValue.fields.isComplete!.booleanValue, isInProgress: item.mapValue.fields.isInProgress!.booleanValue)
-                                            VStack(alignment: .leading) {
-                                                Text("Takes " + item.mapValue.fields.expectedCompletionTime.stringValue)
-                                                    .fontWeight(.light)
-                                                    .font(.system(size: 15))
-                                                Text("Ends: " + DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!))
-                                                    .fontWeight(.light)
-                                                    .font(.system(size: 15))
-                                            }
-                                        }
-                                    }
+                                    //TODO: Talk to Harshit
+                                    infoView(item: item)
+//                                    VStack(alignment: .leading) {
+//                                        HStack {
+//                                            Text(item.mapValue.fields.title.stringValue)
+//                                                .fontWeight(.bold)
+//                                                .font(.system(size: 20))
+//                                            Spacer()
+//                                            if (!(self.model.goalsSubtasks[item.mapValue.fields.id.stringValue] == nil)) {
+//                                                Image(systemName: "plus.circle")
+//                                                    .font(.subheadline)
+//                                                    .imageScale(.small)
+//                                                    .accentColor(.white)
+//                                            }
+//                                        }
+//                                        Spacer()
+//                                        HStack {
+//                                            itemImage(photo: item.mapValue.fields.photo.stringValue, isComplete: item.mapValue.fields.isComplete!.booleanValue, isInProgress: item.mapValue.fields.isInProgress!.booleanValue)
+//                                            VStack(alignment: .leading) {
+//                                                Text("Takes " + item.mapValue.fields.expectedCompletionTime.stringValue)
+//                                                    .fontWeight(.light)
+//                                                    .font(.system(size: 15))
+//                                                Text("Ends: " + DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: item.mapValue.fields.endDayAndTime.stringValue)!))
+//                                                    .fontWeight(.light)
+//                                                    .font(.system(size: 15))
+//                                            }
+//                                        }
+//                                    }
                                 }.frame(height: 80)
                                     .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
                             }.listRowPlatterColor(item.mapValue.fields.isPersistent.booleanValue ? Color.gray : Color.yellow.opacity(0.75))
