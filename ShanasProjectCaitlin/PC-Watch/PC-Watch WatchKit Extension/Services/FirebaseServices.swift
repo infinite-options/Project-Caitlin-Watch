@@ -18,6 +18,8 @@ class FirebaseServices: ObservableObject {
     @Published var goalsSubtasks = [String: [ValueTask]?]()
     @Published var taskSteps = [String: [ValueTask]?]()
     
+    
+    
     private init() {
         updateDataModel {
             print("waiting.. done!")

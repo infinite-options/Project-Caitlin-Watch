@@ -9,68 +9,52 @@
 import WatchKit
 import UserNotifications
 
-class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenterDelegate {
-    
+import FirebaseCore
+import FirebaseMessaging
+
+class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
     
     private let notificationHandler = NotificationHandler()
     
     func applicationDidFinishLaunching() {
-        UNUserNotificationCenter.current().delegate = self
-        let _ = FirebaseServices.shared
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+        //let _ = FirebaseServices.shared
+        
+        FirebaseApp.configure()
+        let center = UNUserNotificationCenter.current()
+        
+        center.delegate = self
+        center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
             if granted {
-                print("User granted permission.")
+                print("User granted permission. Registering for remote notifications now.")
+                WKExtension.shared().registerForRemoteNotifications()
             }
             else {
                 print("Permission not granted")
             }
-            
         }
+        Messaging.messaging().delegate = self
     }
-
+    
+    /// MessagingDelegate
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+      print("Token:" + fcmToken)
+    }
+    
     func applicationDidBecomeActive() {
-        let model = FirebaseServices.shared
-        model.updateDataModel {
-            print("Updating done..")
-            
-            /*if let data = model.data{
-                for item in data{
-                    //User - Before
-                    if (item.mapValue.fields.userNotifications.mapValue.fields.before.mapValue.fields.isEnabled.booleanValue){
-                        self.notificationHandler.setNotification(
-                            message: item.mapValue.fields.userNotifications.mapValue.fields.before.mapValue.fields.message.stringValue,
-                            time:  item.mapValue.fields.userNotifications.mapValue.fields.before.mapValue.fields.time.stringValue,
-                            title: item.mapValue.fields.title.stringValue,
-                            startOrEndTime: item.mapValue.fields.startDayAndTime.stringValue,
-                            id: item.mapValue.fields.id.stringValue,
-                            tag: 0)
-                    }
-                    //User - During
-                    if (item.mapValue.fields.userNotifications.mapValue.fields.during.mapValue.fields.isEnabled.booleanValue){
-                        self.notificationHandler.setNotification(
-                            message: item.mapValue.fields.userNotifications.mapValue.fields.during.mapValue.fields.message.stringValue,
-                            time:  item.mapValue.fields.userNotifications.mapValue.fields.during.mapValue.fields.time.stringValue,
-                            title: item.mapValue.fields.title.stringValue,
-                            startOrEndTime: item.mapValue.fields.startDayAndTime.stringValue,
-                            id: item.mapValue.fields.id.stringValue,
-                            tag: 1)
-                    }
-                    //User - After
-                    if (item.mapValue.fields.userNotifications.mapValue.fields.after.mapValue.fields.isEnabled.booleanValue){
-                        self.notificationHandler.setNotification(
-                            message: item.mapValue.fields.userNotifications.mapValue.fields.after.mapValue.fields.message.stringValue,
-                            time:  item.mapValue.fields.userNotifications.mapValue.fields.after.mapValue.fields.time.stringValue,
-                            title: item.mapValue.fields.title.stringValue,
-                            startOrEndTime: item.mapValue.fields.endDayAndTime.stringValue,
-                            id: item.mapValue.fields.id.stringValue,
-                            tag: 2)
-                        }
-                    }
-                }*/
-        }
+        let _ = FirebaseServices.shared
+        
+        //model.updateDataModel {
+          //  print("Updating done..")
+        //}
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
-
+    
+    func didRegisterForRemoteNotifications(withDeviceToken deviceToken: Data) {
+      /// Swizzling should be disabled in Messaging for watchOS, set APNS token manually.
+        print("Registering done. Send token to FCM now.")
+        Messaging.messaging().apnsToken = deviceToken
+    }
+    
     func applicationWillResignActive() {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, etc.
