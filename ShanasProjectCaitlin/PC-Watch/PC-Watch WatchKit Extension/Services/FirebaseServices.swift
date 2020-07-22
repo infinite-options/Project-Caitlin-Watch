@@ -18,6 +18,10 @@ class FirebaseServices: ObservableObject {
     @Published var goalsSubtasks = [String: [ValueTask]?]()
     @Published var taskSteps = [String: [ValueTask]?]()
     
+    // Key = goalID
+    @Published var goalSubtasksLeft = [String: Int]()
+    // Key = taskID
+    @Published var taskStepsLeft = [String: Int]()
     
     
     private init() {
@@ -39,18 +43,20 @@ class FirebaseServices: ObservableObject {
             
             if let data = data {
                 for goal in data {
+                    self.goalSubtasksLeft[goal.mapValue.fields.id.stringValue] = 0
                     self.getFirebaseTasks(goalID: goal.mapValue.fields.id.stringValue){
                         (task) in self.task = task
                         if let task = task {
                             self.goalsSubtasks[goal.mapValue.fields.id
                                 .stringValue] = task
-                        
+                            self.goalSubtasksLeft[goal.mapValue.fields.id.stringValue]! += 1
                             for step in task {
+                                self.taskStepsLeft[step.mapValue.fields.id.stringValue] = 0
                                 self.getFirebaseStep(stepID: step.mapValue.fields.id.stringValue, goalID: goal.mapValue.fields.id.stringValue){
-                                    
                                     (task) in self.task = task
                                     if let task = task{
                                         self.taskSteps[step.mapValue.fields.id.stringValue] = task
+                                        self.taskStepsLeft[step.mapValue.fields.id.stringValue]! += 1
                                     }
                                 }
                             }

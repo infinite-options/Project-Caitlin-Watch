@@ -13,7 +13,9 @@ struct StepView: View {
     var step: ValueTask?
     var index: Int?
     var taskID: String?
+    var taskIndex: Int?
     var goalOrRoutineID: String?
+    var goalOrRoutineIndex: Int?
     @State var done = false
     
     var body: some View {
@@ -55,6 +57,20 @@ struct StepView: View {
                                                   stepNumber: self.index!,
                                                   start: "step")
                         self.model.taskSteps[self.taskID!]!![self.index!].mapValue.fields.isComplete!.booleanValue = true
+                        //TODO: Look a logic, task complete after only one step complete
+                        self.model.taskStepsLeft[self.taskID!]! -= 1
+                        if self.model.taskStepsLeft[self.taskID!]! == 0 {
+                            self.model.goalsSubtasks[self.goalOrRoutineID!]!![self.taskIndex!].mapValue.fields.isComplete!.booleanValue = true
+                            self.model.goalSubtasksLeft[self.goalOrRoutineID!]! -= 1
+                            if self.model.goalSubtasksLeft[self.goalOrRoutineID!] == 0 {
+                                self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isComplete!.booleanValue = true
+                            } else {
+                                self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isInProgress!.booleanValue = true
+                            }
+                        } else {
+                            self.model.goalsSubtasks[self.goalOrRoutineID!]!![self.taskIndex!].mapValue.fields.isInProgress!.booleanValue = true
+                            self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isInProgress!.booleanValue = true
+                        }
                         print(self.model.taskSteps[self.taskID!]!![self.index!].mapValue.fields.isComplete!.booleanValue)
                         print("completed")
                         self.done = true
@@ -85,6 +101,7 @@ struct StepsView: View {
 //    @Binding var showTasks: Bool
     @Binding var showSteps: Bool
     var goalID: String?
+    var goalOrRoutineIndex: Int?
     var task: ValueTask?
     var taskIndex: Int?
     @State var done = false
@@ -125,7 +142,12 @@ struct StepsView: View {
                                                       stepNumber: -1,
                                                       start: "task")
                             self.model.goalsSubtasks[self.goalID!]!![self.taskIndex!].mapValue.fields.isComplete?.booleanValue = true
-                            print(self.model.goalsSubtasks[self.goalID!]!![self.taskIndex!].mapValue.fields.isComplete!.booleanValue)
+                            self.model.goalSubtasksLeft[self.goalID!]! -= 1
+                            if self.model.goalSubtasksLeft[self.goalID!] == 0 {
+                                self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isComplete!.booleanValue = true
+                            } else {
+                                self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isInProgress!.booleanValue = true
+                            }
                             self.done = true
                             self.showSteps = false
                         }) {
@@ -173,7 +195,12 @@ struct StepsView: View {
                                                               stepNumber: -1,
                                                               start: "task")
                                     self.model.goalsSubtasks[self.goalID!]!![self.taskIndex!].mapValue.fields.isComplete?.booleanValue = true
-                                    print(self.model.goalsSubtasks[self.goalID!]!![self.taskIndex!].mapValue.fields.isComplete!.booleanValue)
+                                    self.model.goalSubtasksLeft[self.goalID!]! -= 1
+                                    if self.model.goalSubtasksLeft[self.goalID!] == 0 {
+                                        self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isComplete!.booleanValue = true
+                                    } else {
+                                        self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isInProgress!.booleanValue = true
+                                    }
                                     self.done = true
                                     self.showSteps = false
                                 }) {
@@ -190,7 +217,7 @@ struct StepsView: View {
                         ForEach(Array(self.model.taskSteps[self.task!.mapValue.fields.id.stringValue]!!.enumerated()), id: \.offset) { index, item in
                             VStack(alignment: .leading) {
                                 if item.mapValue.fields.isAvailable?.booleanValue ?? true {
-                                    StepView(step: item, index: index, taskID: self.task!.mapValue.fields.id.stringValue, goalOrRoutineID: self.goalID!)
+                                    StepView(step: item, index: index, taskID: self.task!.mapValue.fields.id.stringValue, taskIndex: self.taskIndex!, goalOrRoutineID: self.goalID!, goalOrRoutineIndex: self.goalOrRoutineIndex!)
                                 }
                             }
                         }

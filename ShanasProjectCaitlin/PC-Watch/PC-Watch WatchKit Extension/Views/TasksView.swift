@@ -13,6 +13,7 @@ struct TaskItem: View {
     @State var showSteps: Bool = false
     var task: ValueTask?
     var index: Int?
+    var goalOrRoutineIndex: Int?
     var goalOrRoutineID: String?
     @ObservedObject private var model = FirebaseServices.shared
     
@@ -21,7 +22,7 @@ struct TaskItem: View {
     
     var body: some View {
         HStack{
-            NavigationLink(destination: StepsView(showSteps: $showSteps, goalID: goalOrRoutineID, task: self.task, taskIndex: index), isActive: $showSteps){
+            NavigationLink(destination: StepsView(showSteps: $showSteps, goalID: goalOrRoutineID, goalOrRoutineIndex: goalOrRoutineIndex, task: task, taskIndex: index), isActive: $showSteps){
                 VStack(alignment: .leading) {
                     HStack {
                         Text(self.task!.mapValue.fields.title.stringValue)
@@ -53,6 +54,7 @@ struct TaskItem: View {
                                                                stepNumber: self.index!,
                                                                start: "task")
                                         self.model.goalsSubtasks[self.goalOrRoutineID!]!![self.index!].mapValue.fields.isInProgress?.booleanValue = true
+                                        self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isInProgress!.booleanValue = true
                                         print(self.model.goalsSubtasks[self.goalOrRoutineID!]!![self.index!].mapValue.fields.isInProgress!.booleanValue)
                                     }
                             } else if (self.started || task!.mapValue.fields.isInProgress!.booleanValue) {
@@ -120,7 +122,6 @@ struct TasksView: View {
                     if(!self.done && (self.goalOrRoutine!.mapValue.fields.isComplete!.booleanValue == false)){
                         Button(action: {
                             print("done button clicked")
-                            //TODO: Update model
                             self.model.completeGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
                                                       routineId: self.goalOrRoutine!.mapValue.fields.id.stringValue,
                                                       taskId: "NA",
@@ -128,10 +129,8 @@ struct TasksView: View {
                                                       taskNumber: -1,
                                                       stepNumber: -1,
                                                       start: "goal")
-                            self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isComplete?.booleanValue = true
-                            print(self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isComplete!.booleanValue)
+                            self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isComplete!.booleanValue = true
                             self.done = true
-//                            self.showTasks = false
                         }) {
                             Text("Done?")
                                 .foregroundColor(.green)
@@ -159,7 +158,7 @@ struct TasksView: View {
                         ForEach(Array(self.model.goalsSubtasks[self.goalOrRoutine!.mapValue.fields.id.stringValue]!!.enumerated()), id: \.offset) { index, item in
                             VStack(alignment: .leading) {
                                 if item.mapValue.fields.isAvailable?.booleanValue ?? true {
-                                    TaskItem(task: item, index: index, goalOrRoutineID: self.goalOrRoutine!.mapValue.fields.id.stringValue)
+                                    TaskItem(task: item, index: index, goalOrRoutineIndex: self.goalOrRoutineIndex!, goalOrRoutineID: self.goalOrRoutine!.mapValue.fields.id.stringValue)
                                 }
                             }
                         }
