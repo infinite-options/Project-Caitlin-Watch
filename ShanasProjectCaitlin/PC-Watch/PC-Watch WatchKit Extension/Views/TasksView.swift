@@ -47,14 +47,24 @@ struct TaskItem: View {
                                     .onTapGesture {
                                         self.started = true
                                         print("Starting...")
+                                        // starting task
                                         self.model.startGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
                                                                routineId: self.goalOrRoutineID!,
                                                                taskId: self.task!.mapValue.fields.id.stringValue,
                                                                taskNumber: self.index!,
                                                                stepNumber: self.index!,
                                                                start: "task")
+                                        // update task in model
                                         self.model.goalsSubtasks[self.goalOrRoutineID!]!![self.index!].mapValue.fields.isInProgress?.booleanValue = true
+                                        // update goal in model
                                         self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isInProgress!.booleanValue = true
+                                        //start goal
+                                        self.model.startGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
+                                                               routineId: self.goalOrRoutineID!,
+                                                               taskId: "NA",
+                                                               taskNumber: self.goalOrRoutineIndex!,
+                                                               stepNumber: -1,
+                                                               start: "goal")
                                         print(self.model.goalsSubtasks[self.goalOrRoutineID!]!![self.index!].mapValue.fields.isInProgress!.booleanValue)
                                     }
                             } else if (self.started || task!.mapValue.fields.isInProgress!.booleanValue) {
