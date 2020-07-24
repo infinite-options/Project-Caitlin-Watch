@@ -84,6 +84,7 @@ struct EventInfoView: View {
     }
 }
 struct infoView: View {
+    //TODO: doesnt update complete until reload the app because passed by value
     var item: Value?
     @ObservedObject private var model = FirebaseGoogleService.shared
     

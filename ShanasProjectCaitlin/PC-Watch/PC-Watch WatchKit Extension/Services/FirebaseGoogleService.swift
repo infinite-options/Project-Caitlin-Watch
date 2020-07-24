@@ -100,6 +100,41 @@ class FirebaseGoogleService: ObservableObject {
         return calendar.date(from: thisStart)! < calendar.date(from: thatStart)!
     }
     
+    func updateStepsTasksLeftDictionaries() {
+        print("In updateStepsTasksLeftDictionaries...")
+        
+        self.getFirebaseData(){
+            (data) in self.data = data
+            if let data = data {
+                self.data?.sort(by: self.sortGoals)
+                for goal in data {
+                    self.getFirebaseTasks(goalID: (goal.mapValue!.fields.id.stringValue)){
+                        (task) in self.task = task
+                        if let task = task {
+                            self.goalSubtasksLeft[goal.mapValue!.fields.id.stringValue] = task.count
+                            for step in task {
+                                if step.mapValue.fields.isComplete?.booleanValue == true {
+                                    self.goalSubtasksLeft[goal.mapValue!.fields.id.stringValue]! -= 1
+                                }
+                                self.getFirebaseStep(stepID: step.mapValue.fields.id.stringValue, goalID: goal.mapValue!.fields.id.stringValue){
+                                    (task) in self.task = task
+                                    if let task = task {
+                                        self.taskStepsLeft[step.mapValue.fields.id.stringValue] = task.count
+                                        for item in task {
+                                            if item.mapValue.fields.isComplete?.booleanValue == true {
+                                                self.taskStepsLeft[step.mapValue.fields.id.stringValue]! -=  1
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     func updateDataModel(completion: @escaping () -> ()) {
         print("In updating model...")
 
@@ -135,9 +170,6 @@ class FirebaseGoogleService: ObservableObject {
                             (task) in self.task = task
                             if let task = task {
                                 self.goalsSubtasks[goal.mapValue!.fields.id.stringValue] = task
-                                
-                                self.goalSubtasksLeft[goal.mapValue!.fields.id.stringValue] = task.count
-                                
                                 for step in task {
                                     
                                     group.enter()
@@ -146,7 +178,6 @@ class FirebaseGoogleService: ObservableObject {
                                         (task) in self.task = task
                                         if let task = task{
                                             self.taskSteps[step.mapValue.fields.id.stringValue] = task
-                                            self.taskStepsLeft[step.mapValue.fields.id.stringValue] = task.count
                                         }
                                     }
                                     group.leave()
@@ -155,6 +186,7 @@ class FirebaseGoogleService: ObservableObject {
                             group.leave()
                         }
                     }
+                    self.updateStepsTasksLeftDictionaries()
                     group.notify(queue: DispatchQueue.main) {
                         completion()
                     }
