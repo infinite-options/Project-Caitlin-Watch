@@ -12,7 +12,7 @@ import WatchKit
 
 class BackgroundService: NSObject {
     static let shared = BackgroundService()
-    let model = FirebaseServices.shared
+    let model = FirebaseGoogleService.shared
     
     static let url = URL(string: "https://firestore.googleapis.com/v1/projects/project-caitlin-c71a9/databases/(default)/documents/users/VzYNSZMGGRrtzm74zPmM")!
     
@@ -57,7 +57,7 @@ extension BackgroundService : URLSessionDownloadDelegate {
         if let data = try? Data(contentsOf: file),
             let model = try? JSONDecoder().decode(Firebase.self, from: data) {
                 //data?.fields.goalsRoutines.arrayValue.values ?? nil
-            FirebaseServices.shared.data = model.fields.goalsRoutines.arrayValue.values
+            FirebaseGoogleService.shared.data = model.fields.goalsRoutines.arrayValue.values
             print("Successsssss :::::::::")
         }
     }

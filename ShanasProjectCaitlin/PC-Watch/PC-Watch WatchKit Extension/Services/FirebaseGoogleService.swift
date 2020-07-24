@@ -8,14 +8,19 @@
 
 import Foundation
 
-class FirebaseServices: ObservableObject {
+class FirebaseGoogleService: ObservableObject {
     
-    static let shared = FirebaseServices()
-    private let notificationHandler = NotificationHandler()
+    static let shared = FirebaseGoogleService()
+    //private let notificationHandler = NotificationHandler()
+    
+    @Published var UserDay = [UserDayGoalEventList]()
     
     @Published var data: [Value]?
+    @Published var events: [Event]?
     private var task: [ValueTask]?
+    //Key: Goal, Value: tasks
     @Published var goalsSubtasks = [String: [ValueTask]?]()
+    //Key: Task, Value: steps
     @Published var taskSteps = [String: [ValueTask]?]()
     
     // Key = goalID
@@ -26,46 +31,148 @@ class FirebaseServices: ObservableObject {
     
     private init() {
         updateDataModel {
-            print("waiting.. done!")
+            print("Populated data model. -------------------------")
+            print(self.UserDay.count)
+            //if (self.UserDay.count > 1) {
+            self.mergeSortedGoalsEvents()
+            //UserDay.setup(withGoals: self.data ?? [Value](), withEvents: self.events ?? [Event]())
+            //}
+            //print(self.UserDay.count)
+        }
+    }
+    
+    func mergeSortedGoalsEvents() {
+        var i=0
+        var j=0
+        
+        var calendar = Calendar.current
+        calendar.timeZone = .current
+        
+        while i<self.events?.count ?? -1 && j<self.data?.count ?? -1{
+            let eventStart = calendar.dateComponents([.hour, .minute, .second], from: ISO8601DateFormatter().date(from: (self.events![i].start?.dateTime)!)!)
+            let goalStart = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (self.data![j].mapValue?.fields.startDayAndTime.stringValue)!)!)
             
-            if self.data != nil{
-                //print(data)
-                print("App initialized.. now setting notifications")
+            print(eventStart)
+            print(goalStart)
+            
+            if calendar.date(from: eventStart)! < calendar.date(from: goalStart)! {
+                print(calendar.date(from: eventStart))
+                print(calendar.date(from: goalStart))
+                self.UserDay.append(self.events![i])
+                i += 1
+            }
+            else{
+                print(calendar.date(from: eventStart))
+                print(calendar.date(from: goalStart))
+                self.UserDay.append(self.data![j])
+                j += 1
             }
         }
+        
+        while i<self.events?.count ?? -1 {
+            self.UserDay.append(self.events![i])
+            i += 1
+        }
+        
+        while j<self.data?.count ?? -1 {
+            self.UserDay.append(self.data![j])
+            j += 1
+        }
+    }
+ 
+    func sortGoals(this: Value, that: Value) -> Bool {
+        var calendar = Calendar.current
+        calendar.timeZone = .current
+        
+        let thisStart = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (this.mapValue?.fields.startDayAndTime.stringValue)!)!)
+        let thatStart = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (that.mapValue?.fields.startDayAndTime.stringValue)!)!)
+        
+        return calendar.date(from: thisStart)! < calendar.date(from: thatStart)!
+    }
+    
+    func sortEvents(this: Event, that: Event) -> Bool {
+        var calendar = Calendar.current
+        calendar.timeZone = .current
+        
+        let thisStart = calendar.dateComponents([.hour, .minute, .second], from: ISO8601DateFormatter().date(from: (this.start?.dateTime)!)!)
+        let thatStart = calendar.dateComponents([.hour, .minute, .second], from: ISO8601DateFormatter().date(from: (that.start?.dateTime)!)!)
+        
+        return calendar.date(from: thisStart)! < calendar.date(from: thatStart)!
     }
     
     func updateDataModel(completion: @escaping () -> ()) {
         print("In updating model...")
+
+        let group = DispatchGroup()
+        group.enter()
         
-        getFirebaseData(){
-            (data) in self.data = data
+        getEventsFromGoogleCalendar(){
+            (data) in self.events = data
+            print("Got events from Google Calendar. Now getting firebase data.")
             
-            if let data = data {
-                for goal in data {
-                    self.goalSubtasksLeft[goal.mapValue.fields.id.stringValue] = 0
-                    self.getFirebaseTasks(goalID: goal.mapValue.fields.id.stringValue){
-                        (task) in self.task = task
-                        if let task = task {
-                            self.goalsSubtasks[goal.mapValue.fields.id
-                                .stringValue] = task
-                            self.goalSubtasksLeft[goal.mapValue.fields.id.stringValue]! += 1
-                            for step in task {
-                                self.taskStepsLeft[step.mapValue.fields.id.stringValue] = 0
-                                self.getFirebaseStep(stepID: step.mapValue.fields.id.stringValue, goalID: goal.mapValue.fields.id.stringValue){
-                                    (task) in self.task = task
-                                    if let task = task{
-                                        self.taskSteps[step.mapValue.fields.id.stringValue] = task
-                                        self.taskStepsLeft[step.mapValue.fields.id.stringValue]! += 1
+            if self.events != nil{
+                print(self.events)
+                self.events?.sort(by: self.sortEvents)
+                //for event in data{
+                  //  self.UserDay.append(event)
+                //}
+            }
+            group.leave()
+        }
+        
+        //group.notify(queue: DispatchQueue.main){
+            self.getFirebaseData(){
+                (data) in self.data = data
+                
+                if let data = data {
+                    self.data?.sort(by: self.sortGoals)
+                    
+                    for goal in data {
+                        group.enter()
+                        //self.UserDay.append(goal)
+                        self.goalSubtasksLeft[goal.mapValue!.fields.id.stringValue] = 0
+                        self.getFirebaseTasks(goalID: (goal.mapValue!.fields.id.stringValue)){
+                            (task) in self.task = task
+                            if let task = task {
+                                self.goalsSubtasks[goal.mapValue!.fields.id.stringValue] = task
+                                
+                                self.goalSubtasksLeft[goal.mapValue!.fields.id.stringValue] = task.count
+                                
+                                for step in task {
+                                    
+                                    group.enter()
+                                    self.taskStepsLeft[step.mapValue.fields.id.stringValue] = 0
+                                    self.getFirebaseStep(stepID: step.mapValue.fields.id.stringValue, goalID: goal.mapValue!.fields.id.stringValue){
+                                        (task) in self.task = task
+                                        if let task = task{
+                                            self.taskSteps[step.mapValue.fields.id.stringValue] = task
+                                            self.taskStepsLeft[step.mapValue.fields.id.stringValue] = task.count
+                                        }
                                     }
+                                    group.leave()
                                 }
                             }
+                            group.leave()
                         }
                     }
+                    group.notify(queue: DispatchQueue.main) {
+                        completion()
+                    }
                 }
-                completion()
+            }
+        //}
+    }
+    
+    func getEventsFromGoogleCalendar(completion: @escaping ([Event]?) -> ()){
+        print("Getting data now.")
+        guard let url = URL(string: "https://manifestmy.space/getEventsByInterval?start=2020-07-24T00:00:00Z&end=2020-07-24T23:59:59Z&id=GdT7CRXUuDXmteS4rQwN&name=Emma%20Allegrucci") else { return }
+        URLSession.shared.dataTask(with: url) { (data, _, _) in
+            let data = try? JSONDecoder().decode([Event].self, from: data!)
+            DispatchQueue.main.async {
+                completion(data ?? nil)
             }
         }
+        .resume()
     }
     
     func getFirebaseData(completion: @escaping ([Value]?) -> ()) {

@@ -5,7 +5,7 @@
 //  Created by Shana Duchin on 4/11/20.
 //  Copyright © 2020 Infinite Options. All rights reserved.
 //
-
+/*
 import SwiftUI
 import Foundation
 import UIKit
@@ -93,3 +93,4 @@ struct EventsList_Previews: PreviewProvider {
         EventsList()
     }
 }
+*/

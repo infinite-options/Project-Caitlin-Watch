@@ -6,7 +6,7 @@
 //  Updated by Shana Duchin in 4/11/20 and onward
 //  Copyright © 2020 Infinite Options. All rights reserved.
 //
-
+/*
 import SwiftUI
 
 struct RoutineList: View {
@@ -73,3 +73,4 @@ struct RoutineList_Previews: PreviewProvider {
         RoutineList()
     }
 }
+*/

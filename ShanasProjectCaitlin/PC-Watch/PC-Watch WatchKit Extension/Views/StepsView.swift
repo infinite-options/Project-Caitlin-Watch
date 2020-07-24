@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct StepView: View {
-    @ObservedObject private var model = FirebaseServices.shared
+    @ObservedObject private var model = FirebaseGoogleService.shared
     var step: ValueTask?
     var index: Int?
     var taskID: String?
@@ -76,7 +76,7 @@ struct StepView: View {
                             self.model.goalSubtasksLeft[self.goalOrRoutineID!]! -= 1
                             if self.model.goalSubtasksLeft[self.goalOrRoutineID!] == 0 {
                                 //if goal has no tasks left, it is complete so update model
-                                self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isComplete!.booleanValue = true
+                                self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isComplete!.booleanValue = true
                                 // complete goal
                                 self.model.completeGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
                                                           routineId: self.goalOrRoutineID!,
@@ -87,7 +87,7 @@ struct StepView: View {
                                                           start: "goal")
                             } else {
                                 // goal is not complete so is inprogress
-                                self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isInProgress!.booleanValue = true
+                                self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isInProgress!.booleanValue = true
                                 //start goal
                                 self.model.startGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
                                                        routineId: self.goalOrRoutineID!,
@@ -107,7 +107,7 @@ struct StepView: View {
                                                    stepNumber: -1,
                                                    start: "task")
                             // set goal to in progress in model
-                            self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isInProgress!.booleanValue = true
+                            self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isInProgress!.booleanValue = true
                             // start goal
                             self.model.startGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
                                                    routineId: self.goalOrRoutineID!,
@@ -137,7 +137,7 @@ struct StepView: View {
 }
 
 struct StepsView: View {
-    @ObservedObject private var model = FirebaseServices.shared
+    @ObservedObject private var model = FirebaseGoogleService.shared
 //    @Binding var showTasks: Bool
     @Binding var showSteps: Bool
     var goalID: String?
@@ -188,7 +188,7 @@ struct StepsView: View {
                             self.model.goalSubtasksLeft[self.goalID!]! -= 1
                             if self.model.goalSubtasksLeft[self.goalID!] == 0 {
                                 // if no tasks left, update model
-                                self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isComplete!.booleanValue = true
+                                self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isComplete!.booleanValue = true
                                 // set goal to complete
                                 self.model.completeGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
                                                           routineId: self.goalID!,
@@ -199,7 +199,7 @@ struct StepsView: View {
                                                           start: "goal")
                             } else {
                                 // goal is not complete so set to in progress, update model
-                                self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isInProgress!.booleanValue = true
+                                self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isInProgress!.booleanValue = true
                                 // start goal
                                 self.model.startGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
                                                        routineId: self.goalID!,
@@ -261,7 +261,7 @@ struct StepsView: View {
                                     self.model.goalSubtasksLeft[self.goalID!]! -= 1
                                     if self.model.goalSubtasksLeft[self.goalID!] == 0 {
                                         // if no tasks left, update model
-                                        self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isComplete!.booleanValue = true
+                                        self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isComplete!.booleanValue = true
                                         // set goal to complete
                                         self.model.completeGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
                                                                   routineId: self.goalID!,
@@ -272,7 +272,7 @@ struct StepsView: View {
                                                                   start: "goal")
                                     } else {
                                         // goal is not complete so set to in progress, update model
-                                        self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isInProgress!.booleanValue = true
+                                        self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isInProgress!.booleanValue = true
                                         // start goal
                                         self.model.startGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
                                                                routineId: self.goalID!,

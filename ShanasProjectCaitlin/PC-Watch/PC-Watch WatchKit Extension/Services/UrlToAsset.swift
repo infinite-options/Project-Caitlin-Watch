@@ -57,7 +57,7 @@ struct SmallAssetImage<Placeholder: View>: View {
     
     private var smallImage: some View {
         Group {
-            if photoUrlToAssetImage[urlName] != nil {
+            if photoUrlToAssetImage[urlName] != nil && photoUrlToAssetImage[urlName] != "" {
                 Circle()
                     .foregroundColor(Color.yellow.opacity(0.9))
                     .frame(width: 40, height: 40)

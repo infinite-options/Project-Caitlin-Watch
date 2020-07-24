@@ -31,6 +31,7 @@ target 'PC-Watch WatchKit Extension' do
   pod 'GoogleDataTransport'
   pod 'FirebaseInstallations'
   pod 'FirebaseStorage'
+  pod 'SwiftSoup'
 
 end
 
