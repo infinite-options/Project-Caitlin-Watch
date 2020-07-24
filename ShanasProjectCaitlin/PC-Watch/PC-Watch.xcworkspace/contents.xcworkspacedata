@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/harshittrehan/Desktop/Project-Caitlin-Watch/ShanasProjectCaitlin/PC-Watch/PC-Watch WatchKit Extension/Models/UserDayModel.swift">
+   </FileRef>
+   <FileRef
       location = "group:PC-Watch.xcodeproj">
    </FileRef>
    <FileRef

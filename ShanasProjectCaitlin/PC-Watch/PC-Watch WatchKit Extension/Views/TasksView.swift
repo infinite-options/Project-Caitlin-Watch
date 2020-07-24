@@ -15,7 +15,7 @@ struct TaskItem: View {
     var index: Int?
     var goalOrRoutineIndex: Int?
     var goalOrRoutineID: String?
-    @ObservedObject private var model = FirebaseServices.shared
+    @ObservedObject private var model = FirebaseGoogleService.shared
     
     //TODO: change to isInProgress
     @State var started = false
@@ -54,7 +54,7 @@ struct TaskItem: View {
                                                                stepNumber: self.index!,
                                                                start: "task")
                                         self.model.goalsSubtasks[self.goalOrRoutineID!]!![self.index!].mapValue.fields.isInProgress?.booleanValue = true
-                                        self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isInProgress!.booleanValue = true
+                                        self.model.data![self.goalOrRoutineIndex!].mapValue!.fields.isInProgress!.booleanValue = true
                                         print(self.model.goalsSubtasks[self.goalOrRoutineID!]!![self.index!].mapValue.fields.isInProgress!.booleanValue)
                                     }
                             } else if (self.started || task!.mapValue.fields.isInProgress!.booleanValue) {
@@ -95,7 +95,7 @@ struct TaskItem: View {
 }
 
 struct TasksView: View {
-   @ObservedObject private var model = FirebaseServices.shared
+   @ObservedObject private var model = FirebaseGoogleService.shared
 //    @Binding var showTasks: Bool
     var goalOrRoutine: Value?
     var goalOrRoutineIndex: Int?
@@ -103,10 +103,10 @@ struct TasksView: View {
     
     var body: some View {
         GeometryReader { geo in
-            if (self.model.goalsSubtasks[self.goalOrRoutine!.mapValue.fields.id.stringValue] == nil) {
+            if (self.model.goalsSubtasks[self.goalOrRoutine!.mapValue!.fields.id.stringValue] == nil) {
                 VStack(alignment: .center) {
-                    if (self.done || (self.goalOrRoutine!.mapValue.fields.isComplete!.booleanValue == true)){
-                        AssetImage(urlName: self.goalOrRoutine!.mapValue.fields.photo.stringValue, placeholder: Image("default-goal"))
+                    if (self.done || (self.goalOrRoutine!.mapValue!.fields.isComplete!.booleanValue == true)){
+                        AssetImage(urlName: self.goalOrRoutine!.mapValue!.fields.photo.stringValue, placeholder: Image("default-goal"))
                             .aspectRatio(contentMode: .fit)
                             .opacity(0.60)
                             .overlay(Image(systemName: "checkmark.circle")
@@ -114,22 +114,22 @@ struct TasksView: View {
                                 .padding(EdgeInsets(top: 12, leading: 0, bottom: 0, trailing: 0))
                                 .foregroundColor(.green))
                     } else {
-                        AssetImage(urlName: self.goalOrRoutine!.mapValue.fields.photo.stringValue, placeholder: Image("default-goal"))
+                        AssetImage(urlName: self.goalOrRoutine!.mapValue!.fields.photo.stringValue, placeholder: Image("default-goal"))
                             .aspectRatio(contentMode: .fit)
                     }
-                    Text(self.goalOrRoutine!.mapValue.fields.title.stringValue).lineLimit(nil).padding().font(.system(size: 20))
+                    Text(self.goalOrRoutine!.mapValue!.fields.title.stringValue).lineLimit(nil).padding().font(.system(size: 20))
                     Spacer()
-                    if(!self.done && (self.goalOrRoutine!.mapValue.fields.isComplete!.booleanValue == false)){
+                    if(!self.done && (self.goalOrRoutine!.mapValue!.fields.isComplete!.booleanValue == false)){
                         Button(action: {
                             print("done button clicked")
                             self.model.completeGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
-                                                      routineId: self.goalOrRoutine!.mapValue.fields.id.stringValue,
+                                                      routineId: self.goalOrRoutine!.mapValue!.fields.id.stringValue,
                                                       taskId: "NA",
                                                       routineNumber: self.goalOrRoutineIndex!,
                                                       taskNumber: -1,
                                                       stepNumber: -1,
                                                       start: "goal")
-                            self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isComplete!.booleanValue = true
+                            self.model.data![self.goalOrRoutineIndex!].mapValue!.fields.isComplete!.booleanValue = true
                             self.done = true
                         }) {
                             Text("Done?")
@@ -146,19 +146,19 @@ struct TasksView: View {
             }
             else{
                 VStack {
-                    Text(self.goalOrRoutine!.mapValue.fields.title.stringValue)
+                    Text(self.goalOrRoutine!.mapValue!.fields.title.stringValue)
                         .font(.system(size: 20, design: .rounded))
                     HStack {
-                        Text("Duration: " + self.goalOrRoutine!.mapValue.fields.expectedCompletionTime.stringValue)
+                        Text("Duration: " + self.goalOrRoutine!.mapValue!.fields.expectedCompletionTime.stringValue)
                             .fontWeight(.light)
                             .font(.system(size: 15))
 //                        Text(formatter.string(from: timeLeft.date(from: self.goalOrRoutine!.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: self.goalOrRoutine!.mapValue.fields.endDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15))
                     }
                     List {
-                        ForEach(Array(self.model.goalsSubtasks[self.goalOrRoutine!.mapValue.fields.id.stringValue]!!.enumerated()), id: \.offset) { index, item in
+                        ForEach(Array(self.model.goalsSubtasks[self.goalOrRoutine!.mapValue!.fields.id.stringValue]!!.enumerated()), id: \.offset) { index, item in
                             VStack(alignment: .leading) {
                                 if item.mapValue.fields.isAvailable?.booleanValue ?? true {
-                                    TaskItem(task: item, index: index, goalOrRoutineIndex: self.goalOrRoutineIndex!, goalOrRoutineID: self.goalOrRoutine!.mapValue.fields.id.stringValue)
+                                    TaskItem(task: item, index: index, goalOrRoutineIndex: self.goalOrRoutineIndex!, goalOrRoutineID: self.goalOrRoutine!.mapValue!.fields.id.stringValue)
                                 }
                             }
                         }

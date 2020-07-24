@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct StepView: View {
-    @ObservedObject private var model = FirebaseServices.shared
+    @ObservedObject private var model = FirebaseGoogleService.shared
     var step: ValueTask?
     var index: Int?
     var taskID: String?
@@ -63,13 +63,13 @@ struct StepView: View {
                             self.model.goalsSubtasks[self.goalOrRoutineID!]!![self.taskIndex!].mapValue.fields.isComplete!.booleanValue = true
                             self.model.goalSubtasksLeft[self.goalOrRoutineID!]! -= 1
                             if self.model.goalSubtasksLeft[self.goalOrRoutineID!] == 0 {
-                                self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isComplete!.booleanValue = true
+                                self.model.data![self.goalOrRoutineIndex!].mapValue!.fields.isComplete!.booleanValue = true
                             } else {
-                                self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isInProgress!.booleanValue = true
+                                self.model.data![self.goalOrRoutineIndex!].mapValue!.fields.isInProgress!.booleanValue = true
                             }
                         } else {
                             self.model.goalsSubtasks[self.goalOrRoutineID!]!![self.taskIndex!].mapValue.fields.isInProgress!.booleanValue = true
-                            self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isInProgress!.booleanValue = true
+                            self.model.data![self.goalOrRoutineIndex!].mapValue!.fields.isInProgress!.booleanValue = true
                         }
                         print(self.model.taskSteps[self.taskID!]!![self.index!].mapValue.fields.isComplete!.booleanValue)
                         print("completed")
@@ -97,7 +97,7 @@ func buttonAction() -> Void{
 }
 
 struct StepsView: View {
-    @ObservedObject private var model = FirebaseServices.shared
+    @ObservedObject private var model = FirebaseGoogleService.shared
 //    @Binding var showTasks: Bool
     @Binding var showSteps: Bool
     var goalID: String?
@@ -144,9 +144,9 @@ struct StepsView: View {
                             self.model.goalsSubtasks[self.goalID!]!![self.taskIndex!].mapValue.fields.isComplete?.booleanValue = true
                             self.model.goalSubtasksLeft[self.goalID!]! -= 1
                             if self.model.goalSubtasksLeft[self.goalID!] == 0 {
-                                self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isComplete!.booleanValue = true
+                                self.model.data![self.goalOrRoutineIndex!].mapValue!.fields.isComplete!.booleanValue = true
                             } else {
-                                self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isInProgress!.booleanValue = true
+                                self.model.data![self.goalOrRoutineIndex!].mapValue!.fields.isInProgress!.booleanValue = true
                             }
                             self.done = true
                             self.showSteps = false
@@ -197,9 +197,9 @@ struct StepsView: View {
                                     self.model.goalsSubtasks[self.goalID!]!![self.taskIndex!].mapValue.fields.isComplete?.booleanValue = true
                                     self.model.goalSubtasksLeft[self.goalID!]! -= 1
                                     if self.model.goalSubtasksLeft[self.goalID!] == 0 {
-                                        self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isComplete!.booleanValue = true
+                                        self.model.data![self.goalOrRoutineIndex!].mapValue!.fields.isComplete!.booleanValue = true
                                     } else {
-                                        self.model.data![self.goalOrRoutineIndex!].mapValue.fields.isInProgress!.booleanValue = true
+                                        self.model.data![self.goalOrRoutineIndex!].mapValue!.fields.isInProgress!.booleanValue = true
                                     }
                                     self.done = true
                                     self.showSteps = false

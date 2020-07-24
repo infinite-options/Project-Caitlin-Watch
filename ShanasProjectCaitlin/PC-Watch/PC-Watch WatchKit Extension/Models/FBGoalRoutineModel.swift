@@ -74,8 +74,13 @@ struct GoalsRoutinesArrayValue: Codable {
 }
 
 // MARK: - Value
-struct Value: Codable {
-    var mapValue: ValueMapValue
+struct Value: Codable, UserDayGoalEventList {
+    var mapValue: ValueMapValue?
+    var start: DateTime?
+    var end: DateTime?
+    var summary: String?
+    var description: String?
+    var creator: Email?
 }
 
 // MARK: - ValueMapValue
