@@ -169,7 +169,7 @@ struct StepsView: View {
                     VStack {
                         Text(self.task!.mapValue.fields.title.stringValue)
                             .lineLimit(nil)
-                            .font(.system(size: 20))
+                            .font(.system(size: 20, design: .rounded))
                         Text("Takes " + self.task!.mapValue.fields.expectedCompletionTime!.stringValue)
                             .fontWeight(.light)
                             .font(.system(size: 15))

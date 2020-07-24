@@ -37,7 +37,14 @@ struct AsyncSmallImage<Placeholder: View>: View {
                     .shadow(color: .yellow , radius: 4)
                     .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 2))
             } else {
-                placeholder
+                Circle()
+                    .foregroundColor(Color.yellow.opacity(0.9))
+                    .frame(width: 40, height: 40)
+                    .overlay(placeholder)
+                    .overlay(Circle().stroke(Color.red, lineWidth: 1))
+                    .shadow(color: .yellow , radius: 4)
+                    .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 2))
+                
             }
         }
     }

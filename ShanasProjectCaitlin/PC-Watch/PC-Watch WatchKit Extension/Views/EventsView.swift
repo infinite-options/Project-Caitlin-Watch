@@ -14,34 +14,46 @@ struct EventsView: View {
       
     var body: some View {
         GeometryReader { geo in
-            VStack(alignment: .center){
-                Text(self.event!.summary!)
-                    .fontWeight(.bold)
-                    .font(.system(size: 20))
-                    .fixedSize(horizontal: false, vertical: true)
-                Spacer()
-                    //SmallAssetImage(urlName: "", placeholder: Image("calendar"))
-                Circle()
-                    .foregroundColor(Color.yellow.opacity(0.9))
-                    .frame(width: 40, height: 40)
-                    .overlay(Image("calendar")
-                        .resizable()
-                        .frame(width:25, height:25)
-                        .padding(0))
-                    .overlay(Circle().stroke(Color.red, lineWidth: 1))
-                    .shadow(color: .yellow , radius: 4)
-                    .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 2))
-                
-                VStack{
-                    Text("Created by: " + self.event!.creator!.email)
-                    if self.event!.description != nil{
-                        Text("Description: " + self.event!.description!)
+            ScrollView([.vertical]) {
+                VStack(alignment: .center) {
+                    HStack {
+                        Text(self.event!.summary!)
+                            .fontWeight(.bold)
+                            .font(.system(size: 20, design: .rounded))
+                            .fixedSize(horizontal: false, vertical: true)
+                        Spacer()
+                            SmallAssetImage(urlName: "",
+                                            placeholder: Image("calendar")
+                                                .resizable()
+                                                .frame(width:25, height:25)
+                                                .padding(0))
                     }
-                    else{
-                        Text("No description available.")
+                    VStack(alignment: .leading) {
+                        Text(DayDateObj.formatter.string(from: ISO8601DateFormatter().date(from: self.event!.start!.dateTime)!) + " - " + DayDateObj.formatter.string(from: ISO8601DateFormatter().date(from: self.event!.end!.dateTime)!))
+                                .fontWeight(.light)
+                                .font(.system(size: 15))
+                        Divider()
+                        Text("Created by " + self.event!.creator!.email)
+                            .fontWeight(.light)
+                            .font(.system(size: 15))
+                        Divider()
+                        if self.event!.description != nil{
+                            Text("Description: " + self.event!.description!)
+                                .fontWeight(.light)
+                                .font(.system(size: 15))
+                        }
+                        else{
+                            Text("No description available.")
+                                .fontWeight(.light)
+                                .font(.system(size: 15))
+                        }
                     }
-                }
-            }.frame(maxWidth: geo.size.width, alignment: .leading)
+                    Divider()
+                    Button(action: {}) {
+                        Text("Atendees").foregroundColor(.yellow)
+                    }
+                }.frame(maxWidth: geo.size.width, alignment: .leading)
+            }
         }
     }
 }

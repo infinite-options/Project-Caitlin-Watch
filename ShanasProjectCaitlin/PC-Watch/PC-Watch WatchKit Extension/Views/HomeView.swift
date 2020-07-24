@@ -54,21 +54,15 @@ struct EventInfoView: View {
         VStack(alignment: .leading){
             Text(self.item!.summary!)
                 .fontWeight(.bold)
-                .font(.system(size: 20))
+                .font(.system(size: 20, design: .rounded))
                 .lineLimit(2)
             Spacer()
             HStack{
-                //SmallAssetImage(urlName: "", placeholder: Image("calendar"))
-                Circle()
-                    .foregroundColor(Color.yellow.opacity(0.9))
-                    .frame(width: 40, height: 40)
-                    .overlay(Image("calendar")
-                        .resizable()
-                        .frame(width:25, height:25)
-                        .padding(0))
-                    .overlay(Circle().stroke(Color.red, lineWidth: 1))
-                    .shadow(color: .yellow , radius: 4)
-                    .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 2))
+                SmallAssetImage(urlName: "",
+                                placeholder: Image("calendar")
+                                    .resizable()
+                                    .frame(width:25, height:25)
+                                    .padding(0))
                 
                 VStack(alignment: .leading) {
                     Text("Starts: " + DayDateObj.formatter.string(from: ISO8601DateFormatter().date(from: self.item!.start!.dateTime)!))
@@ -91,7 +85,9 @@ struct infoView: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Text(self.item!.mapValue!.fields.title.stringValue).fontWeight(.bold).font(.system(size: 20))
+                Text(self.item!.mapValue!.fields.title.stringValue)
+                    .fontWeight(.bold)
+                    .font(.system(size: 20, design: .rounded))
                 Spacer()
                 if (!(self.model.goalsSubtasks[item!.mapValue!.fields.id.stringValue] == nil)) {
                     Image(systemName: "plus.circle")

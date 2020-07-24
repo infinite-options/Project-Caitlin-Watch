@@ -26,7 +26,7 @@ struct TaskItem: View {
                     HStack {
                         Text(self.task!.mapValue.fields.title.stringValue)
                             .fontWeight(.bold)
-                            .font(.system(size: 20))
+                            .font(.system(size: 20, design: .rounded))
                         Spacer()
                         if (!(self.model.taskSteps[task!.mapValue.fields.id.stringValue] == nil)) {
                             Image(systemName: "plus.circle")
