@@ -49,12 +49,14 @@ struct EventsView: View {
                         }
                     }
                     Divider()
-                    Button(action: {}) {
+                    Button(action: {
+//                        NavigationLink(destination: AtendeesView()<#T##_#>, isActive: <#T##Binding<Bool>#>, label: <#T##() -> _#>)
+                    }) {
                         Text("Atendees").foregroundColor(.yellow)
                     }
                 }.frame(maxWidth: geo.size.width, alignment: .leading)
             }
-        }
+        }.navigationBarTitle("Event")
     }
 }
 
