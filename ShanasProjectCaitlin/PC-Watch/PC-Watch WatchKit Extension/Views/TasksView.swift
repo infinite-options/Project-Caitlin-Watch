@@ -17,7 +17,6 @@ struct TaskItem: View {
     var goalOrRoutineID: String?
     @ObservedObject private var model = FirebaseServices.shared
     
-    //TODO: change to isInProgress
     @State var started = false
     
     var body: some View {
@@ -36,7 +35,6 @@ struct TaskItem: View {
                                 .accentColor(.white)
                         } else {
                             if (!(task!.mapValue.fields.isComplete!.booleanValue) && !(task!.mapValue.fields.isInProgress!.booleanValue)) {
-                                //TODO: fix this being displayed
                                 Text("Go")
                                     .overlay(Circle()
                                         .stroke(Color.green, lineWidth: 1)

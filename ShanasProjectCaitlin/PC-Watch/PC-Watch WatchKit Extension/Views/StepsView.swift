@@ -48,7 +48,6 @@ struct StepView: View {
                 Spacer()
                 if(!self.done && (self.step!.mapValue.fields.isComplete!.booleanValue == false)){
                     Button(action: {
-                        //TODO: below not working
                         //Complete step
                         self.model.completeGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
                                                   routineId: self.goalOrRoutineID!,
