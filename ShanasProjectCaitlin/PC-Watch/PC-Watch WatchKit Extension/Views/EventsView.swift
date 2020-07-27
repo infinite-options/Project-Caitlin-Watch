@@ -49,7 +49,7 @@ struct EventsView: View {
                     }
                     Divider()
                     NavigationLink(destination: AtendeesView(event: self.event)) {
-                        Text("Atendees")
+                        Text("Attendees")
                             .foregroundColor(.yellow)
                     }
                 }.frame(maxWidth: geo.size.width, alignment: .leading)

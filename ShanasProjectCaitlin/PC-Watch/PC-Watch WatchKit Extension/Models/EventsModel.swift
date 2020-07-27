@@ -19,7 +19,8 @@ struct Event: Codable, UserDayGoalEventList {
     var attendees: [Attendent]?
 }
 
-struct Attendent: Codable {
+struct Attendent: Codable, Hashable {
+//    var displayName: String?
     var email: String?
     var responseStatus: String?
 }
