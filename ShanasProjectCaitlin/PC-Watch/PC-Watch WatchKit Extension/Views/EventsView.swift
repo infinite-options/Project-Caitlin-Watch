@@ -49,10 +49,9 @@ struct EventsView: View {
                         }
                     }
                     Divider()
-                    Button(action: {
-//                        NavigationLink(destination: AtendeesView()<#T##_#>, isActive: <#T##Binding<Bool>#>, label: <#T##() -> _#>)
-                    }) {
-                        Text("Atendees").foregroundColor(.yellow)
+                    NavigationLink(destination: AtendeesView()) {
+                        Text("Atendees")
+                            .foregroundColor(.yellow)
                     }
                 }.frame(maxWidth: geo.size.width, alignment: .leading)
             }

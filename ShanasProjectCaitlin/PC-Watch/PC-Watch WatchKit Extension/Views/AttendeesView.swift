@@ -14,6 +14,6 @@ struct AtendeesView: View {
     var body: some View {
         VStack {
             Text("Hello")
-        }
+        }.navigationBarTitle("Atendees")
     }
 }
