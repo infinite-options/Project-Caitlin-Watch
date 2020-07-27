@@ -9,6 +9,28 @@
 import SwiftUI
 
 
+struct AttendeeView: View {
+    var item: Attendent?
+    
+    var body: some View {
+        VStack {
+            HStack {
+                Image(systemName: "person.circle")
+                    .font(.system(size:44))
+                    .foregroundColor(.yellow)
+                Spacer()
+                VStack(alignment: .leading) {
+                    Text(item!.email!)
+                        .font(.system(size: 18, design: .rounded))
+                    Text(item!.responseStatus!)
+                        .font(.system(size: 12, design: .rounded))
+                }
+            }
+            Divider()
+        }
+    }
+}
+
 struct AtendeesView: View {
     var event: Event?
     
@@ -19,21 +41,9 @@ struct AtendeesView: View {
 //                        Text("No other atendees.")
 //                    }
 //                } else {
-                ForEach(self.event!.attendees!, id: \.email) { item in
-                    HStack {
-                        Image(systemName: "person.circle")
-                            .font(.system(size:44))
-                            .foregroundColor(.yellow)
-                        Spacer()
-//                        VStack(alignment: .leading) {
-                            Text("item.email")
-                                .font(.system(size: 18, design: .rounded))
-                            Text("item.responseStatus")
-                                .font(.system(size: 12, design: .rounded))
-//                        }
-                    }
-                    Divider()
-                }
+            ForEach(self.event!.attendees!, id: \.email) { item in
+                AttendeeView(item: item)
+            }
 //                }
         }.navigationBarTitle("Attendees")
     }
