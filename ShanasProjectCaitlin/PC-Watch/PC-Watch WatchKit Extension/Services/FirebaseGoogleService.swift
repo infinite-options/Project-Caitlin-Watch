@@ -12,101 +12,37 @@ class FirebaseGoogleService: ObservableObject {
     
     static let shared = FirebaseGoogleService()
     //private let notificationHandler = NotificationHandler()
-    
-    @Published var UserDay = [UserDayGoalEventList]()
+    let UserDayData = UserDay.shared
+    //@Published var UserDay = [UserDayGoalEventList]()
     
     @Published var data: [Value]?
     @Published var events: [Event]?
+    
     private var tasks: [ValueTask]?
     private var steps: [ValueTask]?
+    
     //Key: Goal, Value: tasks
     @Published var goalsSubtasks = [String: [ValueTask]?]()
     //Key: Task, Value: steps
     @Published var taskSteps = [String: [ValueTask]?]()
     
-    // Key = goalID
+    // Key: Goal, Value: # of tasks in Goal
     @Published var goalSubtasksLeft = [String: Int]()
-    // Key = taskID
+    // Key: Task, Value: #
     @Published var taskStepsLeft = [String: Int]()
     
     
     private init() {
         updateDataModel {
             print("Populated data model. -------------------------")
-            print(self.UserDay.count)
-            //if (self.UserDay.count > 1) {
-            self.mergeSortedGoalsEvents()
-            //UserDay.setup(withGoals: self.data ?? [Value](), withEvents: self.events ?? [Event]())
-            //}
-            //print(self.UserDay.count)
+            self.UserDayData.mergeSortedGoalsEvents(goals: self.data ?? [Value](), events: self.events ?? [Event]())
         }
-    }
-    
-    func mergeSortedGoalsEvents() {
-        var i=0
-        var j=0
-        
-        var calendar = Calendar.current
-        calendar.timeZone = .current
-        
-        while i<self.events?.count ?? -1 && j<self.data?.count ?? -1{
-            let eventStart = calendar.dateComponents([.hour, .minute, .second], from: ISO8601DateFormatter().date(from: (self.events![i].start?.dateTime)!)!)
-            let goalStart = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (self.data![j].mapValue?.fields.startDayAndTime.stringValue)!)!)
-            
-            print(eventStart)
-            print(goalStart)
-            
-            if calendar.date(from: eventStart)! < calendar.date(from: goalStart)! {
-                print(calendar.date(from: eventStart))
-                print(calendar.date(from: goalStart))
-                self.UserDay.append(self.events![i])
-                i += 1
-            }
-            else{
-                print(calendar.date(from: eventStart))
-                print(calendar.date(from: goalStart))
-                self.UserDay.append(self.data![j])
-                j += 1
-            }
-        }
-        
-        while i<self.events?.count ?? -1 {
-            self.UserDay.append(self.events![i])
-            i += 1
-        }
-        
-        while j<self.data?.count ?? -1 {
-            self.UserDay.append(self.data![j])
-            j += 1
-        }
-    }
- 
-    func sortGoals(this: Value, that: Value) -> Bool {
-        var calendar = Calendar.current
-        calendar.timeZone = .current
-        
-        let thisStart = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (this.mapValue?.fields.startDayAndTime.stringValue)!)!)
-        let thatStart = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (that.mapValue?.fields.startDayAndTime.stringValue)!)!)
-        
-        return calendar.date(from: thisStart)! < calendar.date(from: thatStart)!
-    }
-    
-    func sortEvents(this: Event, that: Event) -> Bool {
-        var calendar = Calendar.current
-        calendar.timeZone = .current
-        
-        let thisStart = calendar.dateComponents([.hour, .minute, .second], from: ISO8601DateFormatter().date(from: (this.start?.dateTime)!)!)
-        let thatStart = calendar.dateComponents([.hour, .minute, .second], from: ISO8601DateFormatter().date(from: (that.start?.dateTime)!)!)
-        
-        return calendar.date(from: thisStart)! < calendar.date(from: thatStart)!
     }
     
     func updateDataModel(completion: @escaping () -> ()) {
         print("In updating model...")
-
         let group = DispatchGroup()
         group.enter()
-    
         getEventsFromGoogleCalendar(){
             (data) in self.events = data
             print("Got events from Google Calendar. Now getting firebase data.")
@@ -115,12 +51,11 @@ class FirebaseGoogleService: ObservableObject {
             }
             group.leave()
         }
-    
         self.getFirebaseData(){
             (data) in self.data = data
+            //print("-----------", data)
             if let data = data {
                 self.data?.sort(by: self.sortGoals)
-                
                 for goal in data {
                     group.enter()
                     self.getFirebaseTasks(goalID: (goal.mapValue!.fields.id.stringValue)){
@@ -158,7 +93,6 @@ class FirebaseGoogleService: ObservableObject {
         }
     }
 
-    
     func getEventsFromGoogleCalendar(completion: @escaping ([Event]?) -> ()){
         print("Getting data now.")
         guard let url = URL(string: "https://manifestmy.space/getEventsByInterval?start=2020-07-24T00:00:00Z&end=2020-07-24T23:59:59Z&id=GdT7CRXUuDXmteS4rQwN&name=Emma%20Allegrucci") else { return }
@@ -261,22 +195,6 @@ class FirebaseGoogleService: ObservableObject {
         }.resume()
     }
     
-    struct startGRATISbody: Codable {
-        var data: Fields
-    }
-    
-    struct Fields: Codable {
-        var userId: String
-        var routineId: String
-        var taskId: String?
-        var taskNumber: Int?
-        var stepNumber: Int?
-    }
-    
-    struct cloudFuncResp: Decodable {
-        var result: Int
-    }
-    
     func completeGRATIS(userId: String, routineId: String, taskId: String?, routineNumber: Int?, taskNumber: Int?, stepNumber: Int?, start: String){
         
         var url: URL?
@@ -326,17 +244,24 @@ class FirebaseGoogleService: ObservableObject {
             else { return }
         }.resume()
     }
-    
-    struct completeGRATISbody: Codable {
-        var data: CompleteFields
-    }
-    
-    struct CompleteFields: Codable {
-        var userId: String
-        var routineId: String
-        var taskId: String?
-        var routineNumber: Int?
-        var taskNumber: Int?
-        var stepNumber: Int?
-    }
+
+   func sortGoals(this: Value, that: Value) -> Bool {
+       var calendar = Calendar.current
+       calendar.timeZone = .current
+       
+       let thisStart = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (this.mapValue?.fields.startDayAndTime.stringValue)!)!)
+       let thatStart = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (that.mapValue?.fields.startDayAndTime.stringValue)!)!)
+       
+       return calendar.date(from: thisStart)! < calendar.date(from: thatStart)!
+   }
+   
+   func sortEvents(this: Event, that: Event) -> Bool {
+       var calendar = Calendar.current
+       calendar.timeZone = .current
+       
+       let thisStart = calendar.dateComponents([.hour, .minute, .second], from: ISO8601DateFormatter().date(from: (this.start?.dateTime)!)!)
+       let thatStart = calendar.dateComponents([.hour, .minute, .second], from: ISO8601DateFormatter().date(from: (that.start?.dateTime)!)!)
+       
+       return calendar.date(from: thisStart)! < calendar.date(from: thatStart)!
+   }
 }

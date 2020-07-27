@@ -129,7 +129,7 @@ struct infoView: View {
 
 struct HomeView: View {
     // below has goals and routines
-    @ObservedObject private var model = FirebaseGoogleService.shared
+    @ObservedObject private var model = UserDay.shared
     
     
     //@ObservedObject private var modelTest = UserDay.shared
@@ -137,7 +137,7 @@ struct HomeView: View {
     var body: some View {
 
         GeometryReader { geo in
-            if (self.model.UserDay.count == 0){
+            if (self.model.UserDayData.count == 0){
                 VStack(alignment: .leading) {
                     Text("You dont have anything on your schedule!")
                     Spacer()
@@ -146,7 +146,7 @@ struct HomeView: View {
             else {
                 VStack(alignment: .leading) {
                     List {
-                        ForEach(Array(self.model.UserDay.enumerated()), id: \.offset) { index, item in
+                        ForEach(Array(self.model.UserDayData.enumerated()), id: \.offset) { index, item in
                             VStack(alignment: .leading) {
                                 if self.isGoalOrEvent(item: item){
                                     NavigationLink (destination: EventsView(event: (item as! Event))){
