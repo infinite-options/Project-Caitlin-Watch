@@ -17,7 +17,8 @@ class FirebaseGoogleService: ObservableObject {
     
     @Published var data: [Value]?
     @Published var events: [Event]?
-    private var task: [ValueTask]?
+    private var tasks: [ValueTask]?
+    private var steps: [ValueTask]?
     //Key: Goal, Value: tasks
     @Published var goalsSubtasks = [String: [ValueTask]?]()
     //Key: Task, Value: steps
@@ -100,100 +101,63 @@ class FirebaseGoogleService: ObservableObject {
         return calendar.date(from: thisStart)! < calendar.date(from: thatStart)!
     }
     
-    func updateStepsTasksLeftDictionaries() {
-        print("In updateStepsTasksLeftDictionaries...")
-        
-        self.getFirebaseData(){
-            (data) in self.data = data
-            if let data = data {
-                self.data?.sort(by: self.sortGoals)
-                for goal in data {
-                    self.getFirebaseTasks(goalID: (goal.mapValue!.fields.id.stringValue)){
-                        (task) in self.task = task
-                        if let task = task {
-                            self.goalSubtasksLeft[goal.mapValue!.fields.id.stringValue] = task.count
-                            for step in task {
-                                if step.mapValue.fields.isComplete?.booleanValue == true {
-                                    self.goalSubtasksLeft[goal.mapValue!.fields.id.stringValue]! -= 1
-                                }
-                                self.getFirebaseStep(stepID: step.mapValue.fields.id.stringValue, goalID: goal.mapValue!.fields.id.stringValue){
-                                    (task) in self.task = task
-                                    if let task = task {
-                                        self.taskStepsLeft[step.mapValue.fields.id.stringValue] = task.count
-                                        for item in task {
-                                            if item.mapValue.fields.isComplete?.booleanValue == true {
-                                                self.taskStepsLeft[step.mapValue.fields.id.stringValue]! -=  1
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
     func updateDataModel(completion: @escaping () -> ()) {
         print("In updating model...")
 
         let group = DispatchGroup()
         group.enter()
-        
+    
         getEventsFromGoogleCalendar(){
             (data) in self.events = data
             print("Got events from Google Calendar. Now getting firebase data.")
-            
             if self.events != nil{
-                print(self.events)
                 self.events?.sort(by: self.sortEvents)
-                //for event in data{
-                  //  self.UserDay.append(event)
-                //}
             }
             group.leave()
         }
-        
-        //group.notify(queue: DispatchQueue.main){
-            self.getFirebaseData(){
-                (data) in self.data = data
+    
+        self.getFirebaseData(){
+            (data) in self.data = data
+            if let data = data {
+                self.data?.sort(by: self.sortGoals)
                 
-                if let data = data {
-                    self.data?.sort(by: self.sortGoals)
-                    
-                    for goal in data {
-                        group.enter()
-                        //self.UserDay.append(goal)
-                        self.goalSubtasksLeft[goal.mapValue!.fields.id.stringValue] = 0
-                        self.getFirebaseTasks(goalID: (goal.mapValue!.fields.id.stringValue)){
-                            (task) in self.task = task
-                            if let task = task {
-                                self.goalsSubtasks[goal.mapValue!.fields.id.stringValue] = task
-                                for step in task {
-                                    
-                                    group.enter()
-                                    self.taskStepsLeft[step.mapValue.fields.id.stringValue] = 0
-                                    self.getFirebaseStep(stepID: step.mapValue.fields.id.stringValue, goalID: goal.mapValue!.fields.id.stringValue){
-                                        (task) in self.task = task
-                                        if let task = task{
-                                            self.taskSteps[step.mapValue.fields.id.stringValue] = task
+                for goal in data {
+                    group.enter()
+                    self.getFirebaseTasks(goalID: (goal.mapValue!.fields.id.stringValue)){
+                        (tasks) in self.tasks = tasks
+                        if let tasks = tasks {
+                            self.goalsSubtasks[goal.mapValue!.fields.id.stringValue] = tasks
+                            self.goalSubtasksLeft[goal.mapValue!.fields.id.stringValue] = tasks.count
+                            for task in tasks {
+                                if task.mapValue.fields.isComplete?.booleanValue == true {
+                                    self.goalSubtasksLeft[goal.mapValue!.fields.id.stringValue]! -= 1
+                                }
+                                group.enter()
+                                self.getFirebaseStep(stepID: task.mapValue.fields.id.stringValue, goalID: goal.mapValue!.fields.id.stringValue){
+                                    (steps) in self.steps = steps
+                                    if let steps = steps{
+                                        self.taskSteps[task.mapValue.fields.id.stringValue] = steps
+                                        self.taskStepsLeft[task.mapValue.fields.id.stringValue] = steps.count
+                                        for step in steps {
+                                            if step.mapValue.fields.isComplete?.booleanValue == true {
+                                                self.taskStepsLeft[task.mapValue.fields.id.stringValue]! -=  1
+                                            }
                                         }
                                     }
-                                    group.leave()
                                 }
+                                group.leave()
                             }
-                            group.leave()
                         }
-                    }
-                    self.updateStepsTasksLeftDictionaries()
-                    group.notify(queue: DispatchQueue.main) {
-                        completion()
+                        group.leave()
                     }
                 }
+                group.notify(queue: DispatchQueue.main) {
+                    completion()
+                }
             }
-        //}
+        }
     }
+
     
     func getEventsFromGoogleCalendar(completion: @escaping ([Event]?) -> ()){
         print("Getting data now.")
