@@ -155,7 +155,7 @@ class FirebaseGoogleService: ObservableObject {
             group.leave()
         }
         
-        //group.notify(queue: DispatchQueue.main){
+        group.notify(queue: DispatchQueue.main){
             self.getFirebaseData(){
                 (data) in self.data = data
                 
@@ -191,8 +191,11 @@ class FirebaseGoogleService: ObservableObject {
                         completion()
                     }
                 }
+                else {
+                    completion()
+                }
             }
-        //}
+        }
     }
     
     func getEventsFromGoogleCalendar(completion: @escaping ([Event]?) -> ()){
