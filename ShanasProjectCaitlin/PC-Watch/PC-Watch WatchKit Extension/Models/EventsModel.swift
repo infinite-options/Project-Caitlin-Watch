@@ -14,7 +14,14 @@ struct Event: Codable, UserDayGoalEventList {
     var end: DateTime?
     var mapValue: ValueMapValue?
     var description: String?
+    // TODO: creator name instead of email?
     var creator: Email?
+    var atendees: [Attendent]?
+}
+
+struct Attendent: Codable {
+    var id: String?
+    var email: Email?
 }
 
 struct DateTime: Codable {

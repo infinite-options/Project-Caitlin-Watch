@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct EventsView: View {
-    @ObservedObject private var model = FirebaseGoogleService.shared
     var event: Event?
       
     var body: some View {
@@ -49,7 +48,7 @@ struct EventsView: View {
                         }
                     }
                     Divider()
-                    NavigationLink(destination: AtendeesView()) {
+                    NavigationLink(destination: AtendeesView(event: self.event)) {
                         Text("Atendees")
                             .foregroundColor(.yellow)
                     }

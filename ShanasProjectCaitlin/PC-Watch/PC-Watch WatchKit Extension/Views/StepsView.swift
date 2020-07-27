@@ -310,30 +310,6 @@ struct StepsView: View {
                                 }
                             }
                         }
-//                        Divider()
-//                        if(!self.done && (self.task!.mapValue.fields.isComplete!.booleanValue == false)){
-//                            Button(action: {
-//                                self.model.completeGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
-//                                                          routineId: self.goalID!,
-//                                                          taskId: self.task!.mapValue.fields.id.stringValue,
-//                                                          routineNumber: -1,
-//                                                          taskNumber: self.taskIndex!,
-//                                                          stepNumber: -1,
-//                                                          start: "task")
-//                                self.model.goalsSubtasks[self.goalID!]!![self.taskIndex!].mapValue.fields.isComplete?.booleanValue = true
-//                                print(self.model.goalsSubtasks[self.goalID!]!![self.taskIndex!].mapValue.fields.isComplete!.booleanValue)
-//                                self.done = true
-//                            }) {
-//                                Text("Done?").foregroundColor(.green)
-//                            }
-//                        } else {
-//                            Text("Task Completed")
-//                                .overlay(RoundedRectangle(cornerSize: CGSize(width: 120, height: 30), style: .continuous)
-//                                    .stroke(Color.green, lineWidth: 1)
-//                                    .frame(width:140, height:25))
-//                                .foregroundColor(.green)
-//                        }
-//
                     }.frame(height: geo.size.height)
                         .padding(0)
                 }
@@ -341,9 +317,3 @@ struct StepsView: View {
         }
     }
 }
-
-//struct StepsView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        StepsView()
-//    }
-//}

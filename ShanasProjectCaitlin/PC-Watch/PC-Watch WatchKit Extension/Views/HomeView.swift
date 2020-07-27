@@ -48,7 +48,6 @@ struct itemImage: View {
 }
 struct EventInfoView: View {
     var item: Event?
-    @ObservedObject private var model = FirebaseGoogleService.shared
     
     var body: some View{
         VStack(alignment: .leading){
@@ -129,18 +128,12 @@ struct infoView: View {
 }
 
 struct HomeView: View {
-    //TODO: need to have a list containing all the objects: events, goals, routines
-    // issue: can we display events in same list if in different models?
-    
     // below has goals and routines
     @ObservedObject private var model = FirebaseGoogleService.shared
     
     
     //@ObservedObject private var modelTest = UserDay.shared
-//    @State var showTasks: Bool = false
     
-    // below has events
-    // @ObservedObject private var eventModel = FirebaseServ
     var body: some View {
 
         GeometryReader { geo in
@@ -153,25 +146,22 @@ struct HomeView: View {
             else {
                 VStack(alignment: .leading) {
                     List {
-                        //ForEach(Array(self.model.data!.filter{ $0.mapValue!.fields.isDisplayedToday.booleanValue == true }.enumerated()), id: \.offset) { index, item in
                         ForEach(Array(self.model.UserDay.enumerated()), id: \.offset) { index, item in
                             VStack(alignment: .leading) {
-                            if self.isGoalOrEvent(item: item){
-                                NavigationLink (destination: EventsView(event: (item as! Event))){
-                                    EventInfoView(item: (item as! Event))
-                                //Text(item.summary!)
-                                //Text(item.start!.dateTime)
-                                }.frame(height: 80)
-                                .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
-                            }
-                            else{
-                                NavigationLink(destination: TasksView(goalOrRoutine: (item as! Value), goalOrRoutineIndex: index)) {
-                                HStack {
-                                    infoView(item: (item as! Value))
-                                }.frame(height: 80)
+                                if self.isGoalOrEvent(item: item){
+                                    NavigationLink (destination: EventsView(event: (item as! Event))){
+                                        EventInfoView(item: (item as! Event))
+                                    }.frame(height: 80)
                                     .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
-                            }
-                            }
+                                }
+                                else{
+                                    NavigationLink(destination: TasksView(goalOrRoutine: (item as! Value), goalOrRoutineIndex: index)) {
+                                    HStack {
+                                        infoView(item: (item as! Value))
+                                    }.frame(height: 80)
+                                        .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
+                                    }
+                                }
                             }.listRowPlatterColor((item is Event) ? Color.blue.opacity(0.75) : item.mapValue!.fields.isPersistent.booleanValue ? Color.gray : Color.yellow.opacity(0.75))
                         }
                     }.listStyle(CarouselListStyle()).navigationBarTitle("My Day")
@@ -183,8 +173,9 @@ struct HomeView: View {
     private func isGoalOrEvent(item: UserDayGoalEventList) -> Bool{
         if item is Event {
             return true
+        } else {
+            return false
         }
-        else { return false }
     }
 }
 
