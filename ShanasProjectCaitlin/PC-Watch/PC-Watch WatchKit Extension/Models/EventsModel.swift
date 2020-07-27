@@ -16,12 +16,12 @@ struct Event: Codable, UserDayGoalEventList {
     var description: String?
     // TODO: creator name instead of email?
     var creator: Email?
-    var atendees: [Attendent]?
+    var attendees: [Attendent]?
 }
 
 struct Attendent: Codable {
-    var id: String?
-    var email: Email?
+    var email: String?
+    var responseStatus: String?
 }
 
 struct DateTime: Codable {
