@@ -64,7 +64,9 @@ class FirebaseGoogleService: ObservableObject {
             else{
                 print(calendar.date(from: eventStart))
                 print(calendar.date(from: goalStart))
-                self.UserDay.append(self.data![j])
+                if self.data![j].mapValue!.fields.isDisplayedToday.booleanValue == true {
+                    self.UserDay.append(self.data![j])
+                }
                 j += 1
             }
         }
@@ -75,7 +77,9 @@ class FirebaseGoogleService: ObservableObject {
         }
         
         while j<self.data?.count ?? -1 {
-            self.UserDay.append(self.data![j])
+            if self.data![j].mapValue!.fields.isDisplayedToday.booleanValue == true {
+                self.UserDay.append(self.data![j])
+            }
             j += 1
         }
     }
