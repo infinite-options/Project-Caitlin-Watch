@@ -87,6 +87,11 @@ class FirebaseGoogleService: ObservableObject {
         let thisStart = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (this.mapValue?.fields.startDayAndTime.stringValue)!)!)
         let thatStart = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (that.mapValue?.fields.startDayAndTime.stringValue)!)!)
         
+        if thisStart == thatStart {
+            if that.mapValue?.fields.isPersistent.booleanValue == true {
+                return calendar.date(from: thatStart)! < calendar.date(from: thisStart)!
+            }
+        }
         return calendar.date(from: thisStart)! < calendar.date(from: thatStart)!
     }
     
