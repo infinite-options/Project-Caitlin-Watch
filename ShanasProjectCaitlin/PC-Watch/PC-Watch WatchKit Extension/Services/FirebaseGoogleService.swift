@@ -38,7 +38,7 @@ class FirebaseGoogleService: ObservableObject {
             self.UserDayData.mergeSortedGoalsEvents(goals: self.data ?? [Value](), events: self.events ?? [Event]())
         }
     }
-    
+
     func updateDataModel(completion: @escaping () -> ()) {
         print("In updating model...")
         let group = DispatchGroup()
@@ -51,11 +51,12 @@ class FirebaseGoogleService: ObservableObject {
             }
             group.leave()
         }
+        
         self.getFirebaseData(){
-            (data) in self.data = data
-            //print("-----------", data)
+            (data) in self.data = data!
+
             if let data = data {
-                self.data?.sort(by: self.sortGoals)
+                self.data!.sort(by: self.sortGoals)
                 for goal in data {
                     group.enter()
                     self.getFirebaseTasks(goalID: (goal.mapValue!.fields.id.stringValue)){

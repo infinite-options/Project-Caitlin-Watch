@@ -36,15 +36,15 @@ struct AtendeesView: View {
     
     var body: some View {
         ScrollView([.vertical]) {
-//                if event!.attendees == nil {
-//                    VStack(alignment: .center) {
-//                        Text("No other atendees.")
-//                    }
-//                } else {
-            ForEach(self.event!.attendees!, id: \.email) { item in
-                AttendeeView(item: item)
+            if event!.attendees == nil {
+                VStack(alignment: .center) {
+                    Text("No other atendees.")
+                }
+            } else {
+                ForEach(self.event!.attendees!, id: \.email) { item in
+                    AttendeeView(item: item)
+                }
             }
-//                }
         }.navigationBarTitle("Attendees")
     }
 }

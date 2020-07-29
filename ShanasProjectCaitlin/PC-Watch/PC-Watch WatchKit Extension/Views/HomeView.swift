@@ -148,7 +148,7 @@ struct HomeView: View {
                     List {
                         ForEach(Array(self.model.UserDayData.enumerated()), id: \.offset) { index, item in
                             VStack(alignment: .leading) {
-                                if self.isGoalOrEvent(item: item){
+                                if self.isGoalOrEvent(item: item) {
                                     NavigationLink (destination: EventsView(event: (item as! Event))){
                                         EventInfoView(item: (item as! Event))
                                     }.frame(height: 80)
