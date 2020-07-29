@@ -113,9 +113,9 @@ class FirebaseGoogleService: ObservableObject {
         print("In updateStepsTasksLeftDictionaries...")
         
         self.getFirebaseData(){
-            (data) in self.data = data
+            (data) in self.data = data!
             if let data = data {
-                self.data?.sort(by: self.sortGoals)
+                self.data!.sort(by: self.sortGoals)
                 for goal in data {
                     self.getFirebaseTasks(goalID: (goal.mapValue!.fields.id.stringValue)){
                         (task) in self.task = task
@@ -155,7 +155,7 @@ class FirebaseGoogleService: ObservableObject {
             print("Got events from Google Calendar. Now getting firebase data.")
             
             if self.events != nil{
-                print(self.events)
+                //print(self.events)
                 self.events?.sort(by: self.sortEvents)
                 //for event in data{
                   //  self.UserDay.append(event)
@@ -169,7 +169,7 @@ class FirebaseGoogleService: ObservableObject {
                 (data) in self.data = data
                 
                 if let data = data {
-                    self.data?.sort(by: self.sortGoals)
+                    self.data!.sort(by: self.sortGoals)
                     
                     for goal in data {
                         group.enter()
