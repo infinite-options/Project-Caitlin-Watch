@@ -64,7 +64,9 @@ class FirebaseGoogleService: ObservableObject {
             else{
                 print(calendar.date(from: eventStart))
                 print(calendar.date(from: goalStart))
-                self.UserDay.append(self.data![j])
+                if self.data![j].mapValue!.fields.isDisplayedToday.booleanValue == true {
+                    self.UserDay.append(self.data![j])
+                }
                 j += 1
             }
         }
@@ -75,7 +77,9 @@ class FirebaseGoogleService: ObservableObject {
         }
         
         while j<self.data?.count ?? -1 {
-            self.UserDay.append(self.data![j])
+            if self.data![j].mapValue!.fields.isDisplayedToday.booleanValue == true {
+                self.UserDay.append(self.data![j])
+            }
             j += 1
         }
     }
@@ -87,6 +91,11 @@ class FirebaseGoogleService: ObservableObject {
         let thisStart = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (this.mapValue?.fields.startDayAndTime.stringValue)!)!)
         let thatStart = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (that.mapValue?.fields.startDayAndTime.stringValue)!)!)
         
+        if thisStart == thatStart {
+            if that.mapValue?.fields.isPersistent.booleanValue == true {
+                return calendar.date(from: thatStart)! < calendar.date(from: thisStart)!
+            }
+        }
         return calendar.date(from: thisStart)! < calendar.date(from: thatStart)!
     }
     
