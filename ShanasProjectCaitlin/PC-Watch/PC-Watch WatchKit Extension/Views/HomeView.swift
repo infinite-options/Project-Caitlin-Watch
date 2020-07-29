@@ -162,7 +162,7 @@ struct HomeView: View {
                                         .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
                                     }
                                 }
-                            }.listRowPlatterColor((item is Event) ? Color.blue.opacity(0.75) : item.mapValue!.fields.isPersistent.booleanValue ? Color.gray : Color.yellow.opacity(0.75))
+                            }.listRowPlatterColor((item is Event) ? Color.yellow.opacity(0.75) : (item.mapValue!.fields.isPersistent.booleanValue ? Color.gray : Color(Color.RGBColorSpace.sRGB, red: 0.68, green: 0.68, blue: 0.68, opacity: 0.3)))
                         }
                     }.listStyle(CarouselListStyle()).navigationBarTitle("My Day")
                 }.padding(0)
