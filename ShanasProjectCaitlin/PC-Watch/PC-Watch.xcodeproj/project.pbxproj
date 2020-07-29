@@ -39,6 +39,7 @@
 		2BC9C3EF24C9550800FEEA97 /* EventsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC9C3EE24C9550800FEEA97 /* EventsModel.swift */; };
 		2BCB7EA424CB325E00C72A52 /* UserDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCB7EA324CB325E00C72A52 /* UserDay.swift */; };
 		2BCB7EA624CB474D00C72A52 /* EventsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCB7EA524CB474D00C72A52 /* EventsView.swift */; };
+		2BDB37A224CF755700493F9D /* StartCompleteGRATISModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDB37A124CF755700493F9D /* StartCompleteGRATISModel.swift */; };
 		2BDEE39024B3698900FCFE14 /* BackgroundServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDEE38F24B3698900FCFE14 /* BackgroundServices.swift */; };
 		2BF4E09C24AC015300215138 /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF4E09B24AC015300215138 /* Formatters.swift */; };
 		9134401C67B33D9C28DDE5DF /* Pods_PC_Watch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C90CFFD1C9077E7E7A2884B6 /* Pods_PC_Watch.framework */; };
@@ -125,6 +126,7 @@
 		2BC9C3EE24C9550800FEEA97 /* EventsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsModel.swift; sourceTree = "<group>"; };
 		2BCB7EA324CB325E00C72A52 /* UserDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDay.swift; sourceTree = "<group>"; };
 		2BCB7EA524CB474D00C72A52 /* EventsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsView.swift; sourceTree = "<group>"; };
+		2BDB37A124CF755700493F9D /* StartCompleteGRATISModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartCompleteGRATISModel.swift; sourceTree = "<group>"; };
 		2BDEE38F24B3698900FCFE14 /* BackgroundServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundServices.swift; sourceTree = "<group>"; };
 		2BF4E09B24AC015300215138 /* Formatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatters.swift; sourceTree = "<group>"; };
 		483F3E50717BB29F1D1B93B4 /* Pods-PC-Watch WatchKit Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PC-Watch WatchKit Extension.debug.xcconfig"; path = "Target Support Files/Pods-PC-Watch WatchKit Extension/Pods-PC-Watch WatchKit Extension.debug.xcconfig"; sourceTree = "<group>"; };
@@ -246,6 +248,7 @@
 				04957BB324C5350C0031D253 /* Enums.swift */,
 				2BF4E09B24AC015300215138 /* Formatters.swift */,
 				2BC9C3EE24C9550800FEEA97 /* EventsModel.swift */,
+				2BDB37A124CF755700493F9D /* StartCompleteGRATISModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -540,6 +543,7 @@
 				27BF9DCE243BD389006A5466 /* ExtensionDelegate.swift in Sources */,
 				2B3FB10924BEF8C400CC3D6D /* FBTasksStepsModel.swift in Sources */,
 				2BF4E09C24AC015300215138 /* Formatters.swift in Sources */,
+				2BDB37A224CF755700493F9D /* StartCompleteGRATISModel.swift in Sources */,
 				27BF9DF1243BD501006A5466 /* FBGoalRoutineModel.swift in Sources */,
 				27BF9DFE243BD600006A5466 /* HomeView.swift in Sources */,
 				27BF9DD2243BD389006A5466 /* NotificationView.swift in Sources */,
