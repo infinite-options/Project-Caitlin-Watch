@@ -65,7 +65,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                             
                     let template = modularLarge
                     let timelineEntry = CLKComplicationTimelineEntry(date: scheduledDate!, complicationTemplate: template)
-                    print("Here: \(userDay[counter].summary) :: \(scheduledDate!)")
+                    print("Here: \(userDay[counter].summary!) :: \(scheduledDate!)")
                     
                     handler(timelineEntry)
                 } else {
