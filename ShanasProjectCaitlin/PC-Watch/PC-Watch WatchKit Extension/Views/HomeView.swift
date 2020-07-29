@@ -148,7 +148,7 @@ struct HomeView: View {
                     List {
                         ForEach(Array(self.model.UserDay.enumerated()), id: \.offset) { index, item in
                             VStack(alignment: .leading) {
-                                if self.isGoalOrEvent(item: item) {
+                                if self.isEvent(item: item) {
                                     NavigationLink (destination: EventsView(event: (item as! Event))){
                                         EventInfoView(item: (item as! Event))
                                     }.frame(height: 80)
@@ -170,7 +170,7 @@ struct HomeView: View {
         }
     }
     
-    private func isGoalOrEvent(item: UserDayGoalEventList) -> Bool{
+    private func isEvent(item: UserDayGoalEventList) -> Bool{
         if item is Event {
             return true
         } else {

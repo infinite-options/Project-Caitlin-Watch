@@ -46,63 +46,55 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     // MARK: - Timeline Population
     
     func getCurrentTimelineEntry(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTimelineEntry?) -> Void) {
-        // Call the handler with the current timeline entry
-        if complication.family == .graphicRectangular {
-            var counter = 0
-            if let data = model.data {
-                while ((counter<data.count-1) && !(model.data![counter].mapValue!.fields.isDisplayedToday.booleanValue)){
-                    print("counter")
-                    counter = counter+1
-                }
-                let percentage: Float = 25/60
-
-                let time = timeLeft.date(from: model.data![counter].mapValue!.fields.startDayAndTime.stringValue)
-                let times = formatter.string(from: timeLeft.date(from: model.data![counter].mapValue!.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: model.data![counter].mapValue!.fields.endDayAndTime.stringValue)!)//.fontWeight(.light).font(.system(size: 15)
-                let timeString = formatter.string(from: time!)
-                let scheduledDate = formatter.date(from: timeString)
-
-                let graphicRectangular = CLKComplicationTemplateGraphicRectangularTextGauge()
-                graphicRectangular.headerTextProvider = CLKSimpleTextProvider(text: model.data![counter].mapValue!.fields.title.stringValue)
-
-                graphicRectangular.body1TextProvider = CLKSimpleTextProvider(text: times)
-
-                graphicRectangular.gaugeProvider = CLKSimpleGaugeProvider(style: .fill, gaugeColors: [UIColor.green], gaugeColorLocations: nil, fillFraction: percentage)
-
-                let template = graphicRectangular
-                let timelineEntry = CLKComplicationTimelineEntry(date: scheduledDate!, complicationTemplate: template)
-                print("Here: \(model.data![counter].mapValue!.fields.title.stringValue) :: \(scheduledDate!)")
-
-                handler(timelineEntry)
-            }
-        } else if complication.family == .modularLarge {
-            var counter = 0
-            if let data = model.data {
-                while ((counter<data.count-1) && !(model.data![counter].mapValue!.fields.isDisplayedToday.booleanValue)){
-                    print("counter")
-                    counter = counter+1
-                }
-                let time = timeLeft.date(from: model.data![counter].mapValue!.fields.startDayAndTime.stringValue)
-                let times = formatter.string(from: timeLeft.date(from: model.data![counter].mapValue!.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: model.data![counter].mapValue!.fields.endDayAndTime.stringValue)!)//.fontWeight(.light).font(.system(size: 15)
-                let timeString = formatter.string(from: time!)
-                let scheduledDate = formatter.date(from: timeString)
-                   
-                
-                let modularLarge = CLKComplicationTemplateModularLargeStandardBody()
-                modularLarge.headerTextProvider = CLKSimpleTextProvider(text: model.data![counter].mapValue!.fields.title.stringValue)
-                if ((model.data![counter].mapValue!.fields.isInProgress?.booleanValue) != nil) {
-                    modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "is in progress.")
-                } else if ((model.data![counter].mapValue!.fields.isComplete?.booleanValue) != nil) {
-                    modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "is complete.")
+        if complication.family == .modularLarge {
+            let userDay = model.UserDay
+            if userDay.count > 0 {
+                let counter = userDay.count - 1
+                if userDay[counter] is Event {
+                    let start = userDay[counter].start!.dateTime
+                    let end = userDay[counter].end!.dateTime
+                    
+                    let time = timeLeft.date(from: userDay[counter].start!.dateTime)
+    //                let times = formatter.string(from: timeLeft.date(from: userDay[counter].start!.dateTime)!)  + " - " + formatter.string(from: timeLeft.date(from: userDay[counter].end!.dateTime)!)
+                    let timeString = formatter.string(from: time!)
+                    let scheduledDate = formatter.date(from: timeString)
+                    
+    //                let scheduledDate = formatter.date(from: start)
+                    
+                    let modularLarge = CLKComplicationTemplateModularLargeStandardBody()
+                    modularLarge.headerTextProvider = CLKSimpleTextProvider(text: userDay[counter].summary!)
+                    modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "Starts at " +  start)
+                    modularLarge.body2TextProvider = CLKSimpleTextProvider(text: "Ends at " + end)
+                            
+                    let template = modularLarge
+                    let timelineEntry = CLKComplicationTimelineEntry(date: scheduledDate!, complicationTemplate: template)
+                    print("Here: \(userDay[counter].summary) :: \(scheduledDate!)")
+                    
+                    handler(timelineEntry)
                 } else {
-                    modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "is ready to begin.")
+                    let time = timeLeft.date(from: userDay[counter].mapValue!.fields.startDayAndTime.stringValue)
+                    let times = formatter.string(from: timeLeft.date(from: userDay[counter].mapValue!.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: userDay[counter].mapValue!.fields.endDayAndTime.stringValue)!)
+                    let timeString = formatter.string(from: time!)
+                    let scheduledDate = formatter.date(from: timeString)
+                       
+                    
+                    let modularLarge = CLKComplicationTemplateModularLargeStandardBody()
+                    modularLarge.headerTextProvider = CLKSimpleTextProvider(text: userDay[counter].mapValue!.fields.title.stringValue)
+                    if ((userDay[counter].mapValue!.fields.isInProgress?.booleanValue) != nil) {
+                        modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "is in progress.")
+                    } else if ((userDay[counter].mapValue!.fields.isComplete?.booleanValue) != nil) {
+                        modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "is complete.")
+                    } else {
+                        modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "is ready to begin.")
+                    }
+                    modularLarge.body2TextProvider = CLKSimpleTextProvider(text: times)
+                            
+                    let template = modularLarge
+                    let timelineEntry = CLKComplicationTimelineEntry(date: scheduledDate!, complicationTemplate: template)
+                    print("Here: \(userDay[counter].mapValue!.fields.title.stringValue) :: \(scheduledDate!)")
+                    
+                    handler(timelineEntry)
                 }
-                modularLarge.body2TextProvider = CLKSimpleTextProvider(text: times)
-                        
-                let template = modularLarge
-                let timelineEntry = CLKComplicationTimelineEntry(date: scheduledDate!, complicationTemplate: template)
-                print("Here: \(model.data![counter].mapValue!.fields.title.stringValue) :: \(scheduledDate!)")
-                
-                handler(timelineEntry)
             }
         } else {
             handler(nil)
@@ -114,49 +106,38 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         
         print("getTimelineEntries")
         
-        
-        if complication.family == .graphicRectangular {
+        if complication.family == .modularLarge {
             var timeLineEntries = [CLKComplicationTimelineEntry]()
-            if (model.data != nil) {
-                for index in 1...(model.data!.count-1) {
-                    if model.data![index].mapValue!.fields.isDisplayedToday.booleanValue {
-                    
-                        let percentage: Float = 25/60
-                        let time = timeLeft.date(from: model.data![index].mapValue!.fields.startDayAndTime.stringValue)
-                        //let times = formatter.string(from: timeLeft.date(from: model.data![index].mapValue.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: model.data![index].mapValue.fields.endDayAndTime.stringValue)!)//.fontWeight(.light).font(.system(size: 15)
-                        let timeString = formatter.string(from: time!)
-                        let scheduledDate = formatter.date(from: timeString)
+            if (model.UserDay.count > 0) {
+                for index in 1...(model.UserDay.count-1) {
+                    if model.UserDay[index] is Event {
+                        let start = model.UserDay[index].start!.dateTime
+                        let end = model.UserDay[index].end!.dateTime
                         
-                        let graphicRectangular = CLKComplicationTemplateGraphicRectangularTextGauge()
-                        graphicRectangular.headerTextProvider = CLKSimpleTextProvider(text: model.data![index].mapValue!.fields.title.stringValue)
-                                   
-                        graphicRectangular.body1TextProvider = CLKSimpleTextProvider(text: formatter.string(from: time!))
-                                   
-                        graphicRectangular.gaugeProvider = CLKSimpleGaugeProvider(style: .fill, gaugeColors: [UIColor.green], gaugeColorLocations: nil, fillFraction: percentage)
-                                   
-                        let template = graphicRectangular
-                        let timelineEntry = CLKComplicationTimelineEntry(date: scheduledDate!, complicationTemplate: template)
-                        print("Here: \(model.data![index].mapValue!.fields.title.stringValue) :: \(scheduledDate!)")
-                        timeLineEntries.append(timelineEntry)
-                    }
-                }
-            }
-            handler(timeLineEntries)
-        } else if complication.family == .modularLarge {
-            var timeLineEntries = [CLKComplicationTimelineEntry]()
-            if (model.data != nil) {
-                for index in 1...(model.data!.count-1) {
-                    if model.data![index].mapValue!.fields.isDisplayedToday.booleanValue {
-                        let time = timeLeft.date(from: model.data![index].mapValue!.fields.startDayAndTime.stringValue)
-                        let times = formatter.string(from: timeLeft.date(from: model.data![index].mapValue!.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: model.data![index].mapValue!.fields.endDayAndTime.stringValue)!)//.fontWeight(.light).font(.system(size: 15)
+                        let time = timeLeft.date(from: model.UserDay[index].start!.dateTime)
                         let timeString = formatter.string(from: time!)
                         let scheduledDate = formatter.date(from: timeString)
                         
                         let modularLarge = CLKComplicationTemplateModularLargeStandardBody()
-                        modularLarge.headerTextProvider = CLKSimpleTextProvider(text: model.data![index].mapValue!.fields.title.stringValue)
-                        if ((model.data![index].mapValue!.fields.isInProgress?.booleanValue) != nil) {
+                        modularLarge.headerTextProvider = CLKSimpleTextProvider(text: model.UserDay[index].summary!)
+                        modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "Starts at " +  start)
+                        modularLarge.body2TextProvider = CLKSimpleTextProvider(text: "Ends at " + end)
+                                
+                        let template = modularLarge
+                        let timelineEntry = CLKComplicationTimelineEntry(date: scheduledDate!, complicationTemplate: template)
+                        print("Here: \(model.UserDay[index].summary!) :: \(scheduledDate!)")
+                        timeLineEntries.append(timelineEntry)
+                    } else {
+                        let time = timeLeft.date(from: model.UserDay[index].mapValue!.fields.startDayAndTime.stringValue)
+                        let times = formatter.string(from: timeLeft.date(from: model.UserDay[index].mapValue!.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: model.UserDay[index].mapValue!.fields.endDayAndTime.stringValue)!)
+                        let timeString = formatter.string(from: time!)
+                        let scheduledDate = formatter.date(from: timeString)
+                        
+                        let modularLarge = CLKComplicationTemplateModularLargeStandardBody()
+                        modularLarge.headerTextProvider = CLKSimpleTextProvider(text: model.UserDay[index].mapValue!.fields.title.stringValue)
+                        if ((model.UserDay[index].mapValue!.fields.isInProgress?.booleanValue) != nil) {
                             modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "is in progress.")
-                        } else if ((model.data![index].mapValue!.fields.isComplete?.booleanValue) != nil) {
+                        } else if ((model.UserDay[index].mapValue!.fields.isComplete?.booleanValue) != nil) {
                             modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "is complete.")
                         } else {
                             modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "is ready to begin.")
@@ -165,7 +146,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                                 
                         let template = modularLarge
                         let timelineEntry = CLKComplicationTimelineEntry(date: scheduledDate!, complicationTemplate: template)
-                        print("Here: \(model.data![index].mapValue!.fields.title.stringValue) :: \(scheduledDate!)")
+                        print("Here: \(model.UserDay[index].mapValue!.fields.title.stringValue) :: \(scheduledDate!)")
                         timeLineEntries.append(timelineEntry)
                     }
                 }
