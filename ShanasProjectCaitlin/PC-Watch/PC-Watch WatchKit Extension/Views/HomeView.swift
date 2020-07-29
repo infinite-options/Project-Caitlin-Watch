@@ -64,12 +64,14 @@ struct EventInfoView: View {
                                     .padding(0))
                 
                 VStack(alignment: .leading) {
-                    Text("Starts: " + DayDateObj.formatter.string(from: ISO8601DateFormatter().date(from: self.item!.start!.dateTime)!))
+                    Text("Start " + DayDateObj.formatter.string(from: ISO8601DateFormatter().date(from: self.item!.start!.dateTime)!))
                         .fontWeight(.light)
+                        .fixedSize(horizontal: false, vertical: true)
                         .font(.system(size: 15))
                         
-                    Text("Ends: " + DayDateObj.formatter.string(from: ISO8601DateFormatter().date(from: self.item!.end!.dateTime)!))
+                    Text("End " + DayDateObj.formatter.string(from: ISO8601DateFormatter().date(from: self.item!.end!.dateTime)!))
                         .fontWeight(.light)
+                        .fixedSize(horizontal: false, vertical: true)
                         .font(.system(size: 15))
                 }
             }
