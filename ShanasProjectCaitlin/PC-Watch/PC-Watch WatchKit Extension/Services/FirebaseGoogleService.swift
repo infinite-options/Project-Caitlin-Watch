@@ -15,6 +15,7 @@ class FirebaseGoogleService: ObservableObject {
     let UserDayData = UserDay.shared
     //@Published var UserDay = [UserDayGoalEventList]()
     
+    @Published var User: Firebase?
     @Published var data: [Value]?
     @Published var events: [Event]?
     
@@ -55,9 +56,11 @@ class FirebaseGoogleService: ObservableObject {
         
         group.notify(queue: DispatchQueue.main){
             self.getFirebaseData(){
-                (data) in self.data = data!
-
-                if let data = data {
+                
+                (data) in self.User = data!
+                self.data = data!.fields.goalsRoutines.arrayValue.values
+                
+                if let data = self.data {
                     self.data!.sort(by: self.sortGoals)
                     for goal in data {
                         group.enter()
@@ -121,7 +124,8 @@ class FirebaseGoogleService: ObservableObject {
         currComponents.second = 59
         let endDate = DayDateObj.ISOFormatter.string(from: Calendar.current.date(from: currComponents)!)
         
-        print("Start: \(startDate) ::: End: \(endDate)")
+        //print("Start: \(startDate) ::: End: \(endDate)")
+        
         //Create request the body
         let jsonData = getEventsBody(id: "GdT7CRXUuDXmteS4rQwN",
                                      start: startDate,
@@ -148,7 +152,8 @@ class FirebaseGoogleService: ObservableObject {
                     }
                 }
                 catch let jsonParseError {
-                    print("Error in parsing Events data: \(jsonParseError)" )
+                    print("No events found for user: GdT7CRXUuDXmteS4rQwN")
+                    //print("Error in parsing Events data: \(jsonParseError)" )
                     completion(nil)
                 }
             }
@@ -156,7 +161,7 @@ class FirebaseGoogleService: ObservableObject {
         .resume()
     }
     
-    func getFirebaseData(completion: @escaping ([Value]?) -> ()) {
+    func getFirebaseData(completion: @escaping (Firebase?) -> ()) {
         guard let url = URL(string: "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/GdT7CRXUuDXmteS4rQwN/") else { return }
         URLSession.shared.dataTask(with: url) { (data, _, error) in
             if let error = error {
@@ -167,11 +172,12 @@ class FirebaseGoogleService: ObservableObject {
                 do {
                     let data = try JSONDecoder().decode(Firebase.self, from: data)
                     DispatchQueue.main.async {
-                        completion(data.fields.goalsRoutines.arrayValue.values)
+                        completion(data)
                     }
                 }
                 catch let jsonParseError {
-                    print("Error in parsing Goals data: \(jsonParseError)" )
+                    print("No goals found for user: GdT7CRXUuDXmteS4rQwN")
+                    //print("Error in parsing Goals data: \(jsonParseError)")
                     completion(nil)
                 }
             }
@@ -197,7 +203,8 @@ class FirebaseGoogleService: ObservableObject {
                         }
                     }
                     catch let jsonParseError {
-                        print("Error in parsing Tasks data: \(jsonParseError)" )
+                        print("No tasks for goal: \(goalID)")
+                        //print("Error in parsing Tasks data: \(jsonParseError)" )
                         completion(nil)
                     }
                 }
@@ -225,7 +232,8 @@ class FirebaseGoogleService: ObservableObject {
                     }
                 }
                 catch let jsonParseError {
-                    print("Error in parsing Steps data: \(jsonParseError)" )
+                    print("No steps for task: \(stepID)")
+                    //print("Error in parsing Steps data: \(jsonParseError)" )
                     completion(nil)
                 }
             }

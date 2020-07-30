@@ -17,7 +17,7 @@ class NotificationHandler : NSObject, UNUserNotificationCenterDelegate {
     var calendar = Calendar.current
     
     func scheduleNotifications(){
-        print("ZZZZZZZZZZZZZZ ::: \(DataModel.UserDayData.count)")
+        
         if DataModel.UserDayData.count > 0 {
             for item in DataModel.UserDayData {
                 if isEvent(item: item) {
