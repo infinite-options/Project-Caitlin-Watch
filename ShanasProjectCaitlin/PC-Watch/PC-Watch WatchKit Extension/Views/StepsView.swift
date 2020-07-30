@@ -92,33 +92,33 @@ struct StepView: View {
                                 // goal is not complete so is inprogress
                                 self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isInProgress!.booleanValue = true
                                 //start goal
-                                self.model.startGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
+                                self.model.startGoalOrRoutine(userId: "GdT7CRXUuDXmteS4rQwN",
                                                        routineId: self.goalOrRoutineID!,
                                                        taskId: "NA",
-                                                       taskNumber: self.goalOrRoutineIndex!,
-                                                       stepNumber: -1,
-                                                       start: "goal")
+                                                       routineNumber: self.goalOrRoutineIndex!,
+                                                       taskNumber: -1,
+                                                       stepNumber: -1)
                             }
                         } else {
                             print("task not complete yet")
                             // task is not complete so set to in progress in model
                             self.model.goalsSubtasks[self.goalOrRoutineID!]!![self.taskIndex!].mapValue.fields.isInProgress!.booleanValue = true
                             // start task
-                            self.model.startGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
+                            self.model.startActionOrTask(userId: "GdT7CRXUuDXmteS4rQwN",
                                                    routineId: self.goalOrRoutineID!,
                                                    taskId: self.taskID!,
+                                                   routineNumber: -1,
                                                    taskNumber: self.taskIndex!,
-                                                   stepNumber: -1,
-                                                   start: "task")
+                                                   stepNumber: -1)
                             // set goal to in progress in model
                             self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isInProgress!.booleanValue = true
                             // start goal
-                            self.model.startGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
+                            self.model.startGoalOrRoutine(userId: "GdT7CRXUuDXmteS4rQwN",
                                                    routineId: self.goalOrRoutineID!,
                                                    taskId: "NA",
-                                                   taskNumber: self.goalOrRoutineIndex!,
-                                                   stepNumber: -1,
-                                                   start: "goal")
+                                                   routineNumber: self.goalOrRoutineIndex!,
+                                                   taskNumber: -1,
+                                                   stepNumber: -1)
                         }
                         print(self.model.taskSteps[self.taskID!]!![self.index!].mapValue.fields.isComplete!.booleanValue)
                         self.done = true
@@ -207,12 +207,12 @@ struct StepsView: View {
                                 // goal is not complete so set to in progress, update model
                                 self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isInProgress!.booleanValue = true
                                 // start goal
-                                self.model.startGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
+                                self.model.startGoalOrRoutine(userId: "GdT7CRXUuDXmteS4rQwN",
                                                        routineId: self.goalID!,
                                                        taskId: "NA",
-                                                       taskNumber: self.goalOrRoutineIndex!,
-                                                       stepNumber: -1,
-                                                       start: "goal")
+                                                       routineNumber: self.goalOrRoutineIndex!,
+                                                       taskNumber: -1,
+                                                       stepNumber: -1)
                             }
                             self.done = true
                             self.showSteps = false
@@ -283,12 +283,12 @@ struct StepsView: View {
                                         // goal is not complete so set to in progress, update model
                                         self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isInProgress!.booleanValue = true
                                         // start goal
-                                        self.model.startGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
+                                        self.model.startGoalOrRoutine(userId: "GdT7CRXUuDXmteS4rQwN",
                                                                routineId: self.goalID!,
                                                                taskId: "NA",
-                                                               taskNumber: self.goalOrRoutineIndex!,
-                                                               stepNumber: -1,
-                                                               start: "goal")
+                                                               routineNumber: self.goalOrRoutineIndex!,
+                                                               taskNumber: -1,
+                                                               stepNumber: -1)
                                     }
                                     self.done = true
                                     self.showSteps = false

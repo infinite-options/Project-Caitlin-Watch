@@ -81,6 +81,7 @@ struct Value: Codable, UserDayGoalEventList {
     var summary: String?
     var description: String?
     var creator: Email?
+    var id: String?
 }
 
 // MARK: - ValueMapValue

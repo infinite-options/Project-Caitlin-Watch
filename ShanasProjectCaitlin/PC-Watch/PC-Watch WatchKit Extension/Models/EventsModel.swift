@@ -12,6 +12,7 @@ struct Event: Codable, UserDayGoalEventList {
     var summary: String?
     var start: DateTime?
     var end: DateTime?
+    var id: String?
     var mapValue: ValueMapValue?
     var description: String?
     // TODO: creator name instead of email?
