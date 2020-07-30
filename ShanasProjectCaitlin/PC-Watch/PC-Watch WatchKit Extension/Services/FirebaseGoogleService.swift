@@ -241,32 +241,94 @@ class FirebaseGoogleService: ObservableObject {
         .resume()
     }
     
-    func startGRATIS(userId: String, routineId: String, taskId: String?, taskNumber: Int?, stepNumber: Int?, start: String){
+    func startGoalOrRoutine(userId: String, routineId: String, taskId: String?, routineNumber: Int?, taskNumber: Int?, stepNumber: Int?) {
         
-        var url: URL?
-        var request: URLRequest
-        
-        if start == "goal"{
-            url = URL(string: "https://us-central1-project-caitlin-c71a9.cloudfunctions.net/StartGoalOrRoutine")
-        }
-        if start == "task"{
-           url = URL(string: "https://us-central1-project-caitlin-c71a9.cloudfunctions.net/StartActionOrTask")
-        }
-        if start == "step"{
-            url = URL(string: "https://us-central1-project-caitlin-c71a9.cloudfunctions.net/StartInstructionOrStep")
-        }
+        guard let url = URL(string: "https://us-central1-project-caitlin-c71a9.cloudfunctions.net/StartGoalOrRoutine") else { return }
         
         let jsonData = startGRATISbody(data: Fields(userId: userId,
                                                     routineId: routineId,
                                                     taskId: taskId,
+                                                    routineNumber: routineNumber,
                                                     taskNumber: taskNumber,
                                                     stepNumber: stepNumber
                                                     ))
-        
         let finalJsonData = try? JSONEncoder().encode(jsonData)
-        if let url = url { request = URLRequest(url: url) }
-        else { return }
         
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = finalJsonData
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        
+        URLSession.shared.dataTask(with: request){ (data, _ , error) in
+            if let error = error {
+                print("Generic networking error: \(error)")
+            }
+            
+            if let data = data {
+                do{
+                    let finalRespData = try JSONDecoder().decode(cloudFuncResp.self, from: data)
+                    print(finalRespData)
+                }
+                catch let jsonParseError {
+                    print("Error in parsing JSON response: \(jsonParseError)")
+                }
+            }
+            else { return }
+        }.resume()
+    }
+    
+    func startActionOrTask(userId: String, routineId: String, taskId: String?, routineNumber: Int?, taskNumber: Int?, stepNumber: Int?) {
+        
+        guard let url = URL(string: "https://us-central1-project-caitlin-c71a9.cloudfunctions.net/StartActionOrTask") else { return }
+        
+        let jsonData = startGRATISbody(data: Fields(userId: userId,
+                                                    routineId: routineId,
+                                                    taskId: taskId,
+                                                    routineNumber: routineNumber,
+                                                    taskNumber: taskNumber,
+                                                    stepNumber: stepNumber
+                                                    ))
+        let finalJsonData = try? JSONEncoder().encode(jsonData)
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = finalJsonData
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        
+        URLSession.shared.dataTask(with: request){ (data, _ , error) in
+            if let error = error {
+                print("Generic networking error: \(error)")
+            }
+            
+            if let data = data {
+                do{
+                    let finalRespData = try JSONDecoder().decode(cloudFuncResp.self, from: data)
+                    print(finalRespData)
+                }
+                catch let jsonParseError {
+                    print("Error in parsing JSON response: \(jsonParseError)")
+                }
+            }
+            else { return }
+        }.resume()
+    }
+    
+    func startInstructionOrStep(userId: String, routineId: String, taskId: String?, routineNumber: Int?, taskNumber: Int?, stepNumber: Int?) {
+        
+        guard let url = URL(string: "https://us-central1-project-caitlin-c71a9.cloudfunctions.net/StartInstructionOrStep") else { return }
+        
+        let jsonData = startGRATISbody(data: Fields(userId: userId,
+                                                    routineId: routineId,
+                                                    taskId: taskId,
+                                                    routineNumber: routineNumber,
+                                                    taskNumber: taskNumber,
+                                                    stepNumber: stepNumber
+                                                    ))
+        let finalJsonData = try? JSONEncoder().encode(jsonData)
+        
+        var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.httpBody = finalJsonData
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")

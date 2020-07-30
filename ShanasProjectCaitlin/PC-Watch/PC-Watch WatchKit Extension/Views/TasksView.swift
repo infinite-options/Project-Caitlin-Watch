@@ -46,23 +46,23 @@ struct TaskItem: View {
                                         self.started = true
                                         print("Starting...")
                                         // starting task
-                                        self.model.startGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
+                                        self.model.startActionOrTask(userId: "GdT7CRXUuDXmteS4rQwN",
                                                                routineId: self.goalOrRoutineID!,
                                                                taskId: self.task!.mapValue.fields.id.stringValue,
+                                                               routineNumber: -1,
                                                                taskNumber: self.index!,
-                                                               stepNumber: self.index!,
-                                                               start: "task")
+                                                               stepNumber: -1)
                                         // update task in model
                                         self.model.goalsSubtasks[self.goalOrRoutineID!]!![self.index!].mapValue.fields.isInProgress?.booleanValue = true
                                         // update goal in model
                                         self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isInProgress!.booleanValue = true
                                         //start goal
-                                        self.model.startGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
+                                        self.model.startGoalOrRoutine(userId: "GdT7CRXUuDXmteS4rQwN",
                                                                routineId: self.goalOrRoutineID!,
                                                                taskId: "NA",
-                                                               taskNumber: self.goalOrRoutineIndex!,
-                                                               stepNumber: -1,
-                                                               start: "goal")
+                                                               routineNumber: self.goalOrRoutineIndex!,
+                                                               taskNumber: -1,
+                                                               stepNumber: -1)
                                         print(self.model.goalsSubtasks[self.goalOrRoutineID!]!![self.index!].mapValue.fields.isInProgress!.booleanValue)
                                     }
                             } else if (self.started || task!.mapValue.fields.isInProgress!.booleanValue) {

@@ -16,6 +16,7 @@ struct Fields: Codable {
     var userId: String
     var routineId: String
     var taskId: String?
+    var routineNumber: Int?
     var taskNumber: Int?
     var stepNumber: Int?
 }
