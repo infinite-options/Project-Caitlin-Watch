@@ -16,19 +16,18 @@ class DayDate {
     var day = ["","SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
     
     let taskDateFormat: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.locale = Locale(identifier: "en_US")
-        formatter.setLocalizedDateFormatFromTemplate("d")
-        return formatter
+        let format = DateFormatter()
+        format.dateStyle = .medium
+        format.locale = Locale(identifier: "en_US")
+        format.setLocalizedDateFormatFromTemplate("d")
+        return format
     }()
     
     let timeLeft: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "E, dd MMM yyyy HH:mm:ss Z"
-        formatter.timeZone = .current
-        print(formatter.timeZone!)
-        return formatter
+        let format = DateFormatter()
+        format.dateFormat = "E, dd MMM yyyy HH:mm:ss Z"
+        format.timeZone = .current
+        return format
     }()
     
     let formatter: DateFormatter = {
@@ -42,6 +41,12 @@ class DayDate {
         let format = DateFormatter()
         format.timeZone = .current
         format.dateFormat = "h:mm"
+        return format
+    }()
+    
+    let ISOFormatter: ISO8601DateFormatter = {
+        let format = ISO8601DateFormatter()
+        format.timeZone = .current
         return format
     }()
     
