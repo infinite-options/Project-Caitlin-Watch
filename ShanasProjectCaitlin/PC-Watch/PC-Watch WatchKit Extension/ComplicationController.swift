@@ -46,6 +46,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     // MARK: - Timeline Population
     
     func getCurrentTimelineEntry(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTimelineEntry?) -> Void) {
+        print("getCurrentTimelineEntry")
         if complication.family == .modularLarge {
             let userDay = model.UserDayData
             if userDay.count > 0 {
