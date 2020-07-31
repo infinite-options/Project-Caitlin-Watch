@@ -6,6 +6,8 @@
 //  Copyright © 2020 Infinite Options. All rights reserved.
 //
 
+//Tutorial: https://blog.jayway.com/2020/02/10/show-fresh-content-background-refresh/
+
 import Foundation
 import Combine
 import WatchKit
