@@ -65,12 +65,9 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
             switch task {
             case let backgroundTask as WKApplicationRefreshBackgroundTask:
                 // Be sure to complete the background task once you’re done.
-                let model = FirebaseGoogleService.shared
-                
-                model.updateDataModel {
-                    self.scheduleBackgroundRefreshTasks()
-                    backgroundTask.setTaskCompletedWithSnapshot(true)
-                }
+                BackgroundService.shared.updateContent()
+                scheduleBackgroundRefreshTasks()
+                backgroundTask.setTaskCompletedWithSnapshot(false)
             case let snapshotTask as WKSnapshotRefreshBackgroundTask:
                 // Snapshot tasks have a unique completion call, make sure to set your expiration date
                 snapshotTask.setTaskCompleted(restoredDefaultState: true, estimatedSnapshotExpiration: Date.distantFuture, userInfo: nil)
@@ -79,6 +76,8 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
                 connectivityTask.setTaskCompletedWithSnapshot(false)
             case let urlSessionTask as WKURLSessionRefreshBackgroundTask:
                 // Be sure to complete the URL session task once you’re done.
+                print("FFFFF")
+                BackgroundService.shared.handleDownload(urlSessionTask)
                 urlSessionTask.setTaskCompletedWithSnapshot(false)
             case let relevantShortcutTask as WKRelevantShortcutRefreshBackgroundTask:
                 // Be sure to complete the relevant-shortcut task once you're done.
@@ -135,27 +134,6 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
             }
             
             print("*** Background Task Completed Scheduled! ***")
-        }
-    }
-
-    func scheduleBackgroundRefreshTasks() {
-        
-        // Get the shared extension object.
-        let watchExtension = WKExtension.shared()
-        
-        // If there is a complication on the watch face, update once an hour
-        let targetDate = Date().addingTimeInterval(60.0 * 60.0)
-        
-        // Schedule the background refresh task.
-        watchExtension.scheduleBackgroundRefresh(withPreferredDate: targetDate, userInfo: nil) { (error) in
-            
-            // Check for errors.
-            if let error = error {
-                print("*** An background refresh error occurred: \(error.localizedDescription) ***")
-                return
-            }
-            
-            print("*** Background Task Completed Successfully! ***")
         }
     }
 }

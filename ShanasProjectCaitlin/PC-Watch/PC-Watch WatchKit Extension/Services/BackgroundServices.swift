@@ -16,23 +16,26 @@ class BackgroundService: NSObject {
     static let shared = BackgroundService()
     let model = FirebaseGoogleService.shared
     
-    static let url = URL(string: "https://firestore.googleapis.com/v1/projects/project-caitlin-c71a9/databases/(default)/documents/users/" + UserDay.shared.User)!
+//    static let url = URL(string: "https://firestore.googleapis.com/v1/projects/project-caitlin-c71a9/databases/(default)/documents/users/" + UserDay.shared.User)!
+    let UserDayData = UserDay.shared
     
     // Store tasks in order to complete them when finished
     var pendingBackgroundTasks = [WKURLSessionRefreshBackgroundTask]()
     
-    func updateContent(completion: () -> ()) {
+    func updateContent() {
         let configuration = URLSessionConfiguration
             .background(withIdentifier: "complicationUpdate")
-        
+        configuration.sessionSendsLaunchEvents = true
         let session = URLSession(configuration: configuration,
                                  delegate: self, delegateQueue: nil)
-        
-        let backgroundTask = session.downloadTask(with: BackgroundService.url)
+        let goalUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.UserDayData.User
+        guard let url = URL(string: goalUrl) else { return }
+        let backgroundTask = session.downloadTask(with: url)
         backgroundTask.resume()
     }
     
     func handleDownload(_ backgroundTask: WKURLSessionRefreshBackgroundTask) {
+        print("ZZZZZZ")
         let configuration = URLSessionConfiguration
             .background(withIdentifier: backgroundTask.sessionIdentifier)
         
@@ -59,7 +62,7 @@ extension BackgroundService : URLSessionDownloadDelegate {
         if let data = try? Data(contentsOf: file),
             let model = try? JSONDecoder().decode(Firebase.self, from: data) {
                 //data?.fields.goalsRoutines.arrayValue.values ?? nil
-            FirebaseGoogleService.shared.data = model.fields.goalsRoutines.arrayValue.values
+            //FirebaseGoogleService.shared.data = model.fields.goalsRoutines.arrayValue.values
             print("Successsssss :::::::::")
         }
     }
