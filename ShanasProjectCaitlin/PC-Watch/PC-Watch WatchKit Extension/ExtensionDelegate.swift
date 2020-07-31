@@ -39,7 +39,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     
     func applicationDidEnterBackground() {
         // Schedule a background refresh task to update the complications.
-        //scheduleBackgroundRefreshTasks()
+        scheduleBackgroundRefreshTasks()
     }
     
     func applicationWillResignActive() {
@@ -65,6 +65,8 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
             switch task {
             case let backgroundTask as WKApplicationRefreshBackgroundTask:
                 // Be sure to complete the background task once you’re done.
+                BackgroundService.shared.updateContent()
+                scheduleBackgroundRefreshTasks()
                 backgroundTask.setTaskCompletedWithSnapshot(false)
             case let snapshotTask as WKSnapshotRefreshBackgroundTask:
                 // Snapshot tasks have a unique completion call, make sure to set your expiration date
@@ -74,6 +76,8 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
                 connectivityTask.setTaskCompletedWithSnapshot(false)
             case let urlSessionTask as WKURLSessionRefreshBackgroundTask:
                 // Be sure to complete the URL session task once you’re done.
+                print("FFFFF")
+                BackgroundService.shared.handleDownload(urlSessionTask)
                 urlSessionTask.setTaskCompletedWithSnapshot(false)
             case let relevantShortcutTask as WKRelevantShortcutRefreshBackgroundTask:
                 // Be sure to complete the relevant-shortcut task once you're done.
