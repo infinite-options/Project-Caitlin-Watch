@@ -127,7 +127,7 @@ class FirebaseGoogleService: ObservableObject {
         //print("Start: \(startDate) ::: End: \(endDate)")
         
         //Create request the body
-        let jsonData = getEventsBody(id: "GdT7CRXUuDXmteS4rQwN",
+        let jsonData = getEventsBody(id: self.UserDayData.User,
                                      start: startDate,
                                      end: endDate)
         let finalJsonData = try? JSONEncoder().encode(jsonData)
@@ -151,8 +151,8 @@ class FirebaseGoogleService: ObservableObject {
                         completion(data)
                     }
                 }
-                catch let jsonParseError {
-                    print("No events found for user: GdT7CRXUuDXmteS4rQwN")
+                catch _ {
+                    print("No events found for user: \(self.UserDayData.User)")
                     //print("Error in parsing Events data: \(jsonParseError)" )
                     completion(nil)
                 }
@@ -162,7 +162,10 @@ class FirebaseGoogleService: ObservableObject {
     }
     
     func getFirebaseData(completion: @escaping (Firebase?) -> ()) {
-        guard let url = URL(string: "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/GdT7CRXUuDXmteS4rQwN/") else { return }
+        var goalUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/"
+        goalUrl.append(self.UserDayData.User)
+        
+        guard let url = URL(string: goalUrl) else { return }
         URLSession.shared.dataTask(with: url) { (data, _, error) in
             if let error = error {
                 print("Generic networking error: \(error)")
@@ -175,8 +178,8 @@ class FirebaseGoogleService: ObservableObject {
                         completion(data)
                     }
                 }
-                catch let jsonParseError {
-                    print("No goals found for user: GdT7CRXUuDXmteS4rQwN")
+                catch _ {
+                    print("No goals found for user: \(self.UserDayData.User)")
                     //print("Error in parsing Goals data: \(jsonParseError)")
                     completion(nil)
                 }
@@ -186,8 +189,10 @@ class FirebaseGoogleService: ObservableObject {
     }
     
     func getFirebaseTasks(goalID: String, completion: @escaping ([ValueTask]?) -> ()) {
-        var TaskUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/GdT7CRXUuDXmteS4rQwN/goals&routines/"
-        TaskUrl.append(goalID)
+        let TaskUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.UserDayData.User + "/goals&routines/" + goalID
+        //TaskUrl.append("goals&routines")
+        //TaskUrl.append(goalID)
+        print(TaskUrl)
         
         guard let url = URL(string: TaskUrl) else { return }
             URLSession.shared.dataTask(with: url) { (data, _, error) in
@@ -202,7 +207,7 @@ class FirebaseGoogleService: ObservableObject {
                             completion(data.fields.actionsTasks.arrayValue.values)
                         }
                     }
-                    catch let jsonParseError {
+                    catch _ {
                         print("No tasks for goal: \(goalID)")
                         //print("Error in parsing Tasks data: \(jsonParseError)" )
                         completion(nil)
@@ -213,10 +218,11 @@ class FirebaseGoogleService: ObservableObject {
     }
     
     func getFirebaseStep(stepID: String, goalID: String, completion: @escaping ([ValueTask]?) -> ()) {
-        var StepUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/GdT7CRXUuDXmteS4rQwN/goals&routines/"
-        StepUrl.append(goalID)
-        StepUrl.append("/actions&tasks/")
-        StepUrl.append(stepID)
+        let StepUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.UserDayData.User + "/goals&routines/" + goalID + "/actions&tasks/" + stepID
+        //StepUrl.append(goalID)
+        //StepUrl.append("/actions&tasks/")
+        //StepUrl.append(stepID)
+        print(StepUrl)
         
         guard let url = URL(string: StepUrl) else { return }
         URLSession.shared.dataTask(with: url) { (data, _, error) in
@@ -231,7 +237,7 @@ class FirebaseGoogleService: ObservableObject {
                         completion(data.fields.instructionsSteps.arrayValue.values)
                     }
                 }
-                catch let jsonParseError {
+                catch _ {
                     print("No steps for task: \(stepID)")
                     //print("Error in parsing Steps data: \(jsonParseError)" )
                     completion(nil)

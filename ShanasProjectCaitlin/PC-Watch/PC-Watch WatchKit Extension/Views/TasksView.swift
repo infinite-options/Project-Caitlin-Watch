@@ -17,6 +17,8 @@ struct TaskItem: View {
     var goalOrRoutineID: String?
     @ObservedObject private var model = FirebaseGoogleService.shared
     
+    @ObservedObject private var user = UserDay.shared
+    
     @State var started = false
     
     var body: some View {
@@ -46,7 +48,7 @@ struct TaskItem: View {
                                         self.started = true
                                         print("Starting...")
                                         // starting task
-                                        self.model.startActionOrTask(userId: "GdT7CRXUuDXmteS4rQwN",
+                                        self.model.startActionOrTask(userId: self.user.User,
                                                                routineId: self.goalOrRoutineID!,
                                                                taskId: self.task!.mapValue.fields.id.stringValue,
                                                                routineNumber: -1,
@@ -57,7 +59,7 @@ struct TaskItem: View {
                                         // update goal in model
                                         self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isInProgress!.booleanValue = true
                                         //start goal
-                                        self.model.startGoalOrRoutine(userId: "GdT7CRXUuDXmteS4rQwN",
+                                        self.model.startGoalOrRoutine(userId: self.user.User,
                                                                routineId: self.goalOrRoutineID!,
                                                                taskId: "NA",
                                                                routineNumber: self.goalOrRoutineIndex!,
@@ -103,8 +105,9 @@ struct TaskItem: View {
 }
 
 struct TasksView: View {
-   @ObservedObject private var model = FirebaseGoogleService.shared
-//    @Binding var showTasks: Bool
+    @ObservedObject private var model = FirebaseGoogleService.shared
+    @ObservedObject private var user = UserDay.shared
+    //    @Binding var showTasks: Bool
     var goalOrRoutine: Value?
     var goalOrRoutineIndex: Int?
     @State var done = false
@@ -130,7 +133,7 @@ struct TasksView: View {
                     if(!self.done && (self.goalOrRoutine!.mapValue!.fields.isComplete!.booleanValue == false)){
                         Button(action: {
                             print("done button clicked")
-                            self.model.completeGRATIS(userId: "GdT7CRXUuDXmteS4rQwN",
+                            self.model.completeGRATIS(userId: self.user.User,
                                                       routineId: self.goalOrRoutine!.mapValue!.fields.id.stringValue,
                                                       taskId: "NA",
                                                       routineNumber: self.goalOrRoutineIndex!,

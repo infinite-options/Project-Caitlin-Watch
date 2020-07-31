@@ -12,6 +12,8 @@ class UserDay: ObservableObject {
     
     static let shared = UserDay()
     
+    @Published var User = "DxYAdlHGfnOve7soXl8k"
+    
     @Published var UserDayData = [UserDayGoalEventList]()
   
     private init(){}
