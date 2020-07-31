@@ -30,6 +30,12 @@ class DayDate {
         return format
     }()
     
+    let goalStartUTC: DateFormatter = {
+        let format = DateFormatter()
+        format.dateFormat = "E, dd MMM yyyy HH:mm:ss Z"
+        return format
+    }()
+    
     let formatter: DateFormatter = {
         let format = DateFormatter()
         format.timeZone = .current

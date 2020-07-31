@@ -14,10 +14,7 @@ import FirebaseMessaging
 
 class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
     
-    //private let notificationHandler = NotificationHandler()
-    
     func applicationDidFinishLaunching() {
-        //let _ = FirebaseServices.shared
         
         FirebaseApp.configure()
         let center = UNUserNotificationCenter.current()
@@ -35,18 +32,19 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
         Messaging.messaging().delegate = self
     }
     
-    //MessagingDelegate
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
-      print("Token:" + fcmToken)
+    func applicationDidBecomeActive() {
+        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        let _ = FirebaseGoogleService.shared
     }
     
-    func applicationDidBecomeActive() {
-        let _ = FirebaseGoogleService.shared
-        
-        //model.updateDataModel {
-          //  print("Updating done..")
-        //}
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    func applicationDidEnterBackground() {
+        // Schedule a background refresh task to update the complications.
+        //scheduleBackgroundRefreshTasks()
+    }
+    
+    func applicationWillResignActive() {
+        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
+        // Use this method to pause ongoing tasks, disable timers, etc.
     }
     
     func didRegisterForRemoteNotifications(withDeviceToken deviceToken: Data) {
@@ -55,9 +53,9 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
         Messaging.messaging().apnsToken = deviceToken
     }
     
-    func applicationWillResignActive() {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, etc.
+    //MessagingDelegate
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+      print("Token:" + fcmToken)
     }
 
     func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {

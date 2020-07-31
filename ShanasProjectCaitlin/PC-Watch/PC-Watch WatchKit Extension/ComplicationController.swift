@@ -55,25 +55,40 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                     let start = userDay[counter].start!.dateTime
                     let end = userDay[counter].end!.dateTime
                     
-                    let time = ISO8601DateFormatter().date(from: userDay[counter].start!.dateTime)
-                    let timeString = formatter.string(from: time!)
-                    let scheduledDate = formatter.date(from: timeString)
+                    let time = DayDateObj.ISOFormatter.date(from: userDay[counter].start!.dateTime)
+                    
+                    let startTime = formatter.string(from: DayDateObj.ISOFormatter.date(from: start)!)
+                    
+                    let endTime = formatter.string(from: DayDateObj.ISOFormatter.date(from: end)!)
+                    
+                    //let scheduledDate = formatter.date(from: timeString)
                     
                     let modularLarge = CLKComplicationTemplateModularLargeStandardBody()
                     modularLarge.headerTextProvider = CLKSimpleTextProvider(text: userDay[counter].summary!)
-                    modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "Starts at " +  start)
-                    modularLarge.body2TextProvider = CLKSimpleTextProvider(text: "Ends at " + end)
+                    modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "Starts at " +  startTime)
+                    modularLarge.body2TextProvider = CLKSimpleTextProvider(text: "Ends at " + endTime)
                             
                     let template = modularLarge
-                    let timelineEntry = CLKComplicationTimelineEntry(date: scheduledDate!, complicationTemplate: template)
-                    print("Here: \(userDay[counter].summary!) :: \(scheduledDate!)")
+                    let timelineEntry = CLKComplicationTimelineEntry(date: time!, complicationTemplate: template)
+                    print("Here: \(userDay[counter].summary!) :: \(time!)")
                     
                     handler(timelineEntry)
                 } else {
-                    let time = timeLeft.date(from: userDay[counter].mapValue!.fields.startDayAndTime.stringValue)
+                    var time = DayDateObj.goalStartUTC.date(from: model.UserDayData[counter].mapValue!.fields.startDayAndTime.stringValue)
+                    
+                    let dateComponents = Calendar.current.dateComponents([.hour, .minute, .second], from: time!)
+                    
+                    var currentDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: Date())
+                    
+                    currentDate.hour = dateComponents.hour
+                    currentDate.minute = dateComponents.minute
+                    currentDate.second = dateComponents.second
+                    
+                    time = Calendar.current.date(from: currentDate)
+                    
                     let times = formatter.string(from: timeLeft.date(from: userDay[counter].mapValue!.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: userDay[counter].mapValue!.fields.endDayAndTime.stringValue)!)
-                    let timeString = formatter.string(from: time!)
-                    let scheduledDate = formatter.date(from: timeString)
+                    //let timeString = formatter.string(from: time!)
+                    //let scheduledDate = formatter.date(from: timeString)
                        
                     
                     let modularLarge = CLKComplicationTemplateModularLargeStandardBody()
@@ -88,8 +103,8 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                     modularLarge.body2TextProvider = CLKSimpleTextProvider(text: times)
                             
                     let template = modularLarge
-                    let timelineEntry = CLKComplicationTimelineEntry(date: scheduledDate!, complicationTemplate: template)
-                    print("Here: \(userDay[counter].mapValue!.fields.title.stringValue) :: \(scheduledDate!)")
+                    let timelineEntry = CLKComplicationTimelineEntry(date: time!, complicationTemplate: template)
+                    print("Here: \(userDay[counter].mapValue!.fields.title.stringValue) :: \(time!)")
                     
                     handler(timelineEntry)
                 }
@@ -105,34 +120,54 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         print("getTimelineEntries")
         
         if complication.family == .modularLarge {
+            let userDay = model.UserDayData
             var timeLineEntries = [CLKComplicationTimelineEntry]()
-            if (model.UserDayData.count > 0) {
-                for index in 0...(model.UserDayData.count-2) {
-                    if model.UserDayData[index] is Event {
-                        let start = model.UserDayData[index].start!.dateTime
-                        let end = model.UserDayData[index].end!.dateTime
+            if (userDay.count > 0) {
+                for index in 0...(userDay.count-2) {
+                    if userDay[index] is Event {
+                        let start = userDay[index].start!.dateTime
+                        let end = userDay[index].end!.dateTime
                         
-                        let time = ISO8601DateFormatter().date(from: model.UserDayData[index].start!.dateTime)
-                        let timeString = formatter.string(from: time!)
-                        let scheduledDate = formatter.date(from: timeString)
+                        let time = DayDateObj.ISOFormatter.date(from: userDay[index].start!.dateTime)
+                        
+                        let startTime = formatter.string(from: DayDateObj.ISOFormatter.date(from: start)!)
+                        
+                        let endTime = formatter.string(from: DayDateObj.ISOFormatter.date(from: end)!)
+                        
+                        //let scheduledDate = formatter.date(from: timeString)
                         
                         let modularLarge = CLKComplicationTemplateModularLargeStandardBody()
-                        modularLarge.headerTextProvider = CLKSimpleTextProvider(text: model.UserDayData[index].summary!)
-                        modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "Starts at " +  start)
-                        modularLarge.body2TextProvider = CLKSimpleTextProvider(text: "Ends at " + end)
+                        modularLarge.headerTextProvider = CLKSimpleTextProvider(text: userDay[index].summary!)
+                        modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "Starts at " +  startTime)
+                        modularLarge.body2TextProvider = CLKSimpleTextProvider(text: "Ends at " + endTime)
                                 
                         let template = modularLarge
-                        let timelineEntry = CLKComplicationTimelineEntry(date: scheduledDate!, complicationTemplate: template)
-                        print("Here: \(model.UserDayData[index].summary!) :: \(scheduledDate!)")
+                        let timelineEntry = CLKComplicationTimelineEntry(date: time!, complicationTemplate: template)
+                        print("Here: \(userDay[index].summary!) :: \(time!)")
+                        
                         timeLineEntries.append(timelineEntry)
                     } else {
-                        let time = timeLeft.date(from: model.UserDayData[index].mapValue!.fields.startDayAndTime.stringValue)
+                        var time = DayDateObj.goalStartUTC.date(from: model.UserDayData[index].mapValue!.fields.startDayAndTime.stringValue)
+                        
+                        let dateComponents = Calendar.current.dateComponents([.hour, .minute, .second], from: time!)
+                        
+                        var currentDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: Date())
+                        
+                        currentDate.hour = dateComponents.hour
+                        currentDate.minute = dateComponents.minute
+                        currentDate.second = dateComponents.second
+                        
+                        time = Calendar.current.date(from: currentDate)
+                        //print(time)
+                        
                         let times = formatter.string(from: timeLeft.date(from: model.UserDayData[index].mapValue!.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: model.UserDayData[index].mapValue!.fields.endDayAndTime.stringValue)!)
-                        let timeString = formatter.string(from: time!)
-                        let scheduledDate = formatter.date(from: timeString)
+                        
+                        //let timeString = formatter.string(from: time!)
+                        //let scheduledDate = formatter.date(from: timeString)
                         
                         let modularLarge = CLKComplicationTemplateModularLargeStandardBody()
                         modularLarge.headerTextProvider = CLKSimpleTextProvider(text: model.UserDayData[index].mapValue!.fields.title.stringValue)
+                        
                         if ((model.UserDayData[index].mapValue!.fields.isInProgress?.booleanValue) != nil) {
                             modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "is in progress.")
                         } else if ((model.UserDayData[index].mapValue!.fields.isComplete?.booleanValue) != nil) {
@@ -143,8 +178,8 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                         modularLarge.body2TextProvider = CLKSimpleTextProvider(text: times)
                                 
                         let template = modularLarge
-                        let timelineEntry = CLKComplicationTimelineEntry(date: scheduledDate!, complicationTemplate: template)
-                        print("Here: \(model.UserDayData[index].mapValue!.fields.title.stringValue) :: \(scheduledDate!)")
+                        let timelineEntry = CLKComplicationTimelineEntry(date: time!, complicationTemplate: template)
+                        print("Here: \(model.UserDayData[index].mapValue!.fields.title.stringValue) :: \(time!)")
                         timeLineEntries.append(timelineEntry)
                     }
                 }
