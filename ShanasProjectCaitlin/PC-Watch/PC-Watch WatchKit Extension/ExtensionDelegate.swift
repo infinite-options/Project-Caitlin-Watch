@@ -39,7 +39,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     
     func applicationDidEnterBackground() {
         // Schedule a background refresh task to update the complications.
-        //scheduleBackgroundRefreshTasks()
+        scheduleBackgroundRefreshTasks()
     }
     
     func applicationWillResignActive() {
@@ -65,7 +65,12 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
             switch task {
             case let backgroundTask as WKApplicationRefreshBackgroundTask:
                 // Be sure to complete the background task once you’re done.
-                backgroundTask.setTaskCompletedWithSnapshot(false)
+                let model = FirebaseGoogleService.shared
+                
+                model.updateDataModel {
+                    self.scheduleBackgroundRefreshTasks()
+                    backgroundTask.setTaskCompletedWithSnapshot(true)
+                }
             case let snapshotTask as WKSnapshotRefreshBackgroundTask:
                 // Snapshot tasks have a unique completion call, make sure to set your expiration date
                 snapshotTask.setTaskCompleted(restoredDefaultState: true, estimatedSnapshotExpiration: Date.distantFuture, userInfo: nil)
@@ -114,4 +119,24 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
         }
     }
 
+    func scheduleBackgroundRefreshTasks() {
+        
+        // Get the shared extension object.
+        let watchExtension = WKExtension.shared()
+        
+        // If there is a complication on the watch face, update once an hour
+        let targetDate = Date().addingTimeInterval(60.0 * 60.0)
+        
+        // Schedule the background refresh task.
+        watchExtension.scheduleBackgroundRefresh(withPreferredDate: targetDate, userInfo: nil) { (error) in
+            
+            // Check for errors.
+            if let error = error {
+                print("*** An background refresh error occurred: \(error.localizedDescription) ***")
+                return
+            }
+            
+            print("*** Background Task Completed Successfully! ***")
+        }
+    }
 }

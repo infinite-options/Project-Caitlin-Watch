@@ -14,7 +14,7 @@ class BackgroundService: NSObject {
     static let shared = BackgroundService()
     let model = FirebaseGoogleService.shared
     
-    static let url = URL(string: "https://firestore.googleapis.com/v1/projects/project-caitlin-c71a9/databases/(default)/documents/users/VzYNSZMGGRrtzm74zPmM")!
+    static let url = URL(string: "https://firestore.googleapis.com/v1/projects/project-caitlin-c71a9/databases/(default)/documents/users/" + UserDay.shared.User)!
     
     // Store tasks in order to complete them when finished
     var pendingBackgroundTasks = [WKURLSessionRefreshBackgroundTask]()
