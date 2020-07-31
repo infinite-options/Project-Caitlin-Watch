@@ -109,13 +109,32 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     
     func updateActiveComplication(){
         let complicationServer = CLKComplicationServer.sharedInstance()
-        
         if let activeComplication = complicationServer.activeComplications {
-            
             for complication in activeComplication {
                 complicationServer.reloadTimeline(for: complication)
             }
+        }
+    }
+    
+    func scheduleBackgroundRefreshTasks() {
+        print("SCHEDULING TASK NOWW")
+        // Get the shared extension object.
+        let watchExtension = WKExtension.shared()
+        
+        // If there is a complication on the watch face, the app should get at least four
+        // updates an hour. So calculate a target date 5 minutes in the future.
+        let targetDate = Date().addingTimeInterval(1.0 * 60.0)
+        
+        // Schedule the background refresh task.
+        watchExtension.scheduleBackgroundRefresh(withPreferredDate: targetDate, userInfo: nil) { (error) in
             
+            // Check for errors.
+            if let error = error {
+                print("*** An background refresh error occurred: \(error.localizedDescription) ***")
+                return
+            }
+            
+            print("*** Background Task Completed Scheduled! ***")
         }
     }
 

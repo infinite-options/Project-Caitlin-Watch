@@ -133,7 +133,6 @@ struct HomeView: View {
     // below has goals and routines
     @ObservedObject private var model = UserDay.shared
     
-    
     //@ObservedObject private var modelTest = UserDay.shared
     
     var body: some View {
@@ -166,7 +165,7 @@ struct HomeView: View {
                                 }
                             }.listRowPlatterColor((item is Event) ? Color.yellow.opacity(0.75) : (item.mapValue!.fields.isPersistent.booleanValue ? Color.gray : Color(Color.RGBColorSpace.sRGB, red: 0.68, green: 0.68, blue: 0.68, opacity: 0.3)))
                         }
-                    }.listStyle(CarouselListStyle()).navigationBarTitle("My Day")
+                    }.listStyle(CarouselListStyle()).navigationBarTitle(self.model.navBar)
                 }.padding(0)
             }
         }
