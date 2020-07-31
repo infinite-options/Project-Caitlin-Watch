@@ -16,6 +16,8 @@ class UserDay: ObservableObject {
     
     @Published var UserDayData = [UserDayGoalEventList]()
   
+    @Published var navBar = "MyDay  (" +  TimeZone.current.abbreviation()! + ")"
+    
     private init(){}
     
     func mergeSortedGoalsEvents(goals: [Value]?, events: [Event]?) {
