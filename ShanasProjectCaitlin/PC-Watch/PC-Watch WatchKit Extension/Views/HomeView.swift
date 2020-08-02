@@ -133,7 +133,8 @@ struct HomeView: View {
     // below has goals and routines
     @ObservedObject private var model = UserDay.shared
     
-    //@ObservedObject private var modelTest = UserDay.shared
+    @State var fullDay = false
+    @State var showLess = true
     
     var body: some View {
 
@@ -145,28 +146,70 @@ struct HomeView: View {
                 }
             }
             else {
-                VStack(alignment: .leading) {
-                    List {
-                        ForEach(Array(self.model.UserDayData.enumerated()), id: \.offset) { index, item in
-                            VStack(alignment: .leading) {
-                                if self.isEvent(item: item) {
-                                    NavigationLink (destination: EventsView(event: (item as! Event))){
-                                        EventInfoView(item: (item as! Event))
-                                    }.frame(height: 80)
-                                    .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
+                VStack {
+                    if (self.fullDay) {
+                        VStack(alignment: .leading) {
+                            List {
+                                ForEach(Array(self.model.UserDayData.enumerated()), id: \.offset) { index, item in
+                                    VStack(alignment: .leading) {
+                                        if self.isEvent(item: item) {
+                                            NavigationLink (destination: EventsView(event: (item as! Event))){
+                                                EventInfoView(item: (item as! Event))
+                                            }.frame(height: 80)
+                                            .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
+                                        }
+                                        else {
+                                            NavigationLink(destination: TasksView(goalOrRoutine: (item as! Value), goalOrRoutineIndex: index)) {
+                                            HStack {
+                                                infoView(item: (item as! Value))
+                                            }.frame(height: 80)
+                                                .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
+                                            }
+                                        }
+                                    }.listRowPlatterColor((item is Event) ? Color.yellow.opacity(0.75) : (item.mapValue!.fields.isPersistent.booleanValue ? Color.gray : Color(Color.RGBColorSpace.sRGB, red: 0.68, green: 0.68, blue: 0.68, opacity: 0.3)))
                                 }
-                                else {
-                                    NavigationLink(destination: TasksView(goalOrRoutine: (item as! Value), goalOrRoutineIndex: index)) {
-                                    HStack {
-                                        infoView(item: (item as! Value))
-                                    }.frame(height: 80)
-                                        .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
-                                    }
+                                Button(action: {
+                                    self.fullDay = false
+                                    self.showLess = true
+                                }) {
+                                    Text("Show less")
+                                        .foregroundColor(.yellow)
                                 }
-                            }.listRowPlatterColor((item is Event) ? Color.yellow.opacity(0.75) : (item.mapValue!.fields.isPersistent.booleanValue ? Color.gray : Color(Color.RGBColorSpace.sRGB, red: 0.68, green: 0.68, blue: 0.68, opacity: 0.3)))
-                        }
-                    }.listStyle(CarouselListStyle()).navigationBarTitle(self.model.navBar)
-                }.padding(0)
+                            }.listStyle(CarouselListStyle()).navigationBarTitle(self.model.navBar)
+                        }.padding(0)
+                    }
+                    if self.showLess {
+                        VStack(alignment: .leading) {
+                            List {
+                                ForEach(Array(self.model.UserDayBlockData.enumerated()), id: \.offset) { index, item in
+                                    VStack(alignment: .leading) {
+                                        if self.isEvent(item: item) {
+                                            NavigationLink (destination: EventsView(event: (item as! Event))){
+                                                EventInfoView(item: (item as! Event))
+                                            }.frame(height: 80)
+                                            .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
+                                        }
+                                        else {
+                                            NavigationLink(destination: TasksView(goalOrRoutine: (item as! Value), goalOrRoutineIndex: index)) {
+                                            HStack {
+                                                infoView(item: (item as! Value))
+                                            }.frame(height: 80)
+                                                .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
+                                            }
+                                        }
+                                    }.listRowPlatterColor((item is Event) ? Color.yellow.opacity(0.75) : (item.mapValue!.fields.isPersistent.booleanValue ? Color.gray : Color(Color.RGBColorSpace.sRGB, red: 0.68, green: 0.68, blue: 0.68, opacity: 0.3)))
+                                }
+                                Button(action: {
+                                    self.fullDay = true
+                                    self.showLess = false
+                                }) {
+                                    Text("Show full day")
+                                        .foregroundColor(.yellow)
+                                }
+                            }.listStyle(CarouselListStyle()).navigationBarTitle(self.model.navBar)
+                        }.padding(0)
+                    }
+                }
             }
         }
     }
