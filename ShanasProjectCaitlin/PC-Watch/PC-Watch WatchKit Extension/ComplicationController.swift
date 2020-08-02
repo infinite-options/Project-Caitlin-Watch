@@ -50,29 +50,28 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         if complication.family == .modularLarge {
             let userDay = model.UserDayData
             if userDay.count > 0 {
-                let counter = userDay.count - 1
                 print("Date ", Date())
-                if userDay[counter] is Event {
-                    let start = userDay[counter].start!.dateTime
-                    let end = userDay[counter].end!.dateTime
+                if userDay[0] is Event {
+                    let start = userDay[0].start!.dateTime
+                    let end = userDay[0].end!.dateTime
                     
-                    let time = DayDateObj.ISOFormatter.date(from: userDay[counter].start!.dateTime)
+                    let time = DayDateObj.ISOFormatter.date(from: userDay[0].start!.dateTime)
                     let startTime = formatter.string(from: DayDateObj.ISOFormatter.date(from: start)!)
                     
                     let endTime = formatter.string(from: DayDateObj.ISOFormatter.date(from: end)!)
                     
                     let modularLarge = CLKComplicationTemplateModularLargeStandardBody()
-                    modularLarge.headerTextProvider = CLKSimpleTextProvider(text: userDay[counter].summary!)
+                    modularLarge.headerTextProvider = CLKSimpleTextProvider(text: userDay[0].summary!)
                     modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "Starts at " +  startTime)
                     modularLarge.body2TextProvider = CLKSimpleTextProvider(text: "Ends at " + endTime)
                             
                     let template = modularLarge
                     let timelineEntry = CLKComplicationTimelineEntry(date: time!, complicationTemplate: template)
-                    print("Here: \(userDay[counter].summary!) :: \(time!)")
+                    print("Here: \(userDay[0].summary!) :: \(time!)")
                     
                     handler(timelineEntry)
                 } else {
-                    var time = DayDateObj.goalStartUTC.date(from: model.UserDayData[counter].mapValue!.fields.startDayAndTime.stringValue)
+                    var time = DayDateObj.goalStartUTC.date(from: model.UserDayData[0].mapValue!.fields.startDayAndTime.stringValue)
                     
                     let dateComponents = Calendar.current.dateComponents([.hour, .minute, .second], from: time!)
                     
@@ -84,16 +83,13 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                     
                     time = Calendar.current.date(from: currentDate)
                     
-                    let times = formatter.string(from: timeLeft.date(from: userDay[counter].mapValue!.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: userDay[counter].mapValue!.fields.endDayAndTime.stringValue)!)
-                    //let timeString = formatter.string(from: time!)
-                    //let scheduledDate = formatter.date(from: timeString)
+                    let times = formatter.string(from: timeLeft.date(from: userDay[0].mapValue!.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: userDay[0].mapValue!.fields.endDayAndTime.stringValue)!)
                        
-                    
                     let modularLarge = CLKComplicationTemplateModularLargeStandardBody()
-                    modularLarge.headerTextProvider = CLKSimpleTextProvider(text: userDay[counter].mapValue!.fields.title.stringValue)
-                    if ((userDay[counter].mapValue!.fields.isInProgress?.booleanValue) == true) {
+                    modularLarge.headerTextProvider = CLKSimpleTextProvider(text: userDay[0].mapValue!.fields.title.stringValue)
+                    if ((userDay[0].mapValue!.fields.isInProgress?.booleanValue) == true) {
                         modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "is in progress.")
-                    } else if ((userDay[counter].mapValue!.fields.isComplete?.booleanValue) == true) {
+                    } else if ((userDay[0].mapValue!.fields.isComplete?.booleanValue) == true) {
                         modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "is complete.")
                     } else {
                         modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "is ready to begin.")
@@ -102,10 +98,12 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                             
                     let template = modularLarge
                     let timelineEntry = CLKComplicationTimelineEntry(date: time!, complicationTemplate: template)
-                    print("Here: \(userDay[counter].mapValue!.fields.title.stringValue) :: \(time!)")
+                    print("Here: \(userDay[0].mapValue!.fields.title.stringValue) :: \(time!)")
                     
                     handler(timelineEntry)
                 }
+            } else {
+                handler(nil)
             }
         } else {
             handler(nil)
@@ -155,12 +153,8 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                         currentDate.second = dateComponents.second
                         
                         time = Calendar.current.date(from: currentDate)
-                        //print(time)
                         
                         let times = formatter.string(from: timeLeft.date(from: model.UserDayData[index].mapValue!.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: model.UserDayData[index].mapValue!.fields.endDayAndTime.stringValue)!)
-                        
-                        //let timeString = formatter.string(from: time!)
-                        //let scheduledDate = formatter.date(from: timeString)
                         
                         let modularLarge = CLKComplicationTemplateModularLargeStandardBody()
                         modularLarge.headerTextProvider = CLKSimpleTextProvider(text: model.UserDayData[index].mapValue!.fields.title.stringValue)

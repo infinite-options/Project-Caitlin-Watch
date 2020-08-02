@@ -12,7 +12,7 @@ class UserDay: ObservableObject {
     
     static let shared = UserDay()
     
-    @Published var User = "DxYAdlHGfnOve7soXl8k"
+    @Published var User = "GdT7CRXUuDXmteS4rQwN"
     
     @Published var UserDayData = [UserDayGoalEventList]()
   
@@ -37,7 +37,7 @@ class UserDay: ObservableObject {
                self.UserDayData.append(events![i])
                i += 1
            } else {
-               if goals![j].mapValue!.fields.isDisplayedToday.booleanValue == true {
+               if goals![j].mapValue!.fields.isDisplayedToday.booleanValue == true && goals![j].mapValue!.fields.isAvailable.booleanValue == true {
                    self.UserDayData.append(goals![j])
                }
                j += 1
@@ -50,7 +50,7 @@ class UserDay: ObservableObject {
        }
        
        while j<goals?.count ?? -1 {
-           if goals![j].mapValue!.fields.isDisplayedToday.booleanValue == true {
+           if goals![j].mapValue!.fields.isDisplayedToday.booleanValue == true && goals![j].mapValue!.fields.isAvailable.booleanValue == true {
                self.UserDayData.append(goals![j])
            }
            j += 1
