@@ -155,7 +155,7 @@ struct HomeView: View {
                                     }.frame(height: 80)
                                     .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
                                 }
-                                else{
+                                else {
                                     NavigationLink(destination: TasksView(goalOrRoutine: (item as! Value), goalOrRoutineIndex: index)) {
                                     HStack {
                                         infoView(item: (item as! Value))

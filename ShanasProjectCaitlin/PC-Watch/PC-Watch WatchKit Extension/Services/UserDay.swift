@@ -32,22 +32,25 @@ class UserDay: ObservableObject {
            
            //print(eventStart)
            //print(goalStart)
-           
-           if calendar.date(from: eventStart)! < calendar.date(from: goalStart)! {
-               self.UserDayData.append(events![i])
-               i += 1
-           } else {
-               if goals![j].mapValue!.fields.isDisplayedToday.booleanValue == true && goals![j].mapValue!.fields.isAvailable.booleanValue == true {
-                   self.UserDayData.append(goals![j])
-               }
-               j += 1
-           }
-       }
+            if calendar.date(from: eventStart)! < calendar.date(from: goalStart)! {
+                if self.isNow(item: events![i]) == true {
+                   self.UserDayData.append(events![i])
+                }
+                i += 1
+            } else {
+                if goals![j].mapValue!.fields.isDisplayedToday.booleanValue == true && goals![j].mapValue!.fields.isAvailable.booleanValue == true {
+                    self.UserDayData.append(goals![j])
+                }
+                j += 1
+            }
+        }
        
-       while i<events?.count ?? -1 {
-           self.UserDayData.append(events![i])
-           i += 1
-       }
+        while i<events?.count ?? -1 {
+            if self.isNow(item: events![i]) == true {
+                self.UserDayData.append(events![i])
+            }
+            i += 1
+        }
        
        while j<goals?.count ?? -1 {
            if goals![j].mapValue!.fields.isDisplayedToday.booleanValue == true && goals![j].mapValue!.fields.isAvailable.booleanValue == true {
@@ -55,5 +58,12 @@ class UserDay: ObservableObject {
            }
            j += 1
        }
+    }
+    
+    private func isNow(item: Event) -> Bool {
+        if DayDateObj.ISOFormatter.date(from: item.end!.dateTime)! < Date() {
+            return false
+        }
+        return true
     }
 }
