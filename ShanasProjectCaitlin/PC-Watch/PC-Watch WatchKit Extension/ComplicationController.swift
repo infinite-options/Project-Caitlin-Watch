@@ -45,7 +45,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                     let time = DayDateObj.ISOFormatter.date(from: userDay[0].start!.dateTime)
                     let startTime = DayDateObj.formatter.string(from: DayDateObj.ISOFormatter.date(from: start)!)
                     
-                    let endTime = DayDateObjformatter.string(from: DayDateObj.ISOFormatter.date(from: end)!)
+                    let endTime = DayDateObj.formatter.string(from: DayDateObj.ISOFormatter.date(from: end)!)
                     
                     let modularLarge = CLKComplicationTemplateModularLargeStandardBody()
                     modularLarge.headerTextProvider = CLKSimpleTextProvider(text: userDay[0].summary!)
@@ -70,7 +70,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                     
                     time = Calendar.current.date(from: currentDate)
                     
-                    let times = formatter.string(from: DayDateObj.timeLeft.date(from: userDay[0].mapValue!.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: userDay[0].mapValue!.fields.endDayAndTime.stringValue)!)
+                    let times = DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: userDay[0].mapValue!.fields.startDayAndTime.stringValue)!)  + " - " + DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: userDay[0].mapValue!.fields.endDayAndTime.stringValue)!)
                        
                     let modularLarge = CLKComplicationTemplateModularLargeStandardBody()
                     modularLarge.headerTextProvider = CLKSimpleTextProvider(text: userDay[0].mapValue!.fields.title.stringValue)
@@ -113,9 +113,9 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                         
                         let time = DayDateObj.ISOFormatter.date(from: userDay[index].start!.dateTime)
                         
-                        let startTime = formatter.string(from: DayDateObj.ISOFormatter.date(from: start)!)
+                        let startTime = DayDateObj.formatter.string(from: DayDateObj.ISOFormatter.date(from: start)!)
                         
-                        let endTime = formatter.string(from: DayDateObj.ISOFormatter.date(from: end)!)
+                        let endTime = DayDateObj.formatter.string(from: DayDateObj.ISOFormatter.date(from: end)!)
                         
                         
                         let modularLarge = CLKComplicationTemplateModularLargeStandardBody()
@@ -141,7 +141,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                         
                         time = Calendar.current.date(from: currentDate)
                         
-                        let times = formatter.string(from: DayDateObj.timeLeft.date(from: model.UserDayData[index].mapValue!.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: model.UserDayData[index].mapValue!.fields.endDayAndTime.stringValue)!)
+                        let times = DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: model.UserDayData[index].mapValue!.fields.startDayAndTime.stringValue)!)  + " - " + DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: model.UserDayData[index].mapValue!.fields.endDayAndTime.stringValue)!)
                         
                         let modularLarge = CLKComplicationTemplateModularLargeStandardBody()
                         modularLarge.headerTextProvider = CLKSimpleTextProvider(text: model.UserDayData[index].mapValue!.fields.title.stringValue)
