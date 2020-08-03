@@ -25,27 +25,24 @@ class DayDate {
     
     let timeLeft: DateFormatter = {
         let format = DateFormatter()
-        format.dateFormat = "E, dd MMM yyyy HH:mm:ss Z"
-        format.timeZone = .current
+        format.dateFormat = "M/dd/yyy, h:mm:ss a"
         return format
     }()
     
     let goalStartUTC: DateFormatter = {
         let format = DateFormatter()
-        format.dateFormat = "E, dd MMM yyyy HH:mm:ss Z"
+        format.dateFormat = "M/dd/yyy, h:mm:ss a"
         return format
     }()
     
     let formatter: DateFormatter = {
         let format = DateFormatter()
-        format.timeZone = .current
         format.dateFormat = "h:mm a"
         return format
     }()
 
     let durationFormatter: DateFormatter = {
         let format = DateFormatter()
-        format.timeZone = .current
         format.dateFormat = "h:mm"
         return format
     }()

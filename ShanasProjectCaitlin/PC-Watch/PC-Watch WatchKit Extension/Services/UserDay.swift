@@ -113,7 +113,10 @@ class UserDay: ObservableObject {
     }
     
     private func goalWithinInterval(itemStart: Date, itemEnd: Date, start: Date, end: Date) -> Bool {
+        //print("ITEM START: \(itemStart) ::: INTERVAL END \(end)")
+        //print("ITEM END: \(itemEnd) ::: INTERVAL START \(start)")
         if itemEnd < start || itemStart > end {
+            
             return false
         }
         return true

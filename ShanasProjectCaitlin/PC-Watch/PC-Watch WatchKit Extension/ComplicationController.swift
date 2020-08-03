@@ -11,20 +11,7 @@ import ClockKit
 class ComplicationController: NSObject, CLKComplicationDataSource {
         
     let model = UserDay.shared
-    
-    let timeLeft: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "E, dd MMM yyyy HH:mm:ss Z"
-        formatter.timeZone = .current
-        print(formatter.timeZone!)
-        return formatter
-    }()
 
-    let formatter: DateFormatter = {
-        let formatter1 = DateFormatter()
-        formatter1.dateFormat = "h:mm a"
-        return formatter1
-    }()
     // MARK: - Timeline Configuration
     
     func getSupportedTimeTravelDirections(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTimeTravelDirections) -> Void) {
@@ -56,9 +43,9 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                     let end = userDay[0].end!.dateTime
                     
                     let time = DayDateObj.ISOFormatter.date(from: userDay[0].start!.dateTime)
-                    let startTime = formatter.string(from: DayDateObj.ISOFormatter.date(from: start)!)
+                    let startTime = DayDateObj.formatter.string(from: DayDateObj.ISOFormatter.date(from: start)!)
                     
-                    let endTime = formatter.string(from: DayDateObj.ISOFormatter.date(from: end)!)
+                    let endTime = DayDateObjformatter.string(from: DayDateObj.ISOFormatter.date(from: end)!)
                     
                     let modularLarge = CLKComplicationTemplateModularLargeStandardBody()
                     modularLarge.headerTextProvider = CLKSimpleTextProvider(text: userDay[0].summary!)
@@ -83,7 +70,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                     
                     time = Calendar.current.date(from: currentDate)
                     
-                    let times = formatter.string(from: timeLeft.date(from: userDay[0].mapValue!.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: userDay[0].mapValue!.fields.endDayAndTime.stringValue)!)
+                    let times = formatter.string(from: DayDateObj.timeLeft.date(from: userDay[0].mapValue!.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: userDay[0].mapValue!.fields.endDayAndTime.stringValue)!)
                        
                     let modularLarge = CLKComplicationTemplateModularLargeStandardBody()
                     modularLarge.headerTextProvider = CLKSimpleTextProvider(text: userDay[0].mapValue!.fields.title.stringValue)
@@ -154,7 +141,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                         
                         time = Calendar.current.date(from: currentDate)
                         
-                        let times = formatter.string(from: timeLeft.date(from: model.UserDayData[index].mapValue!.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: model.UserDayData[index].mapValue!.fields.endDayAndTime.stringValue)!)
+                        let times = formatter.string(from: DayDateObj.timeLeft.date(from: model.UserDayData[index].mapValue!.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: model.UserDayData[index].mapValue!.fields.endDayAndTime.stringValue)!)
                         
                         let modularLarge = CLKComplicationTemplateModularLargeStandardBody()
                         modularLarge.headerTextProvider = CLKSimpleTextProvider(text: model.UserDayData[index].mapValue!.fields.title.stringValue)
