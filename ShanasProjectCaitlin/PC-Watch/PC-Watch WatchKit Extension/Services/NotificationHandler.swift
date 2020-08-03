@@ -71,7 +71,6 @@ class NotificationHandler : NSObject, UNUserNotificationCenterDelegate {
     func setNotificationEvent(event: Event){
         let eventStart = ISO8601DateFormatter().date(from: (event.start?.dateTime)!)
         let notificTriggerDate = calendar.date(byAdding: .minute, value: -15, to: eventStart!)!
-        print("notific event date::: \(notificTriggerDate)" )
         if(notificTriggerDate > Date()) {
             let identifier = event.id!
             content.title = event.summary ?? "Upcoming event"
@@ -86,7 +85,6 @@ class NotificationHandler : NSObject, UNUserNotificationCenterDelegate {
                 }
                 else {
                     let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: notificTriggerDate)
-                    print("Date as components:  \(dateComponents)")
                     let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
                     let request = UNNotificationRequest(identifier: identifier, content: self.content, trigger: trigger)
                     
@@ -103,19 +101,7 @@ class NotificationHandler : NSObject, UNUserNotificationCenterDelegate {
         }
     }
     func setNotificationGoalRoutine(message: String, time: String, title: String, startOrEndTime: String, id: String, tag: Int) {
-        /*if (goal.mapValue!.fields.userNotifications.mapValue.fields.before.mapValue.fields.isEnabled.booleanValue){
-            let start = DayDateObj.timeLeft.date(from: goal.mapValue!.fields.startDayAndTime.stringValue)
-            let timeComp = goal.mapValue!.fields.userNotifications.mapValue.fields.before.mapValue.fields.time.stringValue.components(separatedBy: ":")
-            let minutes = Int(timeComp[1])!
-            let notificTriggerDate = Calendar.current.date(byAdding: .minute, value: -minutes, to: start!)!
-            
-            var identifier = goal.mapValue!.fields.id.stringValue
-            identifier.append("-before")
-            content.title = "About to start! \(goal.mapValue!.fields.title.stringValue)"
-            content.body = goal.mapValue!.fields.userNotifications.mapValue.fields.before.mapValue.fields.message.stringValue
-        }*/
-        
-        print("Scheduling")
+
         let start = DayDateObj.timeLeft.date(from: startOrEndTime)
         let timeComp = time.components(separatedBy: ":")
         let minutes = Int(timeComp[1])!
@@ -166,7 +152,6 @@ class NotificationHandler : NSObject, UNUserNotificationCenterDelegate {
                     currentDate.hour = dateComponents.hour
                     currentDate.minute = dateComponents.minute
                     currentDate.second = dateComponents.second
-                    print("Date as components:  \(currentDate)")
                     let trigger = UNCalendarNotificationTrigger(dateMatching: currentDate, repeats: false)
                     let request = UNNotificationRequest(identifier: identifier, content: self.content, trigger: trigger)
                     
@@ -193,7 +178,6 @@ class NotificationHandler : NSObject, UNUserNotificationCenterDelegate {
                         print("Next trigger date:: \(nextTriggerDate)")
                 }*/
                 if item.identifier == identifier {
-                    print("Ooooopssss.")
                     completion(false)
                 }
             }

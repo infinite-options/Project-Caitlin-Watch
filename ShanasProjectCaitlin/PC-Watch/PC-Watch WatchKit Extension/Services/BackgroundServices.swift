@@ -13,10 +13,10 @@ import Combine
 import WatchKit
 
 class BackgroundService: NSObject {
+    
+    var backgroundTasKID = [-1, -1]
     static let shared = BackgroundService()
     let model = FirebaseGoogleService.shared
-    
-//    static let url = URL(string: "https://firestore.googleapis.com/v1/projects/project-caitlin-c71a9/databases/(default)/documents/users/" + UserDay.shared.User)!
     let UserDayData = UserDay.shared
     
     // Store tasks in order to complete them when finished
@@ -28,14 +28,60 @@ class BackgroundService: NSObject {
         configuration.sessionSendsLaunchEvents = true
         let session = URLSession(configuration: configuration,
                                  delegate: self, delegateQueue: nil)
+        
+        updateGoals(session: session) { backgroundGoalTask in
+            self.updateEvents(session: session) { backroundEventTask in
+                backgroundGoalTask.resume()
+                backroundEventTask.resume()
+            }
+        }
+    }
+    
+    func updateGoals( session: URLSession, completion: (URLSessionDownloadTask) -> ())  {
         let goalUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.UserDayData.User
         guard let url = URL(string: goalUrl) else { return }
         let backgroundTask = session.downloadTask(with: url)
-        backgroundTask.resume()
+        backgroundTasKID[0] = backgroundTask.taskIdentifier
+        completion(backgroundTask)
+    }
+    
+    func updateEvents(session: URLSession, completion: (URLSessionDownloadTask) -> ()) {
+        guard let url = URL(string: "https://us-central1-myspace-db.cloudfunctions.net/GetEventsForTheDay") else { return }
+        
+        //Get the components for today's date
+        var currComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: Date())
+
+        //Set to 00:00:00 for 'start' of the day
+        currComponents.hour = 0
+        currComponents.minute = 0
+        currComponents.second = 0
+        let startDate = DayDateObj.ISOFormatter.string(from: Calendar.current.date(from: currComponents)!)
+        
+        //Set to 23:59:59 for 'end' of the day
+        currComponents.hour = 23
+        currComponents.minute = 59
+        currComponents.second = 59
+        let endDate = DayDateObj.ISOFormatter.string(from: Calendar.current.date(from: currComponents)!)
+        
+        //Create request the body
+        let jsonData = getEventsBody(id: self.UserDayData.User,
+                                     start: startDate,
+                                     end: endDate)
+        let finalJsonData = try? JSONEncoder().encode(jsonData)
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = finalJsonData
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        
+        let backgroundTask = session.downloadTask(with: request)
+        backgroundTasKID[1] = backgroundTask.taskIdentifier
+        completion(backgroundTask)
+       
     }
     
     func handleDownload(_ backgroundTask: WKURLSessionRefreshBackgroundTask) {
-        print("ZZZZZZ")
         let configuration = URLSessionConfiguration
             .background(withIdentifier: backgroundTask.sessionIdentifier)
         
@@ -47,23 +93,66 @@ class BackgroundService: NSObject {
 }
 
 extension BackgroundService : URLSessionDownloadDelegate {
+    
     func urlSession(_ session: URLSession,
                     downloadTask: URLSessionDownloadTask,
                     didFinishDownloadingTo location: URL) {
         
-        processFile(file: location)
+        let group = DispatchGroup()
+        
+        if(downloadTask.taskIdentifier == backgroundTasKID[0]){
+            group.enter()
+            processGoalsFile(file: location) {
+                group.leave()
+            }
+        }
+        
+        if(downloadTask.taskIdentifier == backgroundTasKID[1]){
+            group.enter()
+            processEventsFile(file: location) {
+                group.leave()
+            }
+        }
+        
+        group.notify(queue: DispatchQueue.main) {
+            UserDay.shared.mergeSortedGoalsEvents(goals: FirebaseGoogleService.shared.data ?? [Value](), events: FirebaseGoogleService.shared.events ?? [Event]())
+            self.updateActiveComplication()
+        }
         
         self.pendingBackgroundTasks.forEach {
             $0.setTaskCompletedWithSnapshot(false)
         }
     }
     
-    func processFile(file: URL){
+    func processGoalsFile(file: URL, completion: () -> ()){
         if let data = try? Data(contentsOf: file),
             let model = try? JSONDecoder().decode(Firebase.self, from: data) {
-                //data?.fields.goalsRoutines.arrayValue.values ?? nil
-            //FirebaseGoogleService.shared.data = model.fields.goalsRoutines.arrayValue.values
-            print("Successsssss :::::::::")
+            DispatchQueue.main.async {
+                FirebaseGoogleService.shared.data = model.fields.goalsRoutines.arrayValue.values
+            }
+            print("Processed goals successfully")
+            completion()
+        }
+    }
+    
+    func processEventsFile(file: URL, completion: () -> ()){
+        if let data = try? Data(contentsOf: file),
+            let model = try? JSONDecoder().decode([Event].self, from: data) {
+            DispatchQueue.main.async {
+                FirebaseGoogleService.shared.events = model
+            }
+            print("Processed events successfully")
+            completion()
+        }
+    }
+    
+    func updateActiveComplication(){
+        print("Calling reloadTimeline")
+        let complicationServer = CLKComplicationServer.sharedInstance()
+        if let activeComplication = complicationServer.activeComplications {
+            for complication in activeComplication {
+                complicationServer.reloadTimeline(for: complication)
+            }
         }
     }
 }
