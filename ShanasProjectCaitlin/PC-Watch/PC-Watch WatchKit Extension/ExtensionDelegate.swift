@@ -48,7 +48,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     }
     
     func didRegisterForRemoteNotifications(withDeviceToken deviceToken: Data) {
-      /// Swizzling should be disabled in Messaging for watchOS, set APNS token manually.
+        //Swizzling should be disabled in Messaging for watchOS, set APNS token manually.
         print("Registering done. Send token to FCM now.")
         Messaging.messaging().apnsToken = deviceToken
     }
@@ -59,7 +59,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     }
 
     func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {
-        // Sent when the system needs to launch the application in the background to process tasks. Tasks arrive in a set, so loop through and process each one.
+        //Sent when the system needs to launch the application in the background to process tasks. Tasks arrive in a set, so loop through and process each one.
         for task in backgroundTasks {
             // Use a switch statement to check the task type
             switch task {
@@ -76,7 +76,6 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
                 connectivityTask.setTaskCompletedWithSnapshot(false)
             case let urlSessionTask as WKURLSessionRefreshBackgroundTask:
                 // Be sure to complete the URL session task once you’re done.
-                print("FFFFF")
                 BackgroundService.shared.handleDownload(urlSessionTask)
                 urlSessionTask.setTaskCompletedWithSnapshot(false)
             case let relevantShortcutTask as WKRelevantShortcutRefreshBackgroundTask:
@@ -91,32 +90,15 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
             }
         }
     }
-    /*
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        print("here1")
-        completionHandler()
-    }*/
     
     //To show notifications when the app is in the foreground.
-    //Never getting called, need to *FIX* this.
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        print("here2")
         completionHandler([.alert, .sound, .badge])
     }
     
-    func updateActiveComplication(){
-        let complicationServer = CLKComplicationServer.sharedInstance()
-        if let activeComplication = complicationServer.activeComplications {
-            for complication in activeComplication {
-                complicationServer.reloadTimeline(for: complication)
-            }
-        }
-    }
-    
     func scheduleBackgroundRefreshTasks() {
-        print("SCHEDULING TASK NOWW")
         // Get the shared extension object.
         let watchExtension = WKExtension.shared()
         
@@ -129,11 +111,11 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
             
             // Check for errors.
             if let error = error {
-                print("*** An background refresh error occurred: \(error.localizedDescription) ***")
+                print("*** A background refresh error occurred: \(error.localizedDescription) ***")
                 return
             }
             
-            print("*** Background Task Completed Scheduled! ***")
+            print("*** Background Task Scheduled! ***")
         }
     }
 }

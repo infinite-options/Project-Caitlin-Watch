@@ -52,13 +52,12 @@ struct StepView: View {
                 if(!self.done && (self.step!.mapValue.fields.isComplete!.booleanValue == false)){
                     Button(action: {
                         //Complete step
-                        self.model.completeGRATIS(userId: self.user.User,
+                        self.model.completeInstructionOrStep(userId: self.user.User,
                                                   routineId: self.goalOrRoutineID!,
                                                   taskId: self.taskID!,
                                                   routineNumber: -1,
                                                   taskNumber: -1,
-                                                  stepNumber: self.index!,
-                                                  start: "step")
+                                                  stepNumber: self.index!)
                         print("step complete")
                         //update step in model
                         self.model.taskSteps[self.taskID!]!![self.index!].mapValue.fields.isComplete!.booleanValue = true
@@ -69,13 +68,12 @@ struct StepView: View {
                             //if task steps left == 0, task is complete so update data model
                             self.model.goalsSubtasks[self.goalOrRoutineID!]!![self.taskIndex!].mapValue.fields.isComplete!.booleanValue = true
                             //complete task
-                            self.model.completeGRATIS(userId: self.user.User,
+                            self.model.completeActionOrTask(userId: self.user.User,
                                                       routineId: self.goalOrRoutineID!,
                                                       taskId: self.taskID!,
                                                       routineNumber: -1,
                                                       taskNumber: self.taskIndex!,
-                                                      stepNumber: -1,
-                                                      start: "task")
+                                                      stepNumber: -1)
                             // decrement number of tasks left for goal
                             self.model.goalSubtasksLeft[self.goalOrRoutineID!]! -= 1
                             if self.model.goalSubtasksLeft[self.goalOrRoutineID!] == 0 {
@@ -83,13 +81,12 @@ struct StepView: View {
                                 //if goal has no tasks left, it is complete so update model
                                 self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isComplete!.booleanValue = true
                                 // complete goal
-                                self.model.completeGRATIS(userId: self.user.User,
+                                self.model.completeGoalOrRoutine(userId: self.user.User,
                                                           routineId: self.goalOrRoutineID!,
                                                           taskId: self.taskID!,
                                                           routineNumber: self.goalOrRoutineIndex!,
                                                           taskNumber: -1,
-                                                          stepNumber: -1,
-                                                          start: "goal")
+                                                          stepNumber: -1)
                             } else {
                                 print("goal not complete yet")
                                 // goal is not complete so is inprogress
@@ -182,13 +179,12 @@ struct StepsView: View {
                     if(!self.done && (self.task!.mapValue.fields.isComplete!.booleanValue == false)){
                         Button(action: {
                             // complete task
-                            self.model.completeGRATIS(userId: self.user.User,
+                            self.model.completeActionOrTask(userId: self.user.User,
                                                       routineId: self.goalID!,
                                                       taskId: self.task!.mapValue.fields.id.stringValue,
                                                       routineNumber: -1,
                                                       taskNumber: self.taskIndex!,
-                                                      stepNumber: -1,
-                                                      start: "task")
+                                                      stepNumber: -1)
                             print("task complete")
                             // update task in model
                             self.model.goalsSubtasks[self.goalID!]!![self.taskIndex!].mapValue.fields.isComplete?.booleanValue = true
@@ -199,13 +195,12 @@ struct StepsView: View {
                                 // if no tasks left, update model
                                 self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isComplete!.booleanValue = true
                                 // set goal to complete
-                                self.model.completeGRATIS(userId: self.user.User,
+                                self.model.completeGoalOrRoutine(userId: self.user.User,
                                                           routineId: self.goalID!,
                                                           taskId: "NA",
                                                           routineNumber: self.goalOrRoutineIndex!,
                                                           taskNumber: -1,
-                                                          stepNumber: -1,
-                                                          start: "goal")
+                                                          stepNumber: -1)
                             } else {
                                 print("goal not complete yet")
                                 // goal is not complete so set to in progress, update model
@@ -258,13 +253,12 @@ struct StepsView: View {
                             if(!self.done && (self.task!.mapValue.fields.isComplete!.booleanValue == false)){
                                 Button(action: {
                                     // complete task
-                                    self.model.completeGRATIS(userId: self.user.User,
+                                    self.model.completeActionOrTask(userId: self.user.User,
                                                               routineId: self.goalID!,
                                                               taskId: self.task!.mapValue.fields.id.stringValue,
                                                               routineNumber: -1,
                                                               taskNumber: self.taskIndex!,
-                                                              stepNumber: -1,
-                                                              start: "task")
+                                                              stepNumber: -1)
                                     print("task complete")
                                     // update task in model
                                     self.model.goalsSubtasks[self.goalID!]!![self.taskIndex!].mapValue.fields.isComplete?.booleanValue = true
@@ -275,13 +269,12 @@ struct StepsView: View {
                                         // if no tasks left, update model
                                         self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isComplete!.booleanValue = true
                                         // set goal to complete
-                                        self.model.completeGRATIS(userId: self.user.User,
+                                        self.model.completeGoalOrRoutine(userId: self.user.User,
                                                                   routineId: self.goalID!,
                                                                   taskId: "NA",
                                                                   routineNumber: self.goalOrRoutineIndex!,
                                                                   taskNumber: -1,
-                                                                  stepNumber: -1,
-                                                                  start: "goal")
+                                                                  stepNumber: -1)
                                     } else {
                                         print("goal not complete yet")
                                         // goal is not complete so set to in progress, update model

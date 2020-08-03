@@ -133,13 +133,12 @@ struct TasksView: View {
                     if(!self.done && (self.goalOrRoutine!.mapValue!.fields.isComplete!.booleanValue == false)){
                         Button(action: {
                             print("done button clicked")
-                            self.model.completeGRATIS(userId: self.user.User,
+                            self.model.completeGoalOrRoutine(userId: self.user.User,
                                                       routineId: self.goalOrRoutine!.mapValue!.fields.id.stringValue,
                                                       taskId: "NA",
                                                       routineNumber: self.goalOrRoutineIndex!,
                                                       taskNumber: -1,
-                                                      stepNumber: -1,
-                                                      start: "goal")
+                                                      stepNumber: -1)
                             self.model.data![self.goalOrRoutineIndex!].mapValue!.fields.isComplete!.booleanValue = true
                             self.done = true
                         }) {

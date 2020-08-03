@@ -11,14 +11,18 @@ import Foundation
 class FirebaseGoogleService: ObservableObject {
     
     static let shared = FirebaseGoogleService()
-    //private let notificationHandler = NotificationHandler()
     let UserDayData = UserDay.shared
-    //@Published var UserDay = [UserDayGoalEventList]()
     
+    //Stores the user information
     @Published var User: Firebase?
+    
+    //Stores the goals and routines
     @Published var data: [Value]?
+    
+    //Stores the events
     @Published var events: [Event]?
     
+    //Temporary variables to hold tasks and steps
     private var tasks: [ValueTask]?
     private var steps: [ValueTask]?
     
@@ -35,7 +39,7 @@ class FirebaseGoogleService: ObservableObject {
     
     private init() {
         updateDataModel {
-            print("Populated data model. -------------------------")
+            print("Populated data model")
             self.UserDayData.mergeSortedGoalsEvents(goals: self.data ?? [Value](), events: self.events ?? [Event]())
             NotificationHandler().scheduleNotifications()
         }
@@ -100,12 +104,6 @@ class FirebaseGoogleService: ObservableObject {
         }
     }
     
-    struct getEventsBody: Codable {
-        var id: String
-        var start: String
-        var end: String
-    }
-    
     func getEventsFromGoogleCalendar(completion: @escaping ([Event]?) -> ()){
         guard let url = URL(string: "https://us-central1-myspace-db.cloudfunctions.net/GetEventsForTheDay") else { return }
         
@@ -123,8 +121,6 @@ class FirebaseGoogleService: ObservableObject {
         currComponents.minute = 59
         currComponents.second = 59
         let endDate = DayDateObj.ISOFormatter.string(from: Calendar.current.date(from: currComponents)!)
-        
-        //print("Start: \(startDate) ::: End: \(endDate)")
         
         //Create request the body
         let jsonData = getEventsBody(id: self.UserDayData.User,
@@ -152,7 +148,7 @@ class FirebaseGoogleService: ObservableObject {
                     }
                 }
                 catch _ {
-                    print("No events found for user: \(self.UserDayData.User)")
+                    //print("No events found for user: \(self.UserDayData.User)")
                     //print("Error in parsing Events data: \(jsonParseError)" )
                     completion(nil)
                 }
@@ -179,7 +175,7 @@ class FirebaseGoogleService: ObservableObject {
                     }
                 }
                 catch _ {
-                    print("No goals found for user: \(self.UserDayData.User)")
+                    //print("No goals found for user: \(self.UserDayData.User)")
                     //print("Error in parsing Goals data: \(jsonParseError)")
                     completion(nil)
                 }
@@ -190,11 +186,8 @@ class FirebaseGoogleService: ObservableObject {
     
     func getFirebaseTasks(goalID: String, completion: @escaping ([ValueTask]?) -> ()) {
         let TaskUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.UserDayData.User + "/goals&routines/" + goalID
-        //TaskUrl.append("goals&routines")
-        //TaskUrl.append(goalID)
-        print(TaskUrl)
-        
         guard let url = URL(string: TaskUrl) else { return }
+        
             URLSession.shared.dataTask(with: url) { (data, _, error) in
                 if let error = error {
                     print("Generic networking error: \(error)")
@@ -208,7 +201,7 @@ class FirebaseGoogleService: ObservableObject {
                         }
                     }
                     catch _ {
-                        print("No tasks for goal: \(goalID)")
+                        //print("No tasks for goal: \(goalID)")
                         //print("Error in parsing Tasks data: \(jsonParseError)" )
                         completion(nil)
                     }
@@ -219,12 +212,8 @@ class FirebaseGoogleService: ObservableObject {
     
     func getFirebaseStep(stepID: String, goalID: String, completion: @escaping ([ValueTask]?) -> ()) {
         let StepUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.UserDayData.User + "/goals&routines/" + goalID + "/actions&tasks/" + stepID
-        //StepUrl.append(goalID)
-        //StepUrl.append("/actions&tasks/")
-        //StepUrl.append(stepID)
-        print(StepUrl)
-        
         guard let url = URL(string: StepUrl) else { return }
+        
         URLSession.shared.dataTask(with: url) { (data, _, error) in
             if let error = error {
                 print("Generic networking error: \(error)")
@@ -238,7 +227,7 @@ class FirebaseGoogleService: ObservableObject {
                     }
                 }
                 catch _ {
-                    print("No steps for task: \(stepID)")
+                    //print("No steps for task: \(stepID)")
                     //print("Error in parsing Steps data: \(jsonParseError)" )
                     completion(nil)
                 }
@@ -248,10 +237,9 @@ class FirebaseGoogleService: ObservableObject {
     }
     
     func startGoalOrRoutine(userId: String, routineId: String, taskId: String?, routineNumber: Int?, taskNumber: Int?, stepNumber: Int?) {
-        
         guard let url = URL(string: "https://us-central1-project-caitlin-c71a9.cloudfunctions.net/StartGoalOrRoutine") else { return }
         
-        let jsonData = startGRATISbody(data: Fields(userId: userId,
+        let jsonData = StartCompleteGRATISBody(data: Fields(userId: userId,
                                                     routineId: routineId,
                                                     taskId: taskId,
                                                     routineNumber: routineNumber,
@@ -288,7 +276,7 @@ class FirebaseGoogleService: ObservableObject {
         
         guard let url = URL(string: "https://us-central1-project-caitlin-c71a9.cloudfunctions.net/StartActionOrTask") else { return }
         
-        let jsonData = startGRATISbody(data: Fields(userId: userId,
+        let jsonData = StartCompleteGRATISBody(data: Fields(userId: userId,
                                                     routineId: routineId,
                                                     taskId: taskId,
                                                     routineNumber: routineNumber,
@@ -325,7 +313,7 @@ class FirebaseGoogleService: ObservableObject {
         
         guard let url = URL(string: "https://us-central1-project-caitlin-c71a9.cloudfunctions.net/StartInstructionOrStep") else { return }
         
-        let jsonData = startGRATISbody(data: Fields(userId: userId,
+        let jsonData = StartCompleteGRATISBody(data: Fields(userId: userId,
                                                     routineId: routineId,
                                                     taskId: taskId,
                                                     routineNumber: routineNumber,
@@ -358,33 +346,94 @@ class FirebaseGoogleService: ObservableObject {
         }.resume()
     }
     
-    func completeGRATIS(userId: String, routineId: String, taskId: String?, routineNumber: Int?, taskNumber: Int?, stepNumber: Int?, start: String){
+    func completeGoalOrRoutine(userId: String, routineId: String, taskId: String?, routineNumber: Int?, taskNumber: Int?, stepNumber: Int?) {
         
-        var url: URL?
-        var request: URLRequest
+        guard let url = URL(string: "https://us-central1-project-caitlin-c71a9.cloudfunctions.net/CompleteGoalOrRoutine") else { return }
         
-        if start == "goal"{
-            url = URL(string: "https://us-central1-project-caitlin-c71a9.cloudfunctions.net/CompleteGoalOrRoutine")
-        }
-        if start == "task"{
-           url = URL(string: "https://us-central1-project-caitlin-c71a9.cloudfunctions.net/CompleteActionOrTask")
-        }
-        if start == "step"{
-            url = URL(string: "https://us-central1-project-caitlin-c71a9.cloudfunctions.net/CompleteInstructionOrStep")
-        }
-        
-        let jsonData = completeGRATISbody(data: CompleteFields(userId: userId,
+        let jsonData = StartCompleteGRATISBody(data: Fields(userId: userId,
                                                     routineId: routineId,
                                                     taskId: taskId,
                                                     routineNumber: routineNumber,
                                                     taskNumber: taskNumber,
                                                     stepNumber: stepNumber
                                                     ))
-        
         let finalJsonData = try? JSONEncoder().encode(jsonData)
-        if let url = url { request = URLRequest(url: url) }
-        else { return }
         
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = finalJsonData
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        
+        URLSession.shared.dataTask(with: request){ (data, _ , error) in
+            if let error = error {
+                print("Generic networking error: \(error)")
+            }
+            
+            if let data = data {
+                do{
+                    let finalRespData = try JSONDecoder().decode(cloudFuncResp.self, from: data)
+                    print(finalRespData)
+                }
+                catch let jsonParseError {
+                    print("Error in parsing JSON response: \(jsonParseError)")
+                }
+            }
+            else { return }
+        }.resume()
+    }
+    
+    func completeActionOrTask(userId: String, routineId: String, taskId: String?, routineNumber: Int?, taskNumber: Int?, stepNumber: Int?) {
+        
+        guard let url = URL(string: "https://us-central1-project-caitlin-c71a9.cloudfunctions.net/CompleteActionOrTask") else { return }
+        
+        let jsonData = StartCompleteGRATISBody(data: Fields(userId: userId,
+                                                    routineId: routineId,
+                                                    taskId: taskId,
+                                                    routineNumber: routineNumber,
+                                                    taskNumber: taskNumber,
+                                                    stepNumber: stepNumber
+                                                    ))
+        let finalJsonData = try? JSONEncoder().encode(jsonData)
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = finalJsonData
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        
+        URLSession.shared.dataTask(with: request){ (data, _ , error) in
+            if let error = error {
+                print("Generic networking error: \(error)")
+            }
+            
+            if let data = data {
+                do{
+                    let finalRespData = try JSONDecoder().decode(cloudFuncResp.self, from: data)
+                    print(finalRespData)
+                }
+                catch let jsonParseError {
+                    print("Error in parsing JSON response: \(jsonParseError)")
+                }
+            }
+            else { return }
+        }.resume()
+    }
+    
+    func completeInstructionOrStep(userId: String, routineId: String, taskId: String?, routineNumber: Int?, taskNumber: Int?, stepNumber: Int?) {
+        
+        guard let url = URL(string: "https://us-central1-project-caitlin-c71a9.cloudfunctions.net/CompleteInstructionOrStep") else { return }
+        
+        let jsonData = StartCompleteGRATISBody(data: Fields(userId: userId,
+                                                    routineId: routineId,
+                                                    taskId: taskId,
+                                                    routineNumber: routineNumber,
+                                                    taskNumber: taskNumber,
+                                                    stepNumber: stepNumber
+                                                    ))
+        let finalJsonData = try? JSONEncoder().encode(jsonData)
+        
+        var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.httpBody = finalJsonData
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")

@@ -35,18 +35,18 @@ class UserDay: ObservableObject {
         let endComp = calendar.dateComponents([.year, .month, .day], from: endInterval)
         
         while i<events?.count ?? -1 && j<goals?.count ?? -1 {
-           let eventStart = calendar.dateComponents([.hour, .minute, .second], from: ISO8601DateFormatter().date(from: (events![i].start?.dateTime)!)!)
-           var goalStart = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (goals![j].mapValue?.fields.startDayAndTime.stringValue)!)!)
-            goalStart.year = startComp.year
-            goalStart.month = startComp.month
-            goalStart.day = startComp.day
-           var goalEnd = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (goals![j].mapValue?.fields.endDayAndTime.stringValue)!)!)
-            goalEnd.year = endComp.year
-            goalEnd.month = endComp.month
-            goalEnd.day = endComp.day
-           
-           //print(eventStart)
-           //print(goalStart)
+            let eventStart = calendar.dateComponents([.hour, .minute, .second], from: ISO8601DateFormatter().date(from: (events![i].start?.dateTime)!)!)
+            
+            var goalStart = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (goals![j].mapValue?.fields.startDayAndTime.stringValue)!)!)
+                goalStart.year = startComp.year
+                goalStart.month = startComp.month
+                goalStart.day = startComp.day
+            
+            var goalEnd = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (goals![j].mapValue?.fields.endDayAndTime.stringValue)!)!)
+                goalEnd.year = endComp.year
+                goalEnd.month = endComp.month
+                goalEnd.day = endComp.day
+               
             if calendar.date(from: eventStart)! < calendar.date(from: goalStart)! {
                 if self.isNow(item: events![i]) == true {
                    self.UserDayData.append(events![i])
@@ -59,7 +59,7 @@ class UserDay: ObservableObject {
                 if goals![j].mapValue!.fields.isDisplayedToday.booleanValue == true && goals![j].mapValue!.fields.isAvailable.booleanValue == true {
                     self.UserDayData.append(goals![j])
                     if self.goalWithinInterval(itemStart: calendar.date(from: goalStart)!, itemEnd: calendar.date(from: goalEnd)!, start: startInterval, end: endInterval) {
-                         self.UserDayBlockData.append(goals![j])
+                        self.UserDayBlockData.append(goals![j])
                     }
                 }
                 j += 1
@@ -76,19 +76,21 @@ class UserDay: ObservableObject {
             i += 1
         }
        
-       while j<goals?.count ?? -1 {
-        var goalStart = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (goals![j].mapValue?.fields.startDayAndTime.stringValue)!)!)
-        goalStart.year = startComp.year
-        goalStart.month = startComp.month
-        goalStart.day = startComp.day
-        var goalEnd = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (goals![j].mapValue?.fields.endDayAndTime.stringValue)!)!)
-        goalEnd.year = endComp.year
-        goalEnd.month = endComp.month
-        goalEnd.day = endComp.day
-           if goals![j].mapValue!.fields.isDisplayedToday.booleanValue == true && goals![j].mapValue!.fields.isAvailable.booleanValue == true {
-               self.UserDayData.append(goals![j])
+        while j<goals?.count ?? -1 {
+            var goalStart = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (goals![j].mapValue?.fields.startDayAndTime.stringValue)!)!)
+            goalStart.year = startComp.year
+            goalStart.month = startComp.month
+            goalStart.day = startComp.day
+                
+            var goalEnd = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (goals![j].mapValue?.fields.endDayAndTime.stringValue)!)!)
+            goalEnd.year = endComp.year
+            goalEnd.month = endComp.month
+            goalEnd.day = endComp.day
+            
+            if goals![j].mapValue!.fields.isDisplayedToday.booleanValue == true && goals![j].mapValue!.fields.isAvailable.booleanValue == true {
+                self.UserDayData.append(goals![j])
                 if self.goalWithinInterval(itemStart: calendar.date(from: goalStart)!, itemEnd: calendar.date(from: goalEnd)!, start: startInterval, end: endInterval) {
-                     self.UserDayBlockData.append(goals![j])
+                    self.UserDayBlockData.append(goals![j])
                 }
            }
            j += 1
@@ -111,9 +113,6 @@ class UserDay: ObservableObject {
     }
     
     private func goalWithinInterval(itemStart: Date, itemEnd: Date, start: Date, end: Date) -> Bool {
-        print("goalwithininterval")
-        print("end time interval: ", itemStart)
-        print("start time interval: ", itemEnd)
         if itemEnd < start || itemStart > end {
             return false
         }
