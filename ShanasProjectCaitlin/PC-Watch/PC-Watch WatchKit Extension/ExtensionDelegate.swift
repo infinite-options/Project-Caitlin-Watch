@@ -104,7 +104,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
         
         // If there is a complication on the watch face, the app should get at least four
         // updates an hour. So calculate a target date 5 minutes in the future.
-        let targetDate = Date().addingTimeInterval(3.0 * 60.0)
+        let targetDate = Date().addingTimeInterval(30.0 * 60.0)
         
         // Schedule the background refresh task.
         watchExtension.scheduleBackgroundRefresh(withPreferredDate: targetDate, userInfo: nil) { (error) in
