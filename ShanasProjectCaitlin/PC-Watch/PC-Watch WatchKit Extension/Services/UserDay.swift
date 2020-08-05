@@ -48,11 +48,9 @@ class UserDay: ObservableObject {
                 goalEnd.day = endComp.day
                
             if calendar.date(from: eventStart)! < calendar.date(from: goalStart)! {
-                if self.isNow(item: events![i]) == true {
-                   self.UserDayData.append(events![i])
-                    if self.eventWithinInterval(item: events![i], start: startInterval, end: endInterval) {
-                        self.UserDayBlockData.append(events![i])
-                    }
+                self.UserDayData.append(events![i])
+                if self.eventWithinInterval(item: events![i], start: startInterval, end: endInterval) {
+                    self.UserDayBlockData.append(events![i])
                 }
                 i += 1
             } else {
@@ -67,11 +65,9 @@ class UserDay: ObservableObject {
         }
        
         while i<events?.count ?? -1 {
-            if self.isNow(item: events![i]) == true {
-                self.UserDayData.append(events![i])
-                if self.eventWithinInterval(item: events![i], start: startInterval, end: endInterval) {
-                    self.UserDayBlockData.append(events![i])
-                }
+            self.UserDayData.append(events![i])
+            if self.eventWithinInterval(item: events![i], start: startInterval, end: endInterval) {
+                self.UserDayBlockData.append(events![i])
             }
             i += 1
         }
