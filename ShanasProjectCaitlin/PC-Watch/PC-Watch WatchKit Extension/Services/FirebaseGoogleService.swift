@@ -460,7 +460,7 @@ class FirebaseGoogleService: ObservableObject {
     func sortGoals(this: Value, that: Value) -> Bool {
         var calendar = Calendar.current
         calendar.timeZone = .current
-        print(this.mapValue?.fields.startDayAndTime.stringValue)
+        
         let thisStart = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (this.mapValue?.fields.startDayAndTime.stringValue)!)!)
         let thatStart = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (that.mapValue?.fields.startDayAndTime.stringValue)!)!)
        

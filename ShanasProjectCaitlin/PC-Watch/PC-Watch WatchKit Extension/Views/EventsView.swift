@@ -7,10 +7,10 @@
 //
 
 import SwiftUI
+import SwiftSoup
 
 struct EventsView: View {
     var event: Event?
-      
     var body: some View {
         GeometryReader { geo in
             ScrollView([.vertical]) {
@@ -36,7 +36,7 @@ struct EventsView: View {
                             .fontWeight(.light)
                             .font(.system(size: 15))
                         Divider()
-                        if self.event!.description != nil{
+                        if self.event!.description != nil {
                             Text("Description: " + self.event!.description!)
                                 .fontWeight(.light)
                                 .font(.system(size: 15))
