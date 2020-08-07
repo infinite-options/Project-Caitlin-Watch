@@ -9,43 +9,6 @@
 import SwiftUI
 import UIKit
 
-let durationFormatter: DateFormatter = {
-    let format = DateFormatter()
-    format.timeZone = .current
-    format.dateFormat = "h:mm"
-    return format
-}()
-
-struct itemImage: View {
-    var photo: String
-    var isComplete: Bool
-    var isInProgress: Bool
-    
-    var body: some View {
-        HStack {
-            if (isComplete == true){
-                SmallAssetImage(urlName: photo, placeholder: Image("default-goal"))
-                    .aspectRatio(contentMode: .fit)
-                    .opacity(0.40)
-                    .overlay(Image(systemName: "checkmark.circle")
-                        .font(.system(size:44))
-                        .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
-                        .foregroundColor(.green))
-            } else if (isInProgress == true) {
-                SmallAssetImage(urlName: photo, placeholder: Image("default-goal"))
-                    .aspectRatio(contentMode: .fit)
-                    .opacity(0.40)
-                    .overlay(Image(systemName: "arrow.2.circlepath.circle")
-                        .font(.system(size:44))
-                        .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
-                        .foregroundColor(.yellow))
-            } else {
-                SmallAssetImage(urlName: photo, placeholder: Image("default-goal"))
-                    .aspectRatio(contentMode: .fit)
-            }
-        }
-    }
-}
 struct EventInfoView: View {
     var item: Event?
     
@@ -57,11 +20,24 @@ struct EventInfoView: View {
                 .lineLimit(2)
             Spacer()
             HStack{
-                SmallAssetImage(urlName: "",
+                if self.isNow(item: item!) {
+                    SmallAssetImage(urlName: "",
                                 placeholder: Image("calendar")
                                     .resizable()
                                     .frame(width:25, height:25)
                                     .padding(0))
+                } else {
+                    SmallAssetImage(urlName: "",
+                                placeholder: Image("calendar")
+                                    .resizable()
+                                    .frame(width:25, height:25)
+                                    .padding(0))
+                        .opacity(0.40)
+                        .overlay(Image(systemName: "checkmark.circle")
+                            .font(.system(size:44))
+                            .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
+                            .foregroundColor(.green))
+                }
                 
                 VStack(alignment: .leading) {
                     Text("Start " + DayDateObj.formatter.string(from: ISO8601DateFormatter().date(from: self.item!.start!.dateTime)!))
@@ -76,6 +52,13 @@ struct EventInfoView: View {
                 }
             }
         }
+    }
+    
+    private func isNow(item: Event) -> Bool {
+        if DayDateObj.ISOFormatter.date(from: item.end!.dateTime)! < Date() {
+            return false
+        }
+        return true
     }
 }
 struct infoView: View {
