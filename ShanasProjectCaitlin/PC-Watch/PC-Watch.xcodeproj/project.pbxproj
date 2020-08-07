@@ -15,6 +15,7 @@
 		0499EBD424C7A8F300BC359D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0499EBD324C7A8F300BC359D /* GoogleService-Info.plist */; };
 		0499EBD524C7A8F300BC359D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0499EBD324C7A8F300BC359D /* GoogleService-Info.plist */; };
 		0499EBD624C7A8F300BC359D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0499EBD324C7A8F300BC359D /* GoogleService-Info.plist */; };
+		04C6CC4224D9A87A0054E637 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C6CC4124D9A87A0054E637 /* SignInView.swift */; };
 		27BF9DB6243BD385006A5466 /* PC-Watch WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 27BF9DB5243BD385006A5466 /* PC-Watch WatchKit App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		27BF9DBC243BD385006A5466 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27BF9DBA243BD385006A5466 /* Interface.storyboard */; };
 		27BF9DBE243BD389006A5466 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27BF9DBD243BD389006A5466 /* Assets.xcassets */; };
@@ -96,6 +97,7 @@
 		04957BB324C5350C0031D253 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		04957BB524C5D8D10031D253 /* UrlToAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlToAsset.swift; sourceTree = "<group>"; };
 		0499EBD324C7A8F300BC359D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		04C6CC4124D9A87A0054E637 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		27BF9DB1243BD385006A5466 /* PC-Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PC-Watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		27BF9DB5243BD385006A5466 /* PC-Watch WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PC-Watch WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		27BF9DBB243BD385006A5466 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
@@ -280,6 +282,7 @@
 			isa = PBXGroup;
 			children = (
 				27BF9DFD243BD600006A5466 /* HomeView.swift */,
+				04C6CC4124D9A87A0054E637 /* SignInView.swift */,
 				2B42FCAD24C77D2000A6B89E /* GoogleService-Info.plist */,
 				2B5A688924AFBD2000D66FC6 /* StepsView.swift */,
 				2B5A688B24AFBD2E00D66FC6 /* TasksView.swift */,
@@ -526,6 +529,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04C6CC4224D9A87A0054E637 /* SignInView.swift in Sources */,
 				2BC9C3EF24C9550800FEEA97 /* EventsModel.swift in Sources */,
 				0448610D24CB56FF00C0C844 /* UserDayModel.swift in Sources */,
 				04957BB424C5350C0031D253 /* Enums.swift in Sources */,
