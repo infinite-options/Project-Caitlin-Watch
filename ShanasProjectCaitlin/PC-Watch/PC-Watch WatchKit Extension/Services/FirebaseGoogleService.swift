@@ -13,9 +13,6 @@ class FirebaseGoogleService: ObservableObject {
     static let shared = FirebaseGoogleService()
     let UserDayData = UserDay.shared
     
-    //Stores the user information
-    @Published var User: Firebase?
-    
     //Stores the goals and routines
     @Published var data: [Value]?
     
@@ -38,11 +35,12 @@ class FirebaseGoogleService: ObservableObject {
     
     
     private init() {
-        updateDataModel {
-            print("Populated data model")
-            self.UserDayData.mergeSortedGoalsEvents(goals: self.data ?? [Value](), events: self.events ?? [Event]())
-            NotificationHandler().scheduleNotifications()
-        }
+//        updateDataModel {
+//            print("Populated data model")
+//            self.UserDayData.mergeSortedGoalsEvents(goals: self.data ?? [Value](), events: self.events ?? [Event]())
+//            self.UserDayData.loadingUser = false
+//            NotificationHandler().scheduleNotifications()
+//        }
     }
 
     func updateDataModel(completion: @escaping () -> ()) {
@@ -61,7 +59,7 @@ class FirebaseGoogleService: ObservableObject {
         group.notify(queue: DispatchQueue.main){
             self.getFirebaseData(){
                 
-                (data) in self.User = data!
+                (data) in self.UserDayData.UserInfo = data!
                 self.data = data!.fields.goalsRoutines.arrayValue.values
                 
                 if let data = self.data {

@@ -30,3 +30,11 @@ struct getEventsBody: Codable {
     var start: String
     var end: String
 }
+
+struct getUserIdBody: Codable {
+    var email: String
+}
+
+struct getUserFromEmailResponse: Codable {
+    var userId: String
+}
