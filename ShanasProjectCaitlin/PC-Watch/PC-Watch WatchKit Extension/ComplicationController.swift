@@ -92,6 +92,36 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             } else {
                 handler(nil)
             }
+        } else if complication.family == .circularSmall {
+            let circularSmall = CLKComplicationTemplateCircularSmallSimpleImage()
+            circularSmall.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Circular")!)
+            let timelineEntry = CLKComplicationTimelineEntry(date: Date(), complicationTemplate: circularSmall)
+            handler(timelineEntry)
+        } else if complication.family == .graphicCircular {
+            let graphicCircular = CLKComplicationTemplateGraphicCircularImage()
+            graphicCircular.imageProvider = CLKFullColorImageProvider(fullColorImage: UIImage(named: "Complication/Graphic Circular")!)
+            let timelineEntry = CLKComplicationTimelineEntry(date: Date(), complicationTemplate: graphicCircular)
+            handler(timelineEntry)
+        } else if complication.family == .modularSmall {
+            let modularSmall = CLKComplicationTemplateModularSmallSimpleImage()
+            modularSmall.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Modular")!)
+            let timelineEntry = CLKComplicationTimelineEntry(date: Date(), complicationTemplate: modularSmall)
+            handler(timelineEntry)
+        } else if complication.family == .utilitarianSmall {
+            let utilitarianSmall = CLKComplicationTemplateUtilitarianSmallSquare()
+            utilitarianSmall.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Utilitarian")!)
+            let timelineEntry = CLKComplicationTimelineEntry(date: Date(), complicationTemplate: utilitarianSmall)
+            handler(timelineEntry)
+        } else if complication.family == .extraLarge {
+            let extraLarge = CLKComplicationTemplateExtraLargeSimpleImage()
+            extraLarge.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Extra Large")!)
+            let timelineEntry = CLKComplicationTimelineEntry(date: Date(), complicationTemplate: extraLarge)
+            handler(timelineEntry)
+        } else if complication.family == .graphicCorner {
+            let graphicCorner = CLKComplicationTemplateGraphicCornerCircularImage()
+            graphicCorner.imageProvider = CLKFullColorImageProvider(fullColorImage: UIImage(named: "Complication/Graphic Corner")!)
+            let timelineEntry = CLKComplicationTimelineEntry(date: Date(), complicationTemplate: graphicCorner)
+            handler(timelineEntry)
         } else {
             handler(nil)
         }
@@ -162,6 +192,48 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                 }
             }
             handler(timeLineEntries)
+        } else if complication.family == .circularSmall {
+            let circularSmall = CLKComplicationTemplateCircularSmallSimpleImage()
+            circularSmall.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Circular")!)
+            var timeLineEntries = [CLKComplicationTimelineEntry]()
+            let timelineEntry = CLKComplicationTimelineEntry(date: Date(), complicationTemplate: circularSmall)
+            timeLineEntries.append(timelineEntry)
+            handler(timeLineEntries)
+        } else if complication.family == .graphicCircular {
+            let graphicCircular = CLKComplicationTemplateGraphicCircularImage()
+            graphicCircular.imageProvider = CLKFullColorImageProvider(fullColorImage: UIImage(named: "Complication/Graphic Circular")!)
+            var timeLineEntries = [CLKComplicationTimelineEntry]()
+            let timelineEntry = CLKComplicationTimelineEntry(date: Date(), complicationTemplate: graphicCircular)
+            timeLineEntries.append(timelineEntry)
+            handler(timeLineEntries)
+        } else if complication.family == .modularSmall {
+            let modularSmall = CLKComplicationTemplateModularSmallSimpleImage()
+            modularSmall.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Modular")!)
+            var timeLineEntries = [CLKComplicationTimelineEntry]()
+            let timelineEntry = CLKComplicationTimelineEntry(date: Date(), complicationTemplate: modularSmall)
+            timeLineEntries.append(timelineEntry)
+            handler(timeLineEntries)
+        } else if complication.family == .utilitarianSmall {
+            let utilitarianSmall = CLKComplicationTemplateUtilitarianSmallSquare()
+            utilitarianSmall.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Utilitarian")!)
+            var timeLineEntries = [CLKComplicationTimelineEntry]()
+            let timelineEntry = CLKComplicationTimelineEntry(date: Date(), complicationTemplate: utilitarianSmall)
+            timeLineEntries.append(timelineEntry)
+            handler(timeLineEntries)
+        } else if complication.family == .extraLarge {
+            let extraLarge = CLKComplicationTemplateExtraLargeSimpleImage()
+            extraLarge.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Extra Large")!)
+            var timeLineEntries = [CLKComplicationTimelineEntry]()
+            let timelineEntry = CLKComplicationTimelineEntry(date: Date(), complicationTemplate: extraLarge)
+            timeLineEntries.append(timelineEntry)
+            handler(timeLineEntries)
+        } else if complication.family == .graphicCorner {
+            let graphicCorner = CLKComplicationTemplateGraphicCornerCircularImage()
+            graphicCorner.imageProvider = CLKFullColorImageProvider(fullColorImage: UIImage(named: "Complication/Graphic Corner")!)
+            var timeLineEntries = [CLKComplicationTimelineEntry]()
+            let timelineEntry = CLKComplicationTimelineEntry(date: Date(), complicationTemplate: graphicCorner)
+            timeLineEntries.append(timelineEntry)
+            handler(timeLineEntries)
         } else {
             handler(nil)
         }
@@ -171,20 +243,37 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     
     func getLocalizableSampleTemplate(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTemplate?) -> Void) {
         // This method will be called once per supported complication, and the results will be cached
-        if complication.family == .graphicRectangular{
-            let graphicRectangular = CLKComplicationTemplateGraphicRectangularTextGauge()
-            graphicRectangular.headerTextProvider = CLKSimpleTextProvider(text: "Goal")
-            graphicRectangular.body1TextProvider = CLKSimpleTextProvider(text: "Time - Time")
-            graphicRectangular.gaugeProvider = CLKSimpleGaugeProvider(style: .fill, gaugeColors: [UIColor.green], gaugeColorLocations: nil, fillFraction: Float())
-            handler(graphicRectangular)
-        } else if complication.family == .modularLarge{
+        if complication.family == .modularLarge{
             let modularLarge = CLKComplicationTemplateModularLargeStandardBody()
             modularLarge.headerTextProvider = CLKSimpleTextProvider(text: "Goal/Routine")
             modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "Status")
             modularLarge.body2TextProvider = CLKSimpleTextProvider(text: "Time - Time")
             handler(modularLarge)
-        }
-        else {
+        } else if complication.family == .circularSmall {
+            let circularSmall = CLKComplicationTemplateCircularSmallSimpleImage()
+            circularSmall.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Circular")!)
+            handler(circularSmall)
+        } else if complication.family == .graphicCircular {
+            let graphicCircular = CLKComplicationTemplateGraphicCircularImage()
+            graphicCircular.imageProvider = CLKFullColorImageProvider(fullColorImage: UIImage(named: "Complication/Graphic Circular")!)
+            handler(graphicCircular)
+        } else if complication.family == .modularSmall {
+            let modularSmall = CLKComplicationTemplateModularSmallSimpleImage()
+            modularSmall.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Modular")!)
+            handler(modularSmall)
+        } else if complication.family == .utilitarianSmall {
+            let utilitarianSmall = CLKComplicationTemplateUtilitarianSmallSquare()
+            utilitarianSmall.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Utilitarian")!)
+            handler(utilitarianSmall)
+        } else if complication.family == .extraLarge {
+            let extraLarge = CLKComplicationTemplateExtraLargeSimpleImage()
+            extraLarge.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Extra Large")!)
+            handler(extraLarge)
+        } else if complication.family == .graphicCorner {
+            let graphicCorner = CLKComplicationTemplateGraphicCornerCircularImage()
+            graphicCorner.imageProvider = CLKFullColorImageProvider(fullColorImage: UIImage(named: "Complication/Graphic Circular")!)
+            handler(graphicCorner)
+        } else {
             handler(nil)
         }
     }
