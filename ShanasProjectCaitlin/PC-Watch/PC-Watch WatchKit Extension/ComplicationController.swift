@@ -372,6 +372,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             graphicRectangular.headerTextProvider = CLKSimpleTextProvider(text: "Goal/Routine")
             graphicRectangular.body1TextProvider = CLKSimpleTextProvider(text: "Status")
             graphicRectangular.body2TextProvider = CLKSimpleTextProvider(text: "Time - Time")
+            handler(graphicRectangular)
         } else if complication.family == .circularSmall {
             let circularSmall = CLKComplicationTemplateCircularSmallSimpleImage()
             circularSmall.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Circular")!)
