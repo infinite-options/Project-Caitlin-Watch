@@ -30,11 +30,28 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
             }
         }
         Messaging.messaging().delegate = self
+        
     }
     
     func applicationDidBecomeActive() {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        let _ = FirebaseGoogleService.shared
+        let UserModel = UserDay.shared
+        let DataSource = FirebaseGoogleService.shared
+        
+        UserModel.checkUserAuth { (authState) in
+            if authState == .signedIn {
+                UserModel.User = UserModel.manifestSuite?.string(forKey: UserModel.manifestUserIdKey) as! String
+                DataSource.updateDataModel {
+                    print("Populated data model")
+                    UserModel.UserDayData = []
+                    UserModel.UserDayBlockData = []
+                    
+                    UserModel.mergeSortedGoalsEvents(goals: DataSource.data ?? [Value](), events: DataSource.events ?? [Event]())
+                    UserModel.loadingUser = false
+                    NotificationHandler().scheduleNotifications()
+                }
+            }
+        }
     }
     
     func applicationDidEnterBackground() {

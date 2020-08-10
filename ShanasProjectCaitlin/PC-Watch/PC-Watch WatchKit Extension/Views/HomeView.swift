@@ -122,11 +122,23 @@ struct HomeView: View {
     var body: some View {
 
         GeometryReader { geo in
-            if (self.model.UserDayData.count == 0){
-                VStack(alignment: .leading) {
-                    Text("You dont have anything on your schedule!")
+            if(self.model.isUserSignedIn != .signedIn){
+                VStack(alignment: .center) {
+                    Text("Please sign in to view your day!")
+                    .fontWeight(.bold)
+                    .font(.system(size: 20, design: .rounded))
                     Spacer()
-                }
+                }.frame(width: geo.size.width, height: geo.size.height, alignment: .center)
+                .navigationBarTitle(self.model.navBar)
+            }
+            else if (self.model.UserDayData.count == 0){
+                VStack(alignment: .center) {
+                    Text("You dont have anything on your schedule!")
+                    .fontWeight(.bold)
+                    .font(.system(size: 20, design: .rounded))
+                    Spacer()
+                }.frame(width: geo.size.width, height: geo.size.height, alignment: .center)
+                .navigationBarTitle(self.model.navBar)
             }
             else {
                 VStack {
@@ -157,8 +169,10 @@ struct HomeView: View {
                                 }) {
                                     Text("Show less")
                                         .foregroundColor(.yellow)
+                                        .frame(maxWidth: geo.size.width, alignment: .center)
                                 }
-                            }.listStyle(CarouselListStyle()).navigationBarTitle(self.model.navBar)
+                            }.listStyle(CarouselListStyle())
+                                .navigationBarTitle(self.model.navBar)
                         }.padding(0)
                     }
                     if self.showLess {
@@ -189,10 +203,11 @@ struct HomeView: View {
                                     Text("Show full day")
                                         .foregroundColor(.yellow)
                                 }
-                            }.listStyle(CarouselListStyle()).navigationBarTitle(self.model.navBar)
+                            }.listStyle(CarouselListStyle())
+                                .navigationBarTitle(self.model.navBar)
                         }.padding(0)
                     }
-                }
+                }.navigationBarTitle(self.model.navBar)
             }
         }
     }
