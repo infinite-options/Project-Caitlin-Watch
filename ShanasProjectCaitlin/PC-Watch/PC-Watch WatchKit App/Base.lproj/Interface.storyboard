@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="14815" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="NBu-mt-KyX">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="16097.2" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="NBu-mt-KyX">
     <device id="watch38"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14770"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="14621"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="16012"/>
     </dependencies>
     <scenes>
         <!--Hosting Controller-->
         <scene sceneID="RUd-og-cv4">
             <objects>
-                <hostingController id="NBu-mt-KyX" customClass="HostingController" 
-                customModuleProvider="target"/>                
+                <hostingController id="NBu-mt-KyX" customClass="HostingController" customModule="PC_Watch_WatchKit_App" customModuleProvider="target">
+                    <connections>
+                        <segue destination="AXK-o7-3qk" kind="relationship" relationship="nextPage" id="9gX-CP-hZt"/>
+                    </connections>
+                </hostingController>
             </objects>
-            <point key="canvasLocation" x="187" y="141"/>
+            <point key="canvasLocation" x="90" y="137"/>
         </scene>
         <!--Static Notification Interface Controller-->
         <scene sceneID="AEw-b0-oYE">
@@ -30,13 +33,19 @@
             </objects>
             <point key="canvasLocation" x="187" y="462"/>
         </scene>
-        <!--Notification Hosting Controller-->
+        <!--Notification Controller-->
         <scene sceneID="Niz-AI-uX2">
             <objects>
-                <controller id="eXb-UN-Cd0" customClass="NotificationController"
-                customModuleProvider="target"/>
+                <controller id="eXb-UN-Cd0" customClass="NotificationController" customModule="PC_Watch_WatchKit_App" customModuleProvider="target"/>
             </objects>
             <point key="canvasLocation" x="488" y="462"/>
+        </scene>
+        <!--Second Hosting Controller-->
+        <scene sceneID="74q-nb-jCS">
+            <objects>
+                <hostingController id="AXK-o7-3qk" customClass="SecondHostingController" customModule="PC_Watch_WatchKit_App" customModuleProvider="target"/>
+            </objects>
+            <point key="canvasLocation" x="428" y="137"/>
         </scene>
     </scenes>
 </document>
