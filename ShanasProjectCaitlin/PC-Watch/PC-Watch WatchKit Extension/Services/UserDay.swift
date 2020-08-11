@@ -137,20 +137,21 @@ class UserDay: ObservableObject {
         let endComp = calendar.dateComponents([.year, .month, .day], from: endInterval)
         
         while i<events?.count ?? -1 && j<goals?.count ?? -1 {
-            let eventStart = calendar.dateComponents([.hour, .minute, .second], from: ISO8601DateFormatter().date(from: (events![i].start?.dateTime)!)!)
+            var eventStart = calendar.dateComponents([.hour, .minute, .second], from: ISO8601DateFormatter().date(from: (events![i].start?.dateTime)!)!)
+            eventStart.year = startComp.year
+            eventStart.month = startComp.month
+            eventStart.day = startComp.day
             
-            print("Event start: \(eventStart)")
-            print("Event start date: \(calendar.date(from: eventStart)!)")
             var goalStart = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (goals![j].mapValue?.fields.startDayAndTime.stringValue)!)!)
-                goalStart.year = startComp.year
-                goalStart.month = startComp.month
-                goalStart.day = startComp.day
-            print("Goal start: \(goalStart)")
-            print("Goal start date: \(calendar.date(from: goalStart)!)")
+
+            goalStart.year = startComp.year
+            goalStart.month = startComp.month
+            goalStart.day = startComp.day
+            
             var goalEnd = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (goals![j].mapValue?.fields.endDayAndTime.stringValue)!)!)
-                goalEnd.year = endComp.year
-                goalEnd.month = endComp.month
-                goalEnd.day = endComp.day
+            goalEnd.year = endComp.year
+            goalEnd.month = endComp.month
+            goalEnd.day = endComp.day
                
             if calendar.date(from: eventStart)! <= calendar.date(from: goalStart)! {
                 self.UserDayData.append(events![i])
