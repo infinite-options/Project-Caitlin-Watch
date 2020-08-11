@@ -110,6 +110,9 @@ class UserDay: ObservableObject {
                     }
                     else{
                         print("No user found!")
+                        DispatchQueue.main.async{
+                            self.loadingUser = false
+                        }
                         completion(500)
                     }
                 }
@@ -136,17 +139,20 @@ class UserDay: ObservableObject {
         while i<events?.count ?? -1 && j<goals?.count ?? -1 {
             let eventStart = calendar.dateComponents([.hour, .minute, .second], from: ISO8601DateFormatter().date(from: (events![i].start?.dateTime)!)!)
             
+            print("Event start: \(eventStart)")
+            print("Event start date: \(calendar.date(from: eventStart)!)")
             var goalStart = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (goals![j].mapValue?.fields.startDayAndTime.stringValue)!)!)
                 goalStart.year = startComp.year
                 goalStart.month = startComp.month
                 goalStart.day = startComp.day
-            
+            print("Goal start: \(goalStart)")
+            print("Goal start date: \(calendar.date(from: goalStart)!)")
             var goalEnd = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (goals![j].mapValue?.fields.endDayAndTime.stringValue)!)!)
                 goalEnd.year = endComp.year
                 goalEnd.month = endComp.month
                 goalEnd.day = endComp.day
                
-            if calendar.date(from: eventStart)! < calendar.date(from: goalStart)! {
+            if calendar.date(from: eventStart)! <= calendar.date(from: goalStart)! {
                 self.UserDayData.append(events![i])
                 if self.eventWithinInterval(item: events![i], start: startInterval, end: endInterval) {
                     self.UserDayBlockData.append(events![i])

@@ -10,6 +10,7 @@ import SwiftUI
 
 struct LoadingView: View {
     @State var isLoading = false
+    @ObservedObject var User = UserDay.shared
     
     var body: some View {
         VStack{
@@ -36,10 +37,13 @@ struct LoadingView: View {
                     .trim(from: 0, to: 0.2)
                     .stroke(Color.green, lineWidth: 4)
                     .frame(width: 55, height: 55)
-                    .rotationEffect(Angle(degrees: isLoading ? 360 : 0))
+                    .rotationEffect(Angle(degrees: self.isLoading ? 360 : 0))
                     .animation(Animation.linear(duration: 1).repeatForever(autoreverses: false))
                     .onAppear() {
                         self.isLoading = true
+                        if (!self.User.loadingUser) {
+                            self.isLoading = false
+                        }
                 }
             }
             

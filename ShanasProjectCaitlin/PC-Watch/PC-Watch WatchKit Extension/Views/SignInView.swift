@@ -11,6 +11,7 @@ import UIKit
 
 struct SignInView: View {
     
+    @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewPick = ViewController.shared
     @State private var emailId = ""
     @ObservedObject var User = UserDay.shared
@@ -43,12 +44,11 @@ struct SignInView: View {
                         self.User.getUserFromEmail(email: self.emailId) { (status) in
                             if status == 200 {
                                 print("Signed in. User ID: \(self.User.User)")
-                                
+                                self.presentationMode.wrappedValue.dismiss()
                             }
                             else {
                                 DispatchQueue.main.async {
                                     self.User.isUserSignedIn = .invalidEmail
-                                    //self.User.loadingUser = false
                                 }
                             }
                         }
