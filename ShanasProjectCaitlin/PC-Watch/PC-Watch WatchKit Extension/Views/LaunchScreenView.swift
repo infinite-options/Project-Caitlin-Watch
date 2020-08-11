@@ -10,6 +10,7 @@ import SwiftUI
 
 struct LaunchScreenView: View {
 
+    @State var showSignIn = false
     @ObservedObject var viewPick = ViewController.shared
     @ObservedObject var User = UserDay.shared
 
@@ -33,6 +34,15 @@ struct LaunchScreenView: View {
                     Text("Sign In")
                         .foregroundColor(Color.yellow)
                 }
+                
+//                Button(action: {
+//                    self.showSignIn = true
+//                }){
+//                    Text("Sign In")
+//                        .foregroundColor(Color.yellow)
+//                }.sheet(isPresented: self.$showSignIn) {
+//                    SignInView()
+//                }
 
             }.navigationBarTitle("Welcome")
             .frame(maxHeight: geo.size.height)
