@@ -92,6 +92,64 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             } else {
                 handler(nil)
             }
+        } else if complication.family == .graphicRectangular {
+            let userDay = model.UserDayData
+            if userDay.count > 0 {
+                print("Date ", Date())
+                if userDay[0] is Event {
+                    let start = userDay[0].start!.dateTime
+                    let end = userDay[0].end!.dateTime
+                    
+                    let time = DayDateObj.ISOFormatter.date(from: userDay[0].start!.dateTime)
+                    let startTime = DayDateObj.formatter.string(from: DayDateObj.ISOFormatter.date(from: start)!)
+                    
+                    let endTime = DayDateObj.formatter.string(from: DayDateObj.ISOFormatter.date(from: end)!)
+                    
+                    let graphicRectangular = CLKComplicationTemplateGraphicRectangularStandardBody()
+                    graphicRectangular.headerTextProvider = CLKSimpleTextProvider(text: userDay[0].summary!)
+                    graphicRectangular.body1TextProvider = CLKSimpleTextProvider(text: "Starts at " +  startTime)
+                    graphicRectangular.body2TextProvider = CLKSimpleTextProvider(text: "Ends at " + endTime)
+                            
+                    let template = graphicRectangular
+                    let timelineEntry = CLKComplicationTimelineEntry(date: time!, complicationTemplate: template)
+                    print("Here: \(userDay[0].summary!) :: \(time!)")
+                    
+                    handler(timelineEntry)
+                } else {
+                    var time = DayDateObj.goalStartUTC.date(from: model.UserDayData[0].mapValue!.fields.startDayAndTime.stringValue)
+                    
+                    let dateComponents = Calendar.current.dateComponents([.hour, .minute, .second], from: time!)
+                    
+                    var currentDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: Date())
+                    
+                    currentDate.hour = dateComponents.hour
+                    currentDate.minute = dateComponents.minute
+                    currentDate.second = dateComponents.second
+                    
+                    time = Calendar.current.date(from: currentDate)
+                    
+                    let times = DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: userDay[0].mapValue!.fields.startDayAndTime.stringValue)!)  + " - " + DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: userDay[0].mapValue!.fields.endDayAndTime.stringValue)!)
+                       
+                    let graphicRectangular = CLKComplicationTemplateGraphicRectangularStandardBody()
+                    graphicRectangular.headerTextProvider = CLKSimpleTextProvider(text: userDay[0].mapValue!.fields.title.stringValue)
+                    if ((userDay[0].mapValue!.fields.isInProgress?.booleanValue) == true) {
+                        graphicRectangular.body1TextProvider = CLKSimpleTextProvider(text: "is in progress.")
+                    } else if ((userDay[0].mapValue!.fields.isComplete?.booleanValue) == true) {
+                        graphicRectangular.body1TextProvider = CLKSimpleTextProvider(text: "is complete.")
+                    } else {
+                        graphicRectangular.body1TextProvider = CLKSimpleTextProvider(text: "is ready to begin.")
+                    }
+                    graphicRectangular.body2TextProvider = CLKSimpleTextProvider(text: times)
+                            
+                    let template = graphicRectangular
+                    let timelineEntry = CLKComplicationTimelineEntry(date: time!, complicationTemplate: template)
+                    print("Here: \(userDay[0].mapValue!.fields.title.stringValue) :: \(time!)")
+                    
+                    handler(timelineEntry)
+                }
+            } else {
+                handler(nil)
+            }
         } else if complication.family == .circularSmall {
             let circularSmall = CLKComplicationTemplateCircularSmallSimpleImage()
             circularSmall.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Circular")!)
@@ -192,6 +250,66 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                 }
             }
             handler(timeLineEntries)
+        } else if complication.family == .graphicRectangular {
+            let userDay = model.UserDayData
+            var timeLineEntries = [CLKComplicationTimelineEntry]()
+            if (userDay.count > 0) {
+                for index in 0...(userDay.count-2) {
+                    if userDay[index] is Event {
+                        let start = userDay[index].start!.dateTime
+                        let end = userDay[index].end!.dateTime
+                        
+                        let time = DayDateObj.ISOFormatter.date(from: userDay[index].start!.dateTime)
+                        
+                        let startTime = DayDateObj.formatter.string(from: DayDateObj.ISOFormatter.date(from: start)!)
+                        
+                        let endTime = DayDateObj.formatter.string(from: DayDateObj.ISOFormatter.date(from: end)!)
+                        
+                        
+                        let graphicRectangular = CLKComplicationTemplateGraphicRectangularStandardBody()
+                        graphicRectangular.headerTextProvider = CLKSimpleTextProvider(text: userDay[index].summary!)
+                        graphicRectangular.body1TextProvider = CLKSimpleTextProvider(text: "Starts at " +  startTime)
+                        graphicRectangular.body2TextProvider = CLKSimpleTextProvider(text: "Ends at " + endTime)
+                                
+                        let template = graphicRectangular
+                        let timelineEntry = CLKComplicationTimelineEntry(date: time!, complicationTemplate: template)
+                        
+                        print("Here: \(model.UserDayData[index].summary!) :: \(time!)")
+                        timeLineEntries.append(timelineEntry)
+                    } else {
+                        var time = DayDateObj.goalStartUTC.date(from: model.UserDayData[index].mapValue!.fields.startDayAndTime.stringValue)
+                        
+                        let dateComponents = Calendar.current.dateComponents([.hour, .minute, .second], from: time!)
+                        
+                        var currentDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: Date())
+                        
+                        currentDate.hour = dateComponents.hour
+                        currentDate.minute = dateComponents.minute
+                        currentDate.second = dateComponents.second
+                        
+                        time = Calendar.current.date(from: currentDate)
+                        
+                        let times = DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: model.UserDayData[index].mapValue!.fields.startDayAndTime.stringValue)!)  + " - " + DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: model.UserDayData[index].mapValue!.fields.endDayAndTime.stringValue)!)
+                        
+                        let graphicRectangular = CLKComplicationTemplateGraphicRectangularStandardBody()
+                        graphicRectangular.headerTextProvider = CLKSimpleTextProvider(text: model.UserDayData[index].mapValue!.fields.title.stringValue)
+                        if ((model.UserDayData[index].mapValue!.fields.isInProgress?.booleanValue) == true) {
+                            graphicRectangular.body1TextProvider = CLKSimpleTextProvider(text: "is in progress.")
+                        } else if ((model.UserDayData[index].mapValue!.fields.isComplete?.booleanValue) == true) {
+                            graphicRectangular.body1TextProvider = CLKSimpleTextProvider(text: "is complete.")
+                        } else {
+                            graphicRectangular.body1TextProvider = CLKSimpleTextProvider(text: "is ready to begin.")
+                        }
+                        graphicRectangular.body2TextProvider = CLKSimpleTextProvider(text: times)
+                                
+                        let template = graphicRectangular
+                        let timelineEntry = CLKComplicationTimelineEntry(date: time!, complicationTemplate: template)
+                        print("Here: \(model.UserDayData[index].mapValue!.fields.title.stringValue) :: \(time!)")
+                        timeLineEntries.append(timelineEntry)
+                    }
+                }
+            }
+            handler(timeLineEntries)
         } else if complication.family == .circularSmall {
             let circularSmall = CLKComplicationTemplateCircularSmallSimpleImage()
             circularSmall.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Circular")!)
@@ -249,6 +367,12 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "Status")
             modularLarge.body2TextProvider = CLKSimpleTextProvider(text: "Time - Time")
             handler(modularLarge)
+        } else if complication.family == .graphicRectangular {
+            let graphicRectangular = CLKComplicationTemplateGraphicRectangularStandardBody()
+            graphicRectangular.headerTextProvider = CLKSimpleTextProvider(text: "Goal/Routine")
+            graphicRectangular.body1TextProvider = CLKSimpleTextProvider(text: "Status")
+            graphicRectangular.body2TextProvider = CLKSimpleTextProvider(text: "Time - Time")
+            handler(graphicRectangular)
         } else if complication.family == .circularSmall {
             let circularSmall = CLKComplicationTemplateCircularSmallSimpleImage()
             circularSmall.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Circular")!)
