@@ -50,26 +50,26 @@ class FirebaseGoogleService: ObservableObject {
         print("In updating model...")
         let group = DispatchGroup()
         group.enter()
-        getEventsFromGoogleCalendar(){
-            (data) in self.events = data
+        getEventsFromGoogleCalendar(){ (data) in
+            self.events = data
             print("Got events from Google Calendar. Now getting firebase data.")
             if self.events != nil{
                 self.events?.sort(by: self.sortEvents)
             }
             group.leave()
             
-            group.enter()
-            self.getUserProfilePhoto(url: self.UserDayData.UserInfo?.fields.aboutMe?.mapValue.fields.pic.stringValue ?? "") { (image) in
-                self.UserDayData.UserPhoto = image
-                print("Stored the image")
-                group.leave()
-            }
         }
         
         group.notify(queue: DispatchQueue.main){
             self.getFirebaseData(){
                 
                 (data) in self.UserDayData.UserInfo = data!
+                
+                self.getUserProfilePhoto(url: self.UserDayData.UserInfo?.fields.aboutMe?.mapValue.fields.pic.stringValue ?? "") { (image) in
+                    self.UserDayData.UserPhoto = image
+                    print("Stored the image")
+                }
+                
                 self.data = data!.fields.goalsRoutines.arrayValue.values
                 
                 if let data = self.data {
@@ -132,7 +132,7 @@ class FirebaseGoogleService: ObservableObject {
                 print("Image Download done.")
                 DispatchQueue.main.async {
                     self.UserDayData.manifestSuite?.set(data, forKey: self.UserDayData.manifestUserPhoto)
-                    completion((UIImage(data: data) ?? UIImage(named: "person.circle"))!)
+                    completion( UIImage(data: data)! )
                 }
             }
         }.resume()
