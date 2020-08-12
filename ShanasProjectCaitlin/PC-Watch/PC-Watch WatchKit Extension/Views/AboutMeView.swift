@@ -14,8 +14,6 @@ struct AboutMeView: View {
     @ObservedObject var User = UserDay.shared
     
     let fullName = UserDefaults(suiteName: "manifestSuite")?.string(forKey: "userName")
-    let profilePhotoData = UserDefaults(suiteName: "manifestSuite")?.data(forKey: "userPhoto")
-//    let profilePhoto =
     
     var body: some View {
         GeometryReader { geo in
@@ -23,13 +21,18 @@ struct AboutMeView: View {
             Spacer()
             VStack{
 //                Image(systemName: "person.circle")
-                Image(uiImage: (UIImage(data: self.profilePhotoData!) ?? UIImage(named: "person.circle")) ?? UIImage())
-                    .resizable()
-                    .frame(width: 65, height: 65)
-                    .clipShape(Circle())
-                    .overlay(Circle().stroke(Color.yellow, lineWidth: 1))
-                    .font(.system(size:44))
-                    .foregroundColor(.yellow)
+                if self.User.UserPhoto == nil {
+                    Image(systemName: "person.circle")
+                        .font(.system(size:50))
+                        .foregroundColor(.yellow)
+                }
+                else{
+                    Image(uiImage: self.User.UserPhoto ?? UIImage())
+                        .resizable()
+                        .frame(width: 65, height: 65)
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(Color.yellow, lineWidth: 1))
+                }
                 Text("\(self.fullName!)")
                     .fontWeight(.bold)
                     .font(.system(size: 19, design: .rounded))

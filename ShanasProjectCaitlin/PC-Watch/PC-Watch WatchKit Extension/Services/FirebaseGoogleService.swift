@@ -131,7 +131,7 @@ class FirebaseGoogleService: ObservableObject {
             if let data = data {
                 print("Image Download done.")
                 DispatchQueue.main.async {
-                    self.UserDayData.manifestSuite?.set(data, forKey: self.UserDayData.manifestUserPhoto)
+                    //self.UserDayData.manifestSuite?.set(data, forKey: self.UserDayData.manifestUserPhoto)
                     completion( UIImage(data: data)! )
                 }
             }

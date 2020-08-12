@@ -80,7 +80,10 @@ struct StepView: View {
                                                       stepNumber: -1)
                             // decrement number of tasks left for goal
                             self.model.goalSubtasksLeft[self.goalOrRoutineID!]! -= 1
-                            self.model.isMustDoTasks[self.goalOrRoutineID!]! -= 1
+                            
+                            if self.model.goalsSubtasks[self.goalOrRoutineID!]!![self.taskIndex!].mapValue.fields.isMustDo!.booleanValue == true {
+                                self.model.isMustDoTasks[self.goalOrRoutineID!]! -= 1
+                            }
                             
                             if self.model.goalSubtasksLeft[self.goalOrRoutineID!] == 0 || self.model.isMustDoTasks[self.goalOrRoutineID!] == 0{
                                 print("goal complete")
@@ -221,7 +224,11 @@ struct StepsView: View {
                             self.model.goalsSubtasks[self.goalID!]!![self.taskIndex!].mapValue.fields.isComplete?.booleanValue = true
                             // decrement tasks left for goal
                             self.model.goalSubtasksLeft[self.goalID!]! -= 1
-                            self.model.isMustDoTasks[self.goalID!]! -= 1
+                            
+                            if self.model.goalsSubtasks[self.goalID!]!![self.taskIndex!].mapValue.fields.isMustDo!.booleanValue == true {
+                                self.model.isMustDoTasks[self.goalID!]! -= 1
+                            }
+                            
                             if self.model.goalSubtasksLeft[self.goalID!] == 0 || self.model.isMustDoTasks[self.goalID!] == 0{
                                 print("goal complete")
                                 // if no tasks left, update model
@@ -312,7 +319,11 @@ struct StepsView: View {
                                     self.model.goalsSubtasks[self.goalID!]!![self.taskIndex!].mapValue.fields.isComplete?.booleanValue = true
                                     // decrement tasks left for goal
                                     self.model.goalSubtasksLeft[self.goalID!]! -= 1
-                                    self.model.isMustDoTasks[self.goalID!]! -= 1
+                                    
+                                    if self.model.goalsSubtasks[self.goalID!]!![self.taskIndex!].mapValue.fields.isMustDo!.booleanValue == true {
+                                        self.model.isMustDoTasks[self.goalID!]! -= 1
+                                    }
+                                    
                                     if self.model.goalSubtasksLeft[self.goalID!] == 0 || self.model.isMustDoTasks[self.goalID!] == 0 {
                                         print("goal complete")
                                         // if no tasks left, update model
