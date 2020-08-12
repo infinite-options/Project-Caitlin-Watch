@@ -23,6 +23,7 @@ class UserDay: ObservableObject {
     
     //Stores the user information
     @Published var UserInfo: Firebase?
+    @Published var UserPhoto: UIImage?
     
     @Published var isUserSignedIn: AuthState = .undefined
     
@@ -109,8 +110,8 @@ class UserDay: ObservableObject {
                                 
 //                                let group = DispatchGroup()
 //                                group.enter()
-//                                self.getUserProfilePhoto(url: self.UserInfo?.fields.aboutMe?.mapValue.fields.pic.stringValue ?? "") { (imageData) in
-//                                    self.manifestSuite?.set(imageData, forKey: self.manifestUserPhoto)
+//                                self.getUserProfilePhoto(url: self.UserInfo?.fields.aboutMe?.mapValue.fields.pic.stringValue ?? "") { (image) in
+//                                    self.UserPhoto = image
 //                                    group.leave()
 //                                }
                                 
@@ -124,10 +125,10 @@ class UserDay: ObservableObject {
                                 self.loadingUser = false
                                 
                                 NotificationHandler().scheduleNotifications()
+                                self.isUserSignedIn = .signedIn
+                                completion(200)
                                 
 //                                group.notify(queue: DispatchQueue.main){
-                                    self.isUserSignedIn = .signedIn
-                                    completion(200)
 //                                }
                             }
                         }
@@ -145,23 +146,6 @@ class UserDay: ObservableObject {
                 }
             }
             else { return }
-        }.resume()
-    }
-    
-    func getUserProfilePhoto(url: String, completion: @escaping (Data) -> () ) {
-        guard let photoUrl = URL(string: url) else { return }
-        print(url)
-        URLSession.shared.dataTask(with: photoUrl) { (data, _, error) in
-            if let error = error {
-                print("Error in downlaoding profile image: \(error)")
-                return
-            }
-            if let data = data {
-                print("Image Downlaod done.")
-                DispatchQueue.main.async {
-                    completion(data)
-                }
-            }
         }.resume()
     }
     

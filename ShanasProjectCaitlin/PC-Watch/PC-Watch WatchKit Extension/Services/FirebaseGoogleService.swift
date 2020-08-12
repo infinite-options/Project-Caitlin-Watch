@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 class FirebaseGoogleService: ObservableObject {
     
@@ -54,6 +55,13 @@ class FirebaseGoogleService: ObservableObject {
                 self.events?.sort(by: self.sortEvents)
             }
             group.leave()
+            
+            group.enter()
+            self.getUserProfilePhoto(url: self.UserDayData.UserInfo?.fields.aboutMe?.mapValue.fields.pic.stringValue ?? "") { (image) in
+                self.UserDayData.UserPhoto = image
+                print("Stored the image")
+                group.leave()
+            }
         }
         
         group.notify(queue: DispatchQueue.main){
@@ -100,6 +108,24 @@ class FirebaseGoogleService: ObservableObject {
                 }
             }
         }
+    }
+    
+    func getUserProfilePhoto(url: String, completion: @escaping (UIImage) -> () ) {
+        guard let photoUrl = URL(string: url) else { return }
+        print(url)
+        URLSession.shared.dataTask(with: photoUrl) { (data, _, error) in
+            if let error = error {
+                print("Error in downlaoding profile image: \(error)")
+                return
+            }
+            if let data = data {
+                print("Image Download done.")
+                DispatchQueue.main.async {
+                    self.UserDayData.manifestSuite?.set(data, forKey: self.UserDayData.manifestUserPhoto)
+                    completion((UIImage(data: data) ?? UIImage(named: "person.circle"))!)
+                }
+            }
+        }.resume()
     }
     
     func getEventsFromGoogleCalendar(completion: @escaping ([Event]?) -> ()){

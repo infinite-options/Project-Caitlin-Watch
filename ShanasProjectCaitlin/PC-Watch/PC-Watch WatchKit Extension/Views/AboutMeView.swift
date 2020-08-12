@@ -22,10 +22,10 @@ struct AboutMeView: View {
         ScrollView([.vertical]){
             Spacer()
             VStack{
-                Image(systemName: "person.circle")
-                //Image(uiImage: UIImage(data: self.profilePhotoData!)!)
-                    .font(.system(size:44))
-                    .foregroundColor(.yellow)
+//                Image(systemName: "person.circle")
+                Image(uiImage: self.User.UserPhoto!)
+                    //.font(.system(size:44))
+                    //.foregroundColor(.yellow)
                 Text("\(self.fullName!)")
                 
                 NavigationLink(destination: SignInView()){
