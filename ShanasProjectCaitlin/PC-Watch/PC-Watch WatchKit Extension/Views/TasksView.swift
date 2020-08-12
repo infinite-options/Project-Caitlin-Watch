@@ -15,6 +15,7 @@ struct TaskItem: View {
     var index: Int?
     var goalOrRoutineIndex: Int?
     var goalOrRoutineID: String?
+    var fullDayArray: Bool
     @ObservedObject private var model = FirebaseGoogleService.shared
     
     @ObservedObject private var user = UserDay.shared
@@ -23,7 +24,7 @@ struct TaskItem: View {
     
     var body: some View {
         HStack{
-            NavigationLink(destination: StepsView(showSteps: $showSteps, goalID: goalOrRoutineID, goalOrRoutineIndex: goalOrRoutineIndex, task: task, taskIndex: index), isActive: $showSteps){
+            NavigationLink(destination: StepsView(showSteps: $showSteps, goalID: goalOrRoutineID, goalOrRoutineIndex: goalOrRoutineIndex, task: task, taskIndex: index, fullDayArray: self.fullDayArray), isActive: $showSteps){
                 VStack(alignment: .leading) {
                     HStack {
                         Text(self.task!.mapValue.fields.title.stringValue)
@@ -57,7 +58,15 @@ struct TaskItem: View {
                                         // update task in model
                                         self.model.goalsSubtasks[self.goalOrRoutineID!]!![self.index!].mapValue.fields.isInProgress?.booleanValue = true
                                         // update goal in model
-                                        self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isInProgress!.booleanValue = true
+                                        // self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isInProgress!.booleanValue = true
+                                        
+                                        if self.fullDayArray {
+                                            self.user.UserDayData[self.goalOrRoutineIndex!].mapValue!.fields.isInProgress!.booleanValue = true
+                                        }
+                                        else {
+                                            self.user.UserDayBlockData[self.goalOrRoutineIndex!].mapValue!.fields.isInProgress!.booleanValue = true
+                                        }
+                                        
                                         //start goal
                                         self.model.startGoalOrRoutine(userId: self.user.User,
                                                                routineId: self.goalOrRoutineID!,
@@ -110,6 +119,7 @@ struct TasksView: View {
     //    @Binding var showTasks: Bool
     var goalOrRoutine: Value?
     var goalOrRoutineIndex: Int?
+    var fullDayArray: Bool
     @State var done = false
     
     var body: some View {
@@ -139,7 +149,12 @@ struct TasksView: View {
                                                       routineNumber: self.goalOrRoutineIndex!,
                                                       taskNumber: -1,
                                                       stepNumber: -1)
-                            self.model.data![self.goalOrRoutineIndex!].mapValue!.fields.isComplete!.booleanValue = true
+                            if self.fullDayArray {
+                                self.user.UserDayData[self.goalOrRoutineIndex!].mapValue!.fields.isComplete!.booleanValue = true
+                            }
+                            else {
+                                self.user.UserDayBlockData[self.goalOrRoutineIndex!].mapValue!.fields.isComplete!.booleanValue = true
+                            }
                             self.done = true
                         }) {
                             Text("Done?")
@@ -168,7 +183,7 @@ struct TasksView: View {
                         ForEach(Array(self.model.goalsSubtasks[self.goalOrRoutine!.mapValue!.fields.id.stringValue]!!.enumerated()), id: \.offset) { index, item in
                             VStack(alignment: .leading) {
                                 if item.mapValue.fields.isAvailable?.booleanValue ?? true {
-                                    TaskItem(task: item, index: index, goalOrRoutineIndex: self.goalOrRoutineIndex!, goalOrRoutineID: self.goalOrRoutine!.mapValue!.fields.id.stringValue)
+                                    TaskItem(task: item, index: index, goalOrRoutineIndex: self.goalOrRoutineIndex!, goalOrRoutineID: self.goalOrRoutine!.mapValue!.fields.id.stringValue, fullDayArray: self.fullDayArray)
                                 }
                             }
                         }

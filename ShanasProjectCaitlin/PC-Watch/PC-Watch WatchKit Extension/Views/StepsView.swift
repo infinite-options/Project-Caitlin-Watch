@@ -13,12 +13,15 @@ struct StepView: View {
     
     @ObservedObject private var user = UserDay.shared
     
+    var fullDayArray: Bool
     var step: ValueTask?
     var index: Int?
     var taskID: String?
     var taskIndex: Int?
     var goalOrRoutineID: String?
     var goalOrRoutineIndex: Int?
+    
+    
     @State var done = false
     
     var body: some View {
@@ -63,7 +66,8 @@ struct StepView: View {
                         self.model.taskSteps[self.taskID!]!![self.index!].mapValue.fields.isComplete!.booleanValue = true
                         //decrement number of steps left for task
                         self.model.taskStepsLeft[self.taskID!]! -= 1
-                        if self.model.taskStepsLeft[self.taskID!]! == 0 {
+//                        self.model.isMustDoSteps[self.taskID!]! -= 1
+                        if self.model.taskStepsLeft[self.taskID!]! == 0 /*|| self.model.isMustDoSteps[self.taskID!] == 0*/{
                             print("task complete")
                             //if task steps left == 0, task is complete so update data model
                             self.model.goalsSubtasks[self.goalOrRoutineID!]!![self.taskIndex!].mapValue.fields.isComplete!.booleanValue = true
@@ -76,10 +80,20 @@ struct StepView: View {
                                                       stepNumber: -1)
                             // decrement number of tasks left for goal
                             self.model.goalSubtasksLeft[self.goalOrRoutineID!]! -= 1
-                            if self.model.goalSubtasksLeft[self.goalOrRoutineID!] == 0 {
+                            self.model.isMustDoTasks[self.goalOrRoutineID!]! -= 1
+                            
+                            if self.model.goalSubtasksLeft[self.goalOrRoutineID!] == 0 || self.model.isMustDoTasks[self.goalOrRoutineID!] == 0{
                                 print("goal complete")
                                 //if goal has no tasks left, it is complete so update model
-                                self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isComplete!.booleanValue = true
+                                //self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isComplete!.booleanValue = true
+                                
+                                if self.fullDayArray {
+                                    self.user.UserDayData[self.goalOrRoutineIndex!].mapValue!.fields.isComplete!.booleanValue = true
+                                }
+                                else {
+                                    self.user.UserDayBlockData[self.goalOrRoutineIndex!].mapValue!.fields.isComplete!.booleanValue = true
+                                }
+                                
                                 // complete goal
                                 self.model.completeGoalOrRoutine(userId: self.user.User,
                                                           routineId: self.goalOrRoutineID!,
@@ -90,7 +104,15 @@ struct StepView: View {
                             } else {
                                 print("goal not complete yet")
                                 // goal is not complete so is inprogress
-                                self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isInProgress!.booleanValue = true
+                                //self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isInProgress!.booleanValue = true
+                                
+                                if self.fullDayArray {
+                                    self.user.UserDayData[self.goalOrRoutineIndex!].mapValue!.fields.isInProgress!.booleanValue = true
+                                }
+                                else {
+                                    self.user.UserDayBlockData[self.goalOrRoutineIndex!].mapValue!.fields.isInProgress!.booleanValue = true
+                                }
+                                
                                 //start goal
                                 self.model.startGoalOrRoutine(userId: self.user.User,
                                                        routineId: self.goalOrRoutineID!,
@@ -111,7 +133,15 @@ struct StepView: View {
                                                    taskNumber: self.taskIndex!,
                                                    stepNumber: -1)
                             // set goal to in progress in model
-                            self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isInProgress!.booleanValue = true
+                            //self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isInProgress!.booleanValue = true
+                            
+                            if self.fullDayArray {
+                                self.user.UserDayData[self.goalOrRoutineIndex!].mapValue!.fields.isInProgress!.booleanValue = true
+                            }
+                            else {
+                                self.user.UserDayBlockData[self.goalOrRoutineIndex!].mapValue!.fields.isInProgress!.booleanValue = true
+                            }
+                            
                             // start goal
                             self.model.startGoalOrRoutine(userId: self.user.User,
                                                    routineId: self.goalOrRoutineID!,
@@ -148,6 +178,7 @@ struct StepsView: View {
     var goalOrRoutineIndex: Int?
     var task: ValueTask?
     var taskIndex: Int?
+    var fullDayArray: Bool
     @State var done = false
     
     var body: some View {
@@ -190,10 +221,19 @@ struct StepsView: View {
                             self.model.goalsSubtasks[self.goalID!]!![self.taskIndex!].mapValue.fields.isComplete?.booleanValue = true
                             // decrement tasks left for goal
                             self.model.goalSubtasksLeft[self.goalID!]! -= 1
-                            if self.model.goalSubtasksLeft[self.goalID!] == 0 {
+                            self.model.isMustDoTasks[self.goalID!]! -= 1
+                            if self.model.goalSubtasksLeft[self.goalID!] == 0 || self.model.isMustDoTasks[self.goalID!] == 0{
                                 print("goal complete")
                                 // if no tasks left, update model
-                                self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isComplete!.booleanValue = true
+                                //self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isComplete!.booleanValue = true
+                                
+                                if self.fullDayArray {
+                                    self.user.UserDayData[self.goalOrRoutineIndex!].mapValue!.fields.isComplete!.booleanValue = true
+                                }
+                                else {
+                                    self.user.UserDayBlockData[self.goalOrRoutineIndex!].mapValue!.fields.isComplete!.booleanValue = true
+                                }
+                                
                                 // set goal to complete
                                 self.model.completeGoalOrRoutine(userId: self.user.User,
                                                           routineId: self.goalID!,
@@ -204,7 +244,15 @@ struct StepsView: View {
                             } else {
                                 print("goal not complete yet")
                                 // goal is not complete so set to in progress, update model
-                                self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isInProgress!.booleanValue = true
+                                //self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isInProgress!.booleanValue = true
+                                
+                                if self.fullDayArray {
+                                    self.user.UserDayData[self.goalOrRoutineIndex!].mapValue!.fields.isInProgress!.booleanValue = true
+                                }
+                                else {
+                                    self.user.UserDayBlockData[self.goalOrRoutineIndex!].mapValue!.fields.isInProgress!.booleanValue = true
+                                }
+                                
                                 // start goal
                                 self.model.startGoalOrRoutine(userId: self.user.User,
                                                        routineId: self.goalID!,
@@ -264,10 +312,19 @@ struct StepsView: View {
                                     self.model.goalsSubtasks[self.goalID!]!![self.taskIndex!].mapValue.fields.isComplete?.booleanValue = true
                                     // decrement tasks left for goal
                                     self.model.goalSubtasksLeft[self.goalID!]! -= 1
-                                    if self.model.goalSubtasksLeft[self.goalID!] == 0 {
+                                    self.model.isMustDoTasks[self.goalID!]! -= 1
+                                    if self.model.goalSubtasksLeft[self.goalID!] == 0 || self.model.isMustDoTasks[self.goalID!] == 0 {
                                         print("goal complete")
                                         // if no tasks left, update model
-                                        self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isComplete!.booleanValue = true
+                                        //self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isComplete!.booleanValue = true
+                                        
+                                        if self.fullDayArray {
+                                            self.user.UserDayData[self.goalOrRoutineIndex!].mapValue!.fields.isComplete!.booleanValue = true
+                                        }
+                                        else {
+                                            self.user.UserDayBlockData[self.goalOrRoutineIndex!].mapValue!.fields.isComplete!.booleanValue = true
+                                        }
+                                        
                                         // set goal to complete
                                         self.model.completeGoalOrRoutine(userId: self.user.User,
                                                                   routineId: self.goalID!,
@@ -278,7 +335,15 @@ struct StepsView: View {
                                     } else {
                                         print("goal not complete yet")
                                         // goal is not complete so set to in progress, update model
-                                        self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isInProgress!.booleanValue = true
+                                        //self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isInProgress!.booleanValue = true
+                                        
+                                        if self.fullDayArray {
+                                            self.user.UserDayData[self.goalOrRoutineIndex!].mapValue!.fields.isInProgress!.booleanValue = true
+                                        }
+                                        else {
+                                            self.user.UserDayBlockData[self.goalOrRoutineIndex!].mapValue!.fields.isInProgress!.booleanValue = true
+                                        }
+                                        
                                         // start goal
                                         self.model.startGoalOrRoutine(userId: self.user.User,
                                                                routineId: self.goalID!,
@@ -303,7 +368,7 @@ struct StepsView: View {
                         ForEach(Array(self.model.taskSteps[self.task!.mapValue.fields.id.stringValue]!!.enumerated()), id: \.offset) { index, item in
                             VStack(alignment: .leading) {
                                 if item.mapValue.fields.isAvailable?.booleanValue ?? true {
-                                    StepView(step: item, index: index, taskID: self.task!.mapValue.fields.id.stringValue, taskIndex: self.taskIndex!, goalOrRoutineID: self.goalID!, goalOrRoutineIndex: self.goalOrRoutineIndex!)
+                                    StepView(fullDayArray: self.fullDayArray, step: item, index: index, taskID: self.task!.mapValue.fields.id.stringValue, taskIndex: self.taskIndex!, goalOrRoutineID: self.goalID!, goalOrRoutineIndex: self.goalOrRoutineIndex!)
                                 }
                             }
                         }
