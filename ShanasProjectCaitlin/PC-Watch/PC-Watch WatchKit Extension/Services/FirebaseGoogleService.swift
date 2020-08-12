@@ -34,6 +34,8 @@ class FirebaseGoogleService: ObservableObject {
     // Key: Task, Value: #
     @Published var taskStepsLeft = [String: Int]()
     
+    @Published var isMustDoTasks = [String: Int]()
+//    @Published var isMustDoSteps = [String: Int]()
     
     private init() {
 //        updateDataModel {
@@ -79,10 +81,15 @@ class FirebaseGoogleService: ObservableObject {
                             if let tasks = tasks {
                                 self.goalsSubtasks[goal.mapValue!.fields.id.stringValue] = tasks
                                 self.goalSubtasksLeft[goal.mapValue!.fields.id.stringValue] = tasks.count
+                                self.isMustDoTasks[goal.mapValue!.fields.id.stringValue] = 0
                                 for task in tasks {
                                     if task.mapValue.fields.isComplete?.booleanValue == true {
                                         self.goalSubtasksLeft[goal.mapValue!.fields.id.stringValue]! -= 1
                                     }
+                                    if task.mapValue.fields.isMustDo?.booleanValue == true {
+                                        self.isMustDoTasks[goal.mapValue!.fields.id.stringValue]! += 1
+                                    }
+                                    
                                     group.enter()
                                     self.getFirebaseStep(stepID: task.mapValue.fields.id.stringValue, goalID: goal.mapValue!.fields.id.stringValue){
                                         (steps) in self.steps = steps
@@ -93,6 +100,9 @@ class FirebaseGoogleService: ObservableObject {
                                                 if step.mapValue.fields.isComplete?.booleanValue == true {
                                                     self.taskStepsLeft[task.mapValue.fields.id.stringValue]! -=  1
                                                 }
+//                                                if step.mapValue.fields.isMustDo?.booleanValue == true {
+//                                                    self.isMustDoSteps[task.mapValue.fields.id.stringValue]! += 1
+//                                                }
                                             }
                                         }
                                     }

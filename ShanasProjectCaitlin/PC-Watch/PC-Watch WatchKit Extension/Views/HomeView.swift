@@ -154,7 +154,7 @@ struct HomeView: View {
                                             .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
                                         }
                                         else {
-                                            NavigationLink(destination: TasksView(goalOrRoutine: (item as! Value), goalOrRoutineIndex: index)) {
+                                            NavigationLink(destination: TasksView(goalOrRoutine: (item as! Value), goalOrRoutineIndex: index, fullDayArray: true)) {
                                             HStack {
                                                 infoView(item: (item as! Value))
                                             }.frame(height: 80)
@@ -187,7 +187,7 @@ struct HomeView: View {
                                             .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
                                         }
                                         else {
-                                            NavigationLink(destination: TasksView(goalOrRoutine: (item as! Value), goalOrRoutineIndex: index)) {
+                                            NavigationLink(destination: TasksView(goalOrRoutine: (item as! Value), goalOrRoutineIndex: index, fullDayArray: false)) {
                                             HStack {
                                                 infoView(item: (item as! Value))
                                             }.frame(height: 80)
