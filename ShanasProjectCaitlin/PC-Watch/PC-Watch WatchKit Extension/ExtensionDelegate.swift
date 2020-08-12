@@ -40,7 +40,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
         
         UserModel.checkUserAuth { (authState) in
             if authState == .signedIn {
-                UserModel.User = UserModel.manifestSuite?.string(forKey: UserModel.manifestUserIdKey) as! String
+                UserModel.User = UserModel.manifestSuite?.string(forKey: UserModel.manifestUserIdKey)! as! String
                 DataSource.updateDataModel {
                     print("Populated data model")
                     UserModel.UserDayData = []

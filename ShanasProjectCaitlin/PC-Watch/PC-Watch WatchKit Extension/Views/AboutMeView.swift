@@ -14,6 +14,8 @@ struct AboutMeView: View {
     @ObservedObject var User = UserDay.shared
     
     let fullName = UserDefaults(suiteName: "manifestSuite")?.string(forKey: "userName")
+//    let profilePhotoData = UserDefaults(suiteName: "manifestSuite")?.data(forKey: "userPhoto")
+//    let profilePhoto =
     
     var body: some View {
         GeometryReader { geo in
@@ -21,6 +23,7 @@ struct AboutMeView: View {
             Spacer()
             VStack{
                 Image(systemName: "person.circle")
+                //Image(uiImage: UIImage(data: self.profilePhotoData!)!)
                     .font(.system(size:44))
                     .foregroundColor(.yellow)
                 Text("\(self.fullName!)")
@@ -28,7 +31,6 @@ struct AboutMeView: View {
                 NavigationLink(destination: SignInView()){
                     Text("Change User")
                 }
-                
             }
         }.navigationBarTitle("About Me")
         }

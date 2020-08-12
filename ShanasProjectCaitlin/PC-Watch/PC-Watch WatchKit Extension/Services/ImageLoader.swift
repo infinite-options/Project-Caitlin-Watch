@@ -18,10 +18,6 @@ class ImageLoader: ObservableObject {
     init(url: URL) {
         self.url = url
     }
-    
-    deinit {
-        cancellable?.cancel()
-    }
 
     func load() {
         cancellable = URLSession.shared.dataTaskPublisher(for: url)
@@ -35,3 +31,4 @@ class ImageLoader: ObservableObject {
         cancellable?.cancel()
     }
 }
+
