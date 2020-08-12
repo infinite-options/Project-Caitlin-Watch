@@ -74,7 +74,7 @@ struct TaskFluffyFields: Codable {
     var isAvailable, isComplete: HavePic?
     var expectedCompletionTime: EmailID?
     var isInProgress: HavePic?
-    //var isMustDo: EmailID
+    var isMustDo: HavePic?
     //var isSublistAvailable: HavePic
     var photo, id, title: EmailID
     
@@ -84,7 +84,7 @@ struct TaskFluffyFields: Codable {
         case isAvailable = "is_available"
         case expectedCompletionTime = "expected_completion_time"
         case isInProgress = "is_in_progress"
-        //case isMustDo = "is_must_do"
+        case isMustDo = "is_must_do"
         //case isSublistAvailable = "is_sublist_available"
         case availableEndTime = "available_end_time"
         case datetimeCompleted = "datetime_completed"
