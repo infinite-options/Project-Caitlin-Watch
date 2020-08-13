@@ -43,9 +43,20 @@
         <!--Second Hosting Controller-->
         <scene sceneID="74q-nb-jCS">
             <objects>
-                <hostingController id="AXK-o7-3qk" customClass="SecondHostingController" customModule="PC_Watch_WatchKit_App" customModuleProvider="target"/>
+                <hostingController id="AXK-o7-3qk" customClass="SecondHostingController" customModule="PC_Watch_WatchKit_App" customModuleProvider="target">
+                    <connections>
+                        <segue destination="byJ-mt-Qmh" kind="relationship" relationship="nextPage" id="vko-YA-Bpw"/>
+                    </connections>
+                </hostingController>
             </objects>
             <point key="canvasLocation" x="428" y="137"/>
+        </scene>
+        <!--Third Hosting Controller-->
+        <scene sceneID="F4g-rP-j4L">
+            <objects>
+                <hostingController id="byJ-mt-Qmh" customClass="ThirdHostingController" customModule="PC_Watch_WatchKit_App" customModuleProvider="target"/>
+            </objects>
+            <point key="canvasLocation" x="766" y="137"/>
         </scene>
     </scenes>
 </document>
