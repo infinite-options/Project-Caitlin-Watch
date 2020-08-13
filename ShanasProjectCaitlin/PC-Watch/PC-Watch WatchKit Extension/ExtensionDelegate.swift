@@ -76,7 +76,63 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     
     //MessagingDelegate
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
-      print("Token:" + fcmToken)
+        print("Token:" + fcmToken)
+        
+        UserDay.shared.checkUserAuth { (authState) in
+            if authState == .signedIn {
+                self.sendTokentoFirestore(token: fcmToken) { (status) in
+                    print(status)
+                }
+            }
+            else {
+                print("User not signed in. Not sending the device token.")
+            }
+        }
+    }
+    
+    func sendTokentoFirestore(token: String, completion: @escaping (String) -> ()) {
+        guard let url = URL(string: "https://us-central1-myspace-db.cloudfunctions.net/SaveDeviceToken") else { return }
+        
+        let userId = UserDefaults(suiteName: "manifestSuite")?.string(forKey: "userIdentifier") ?? ""
+        
+        let jsonData = sendDeviceTokenBody(userId: userId,
+                                           deviceToken: token)
+        
+        let finalJsonData = try? JSONEncoder().encode(jsonData)
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = finalJsonData
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        
+        URLSession.shared.dataTask(with: request){ (data, _, error) in
+            if let error = error {
+                print("Generic networking error: \(error)")
+            }
+            if let data = data {
+                print(data)
+                do {
+                    let data = try JSONDecoder().decode(sendDeviceTokenResponse.self, from: data)
+                    DispatchQueue.main.async {
+                        completion(data.result)
+                    }
+                }
+                catch _ {
+                    //print("No events found for user: \(self.UserDayData.User)")
+                    //print("Error in parsing Events data: \(jsonParseError)" )
+                    completion("Error")
+                }
+            }
+        }.resume()
+    }
+    
+    struct sendDeviceTokenResponse: Codable {
+        var result: String
+    }
+    struct sendDeviceTokenBody: Codable {
+        var userId: String
+        var deviceToken: String
     }
 
     func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {
