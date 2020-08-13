@@ -70,6 +70,10 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
         Messaging.messaging().apnsToken = deviceToken
     }
     
+    func didFailToRegisterForRemoteNotificationsWithError(_ error: Error) {
+        print("Error while registering for remote notifications: \n", error)
+    }
+    
     //MessagingDelegate
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
       print("Token:" + fcmToken)
