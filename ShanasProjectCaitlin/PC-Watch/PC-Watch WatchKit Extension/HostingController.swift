@@ -22,6 +22,12 @@ class SecondHostingController: WKHostingController<RootView> {
     }
 }
 
+class ThirdHostingController: WKHostingController<ImportantPeopleView> {
+    override var body: ImportantPeopleView {
+        return ImportantPeopleView()
+    }
+}
+
 /*
 class HostingController: WKHostingController<Test> {
     override var body: Test {

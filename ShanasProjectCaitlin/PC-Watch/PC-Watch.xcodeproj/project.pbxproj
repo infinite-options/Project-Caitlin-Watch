@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0448610D24CB56FF00C0C844 /* UserDayModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0448610C24CB56FF00C0C844 /* UserDayModel.swift */; };
 		0448610F24CB8A1400C0C844 /* AttendeesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0448610E24CB8A1400C0C844 /* AttendeesView.swift */; };
+		046D8CB924E4AA6600D33871 /* ImportantPeopleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D8CB824E4AA6600D33871 /* ImportantPeopleView.swift */; };
 		0484C4FE24B90D55002C3F13 /* AsyncSmallImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0484C4FD24B90D55002C3F13 /* AsyncSmallImage.swift */; };
 		04957BB424C5350C0031D253 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04957BB324C5350C0031D253 /* Enums.swift */; };
 		04957BB624C5D8D10031D253 /* UrlToAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04957BB524C5D8D10031D253 /* UrlToAsset.swift */; };
@@ -98,6 +99,7 @@
 /* Begin PBXFileReference section */
 		0448610C24CB56FF00C0C844 /* UserDayModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserDayModel.swift; path = ../../../../../../Downloads/UserDayModel.swift; sourceTree = "<group>"; };
 		0448610E24CB8A1400C0C844 /* AttendeesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendeesView.swift; sourceTree = "<group>"; };
+		046D8CB824E4AA6600D33871 /* ImportantPeopleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportantPeopleView.swift; sourceTree = "<group>"; };
 		0484C4FD24B90D55002C3F13 /* AsyncSmallImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncSmallImage.swift; sourceTree = "<group>"; };
 		04957BB324C5350C0031D253 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		04957BB524C5D8D10031D253 /* UrlToAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlToAsset.swift; sourceTree = "<group>"; };
@@ -303,6 +305,7 @@
 				0448610E24CB8A1400C0C844 /* AttendeesView.swift */,
 				2BF95D7224E0BB5E00787EE6 /* LoadingView.swift */,
 				2B42FCAD24C77D2000A6B89E /* GoogleService-Info.plist */,
+				046D8CB824E4AA6600D33871 /* ImportantPeopleView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -562,6 +565,7 @@
 				2B5A688A24AFBD2000D66FC6 /* StepsView.swift in Sources */,
 				27E475A9244240B200D380FA /* ImageLoader.swift in Sources */,
 				2B5A688C24AFBD2E00D66FC6 /* TasksView.swift in Sources */,
+				046D8CB924E4AA6600D33871 /* ImportantPeopleView.swift in Sources */,
 				27BF9DCE243BD389006A5466 /* ExtensionDelegate.swift in Sources */,
 				2B3FB10924BEF8C400CC3D6D /* FBTasksStepsModel.swift in Sources */,
 				2BF4E09C24AC015300215138 /* Formatters.swift in Sources */,

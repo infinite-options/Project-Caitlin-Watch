@@ -14,6 +14,9 @@ class FirebaseGoogleService: ObservableObject {
     static let shared = FirebaseGoogleService()
     let UserDayData = UserDay.shared
     
+    //Stores important people
+    @Published var importantPeople: [ImportantPerson]?
+    
     //Stores the goals and routines
     @Published var data: [Value]?
     
@@ -58,6 +61,12 @@ class FirebaseGoogleService: ObservableObject {
             }
             group.leave()
             
+        }
+        
+        self.getFirebaseImportantPeople() { data in
+            self.importantPeople = data
+            print("Got important people from Firebase. Now getting firebase data.")
+            print("People: ", data)
         }
         
         group.notify(queue: DispatchQueue.main){
@@ -215,6 +224,30 @@ class FirebaseGoogleService: ObservableObject {
                 }
             }
         }
+        .resume()
+    }
+    
+    func getFirebaseImportantPeople(completion: @escaping ([ImportantPerson]?) -> ()) {
+        let TaskUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.UserDayData.User + "/people/"
+        guard let url = URL(string: TaskUrl) else { return }
+
+            URLSession.shared.dataTask(with: url) { (data, _, error) in
+                if let error = error {
+                    print("Generic networking error: \(error)")
+                }
+
+                if let data = data {
+                    do {
+                        let data = try JSONDecoder().decode(People.self, from: data)
+                        DispatchQueue.main.async {
+                            completion(data.documents)
+                        }
+                    }
+                    catch _ {
+                        completion(nil)
+                    }
+                }
+            }
         .resume()
     }
     

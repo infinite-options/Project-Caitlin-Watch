@@ -9,7 +9,7 @@
 import Foundation
 
 enum ViewState {
-    case showLaunch, showSignin, showAboutme
+    case showLaunch, showSignin, showAboutme, showImportantPeople
 }
 
 class ViewController: ObservableObject {

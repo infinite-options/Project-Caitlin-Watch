@@ -53,6 +53,40 @@ struct PurpleFields: Codable {
     }
 }
 
+// MARK: - People
+struct People: Codable {
+    var documents: [ImportantPerson]
+}
+
+struct ImportantPerson: Codable {
+    var fields: ImportantPersonFields
+}
+
+// MARK: - ImportantPersonValue
+struct ImportantPersonFields: Codable {
+    var emailId: EmailID?
+    var havePic: HavePic
+    var important: HavePic
+    var name: EmailID
+    var phoneNumber: EmailID?
+    var pic: EmailID?
+    var relationship: EmailID
+    var speakerId: EmailID?
+    var uniqueId: EmailID
+    
+    enum CodingKeys: String, CodingKey {
+        case havePic = "have_pic"
+        case emailId = "email_id"
+        case important
+        case name
+        case phoneNumber = "phone_number"
+        case pic
+        case relationship
+        case speakerId = "speaker_id"
+        case uniqueId = "unique_id"
+    }
+}
+
 // MARK: - HavePic
 struct HavePic: Codable {
     var booleanValue: Bool
