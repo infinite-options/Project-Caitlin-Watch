@@ -61,6 +61,7 @@ struct EventInfoView: View {
         return true
     }
 }
+
 struct infoView: View {
     //TODO: doesnt update complete until reload the app because passed by value
     var item: Value?
