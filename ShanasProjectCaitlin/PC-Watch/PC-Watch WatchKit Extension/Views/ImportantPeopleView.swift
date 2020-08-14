@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct ImportantPeopleView: View {
-    @ObservedObject var viewPick = ViewController.shared
+    @ObservedObject private var model = FirebaseGoogleService.shared
     
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)

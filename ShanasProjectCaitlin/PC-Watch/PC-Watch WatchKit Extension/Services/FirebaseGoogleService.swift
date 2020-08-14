@@ -65,8 +65,7 @@ class FirebaseGoogleService: ObservableObject {
         
         self.getFirebaseImportantPeople() { data in
             self.importantPeople = data
-            print("Got important people from Firebase. Now getting firebase data.")
-            print("People: ", data)
+            print("Got important people from Firebase. Now getting other firebase data.")
         }
         
         group.notify(queue: DispatchQueue.main){
