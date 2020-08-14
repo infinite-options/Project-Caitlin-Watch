@@ -768,7 +768,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0.9;
-				PRODUCT_BUNDLE_IDENTIFIER = com.infiniteoptions.caitlinwatch.watchkitapp.watchkitextension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.inifiniteoptions.caitlinwatch.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
@@ -816,7 +816,7 @@
 				IBSC_MODULE = PC_Watch_WatchKit_Extension;
 				INFOPLIST_FILE = "PC-Watch WatchKit App/Info.plist";
 				MARKETING_VERSION = 1.0.9;
-				PRODUCT_BUNDLE_IDENTIFIER = com.infiniteoptions.caitlinwatch.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.inifiniteoptions.caitlinwatch.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
@@ -852,7 +852,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8V66NC2T37;
 				MARKETING_VERSION = 1.0.9;
-				PRODUCT_BUNDLE_IDENTIFIER = com.infiniteoptions.caitlinwatch;
+				PRODUCT_BUNDLE_IDENTIFIER = com.inifiniteoptions.caitlinwatch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
