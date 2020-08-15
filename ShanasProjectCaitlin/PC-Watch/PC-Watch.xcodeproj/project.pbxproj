@@ -31,12 +31,12 @@
 		27E475AD2442413700D380FA /* AsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E475AC2442413700D380FA /* AsyncImage.swift */; };
 		2B258E3524A7839100C6DD2E /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B258E3424A7839100C6DD2E /* ComplicationController.swift */; };
 		2B2938C824E5CF3C00ED62CE /* UserDayModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2938C724E5CF3C00ED62CE /* UserDayModel.swift */; };
-		2B2938D224E5E5F800ED62CE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B2938D124E5E5F800ED62CE /* GoogleService-Info.plist */; };
-		2B2938D324E5E5F800ED62CE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B2938D124E5E5F800ED62CE /* GoogleService-Info.plist */; };
-		2B2938D424E5E5F800ED62CE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B2938D124E5E5F800ED62CE /* GoogleService-Info.plist */; };
 		2B3FB10924BEF8C400CC3D6D /* FBTasksStepsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3FB10824BEF8C400CC3D6D /* FBTasksStepsModel.swift */; };
 		2B5A688A24AFBD2000D66FC6 /* StepsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5A688924AFBD2000D66FC6 /* StepsView.swift */; };
 		2B5A688C24AFBD2E00D66FC6 /* TasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5A688B24AFBD2E00D66FC6 /* TasksView.swift */; };
+		2B63745E24E78BC7006C7783 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B63745D24E78BC7006C7783 /* GoogleService-Info.plist */; };
+		2B63745F24E78BC7006C7783 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B63745D24E78BC7006C7783 /* GoogleService-Info.plist */; };
+		2B63746024E78BC7006C7783 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B63745D24E78BC7006C7783 /* GoogleService-Info.plist */; };
 		2B706DB324ADE791001AEABE /* NotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B706DB224ADE791001AEABE /* NotificationHandler.swift */; };
 		2B7CC57924DF8975002657D6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7CC57824DF8975002657D6 /* ViewController.swift */; };
 		2BC9C3EF24C9550800FEEA97 /* EventsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC9C3EE24C9550800FEEA97 /* EventsModel.swift */; };
@@ -125,11 +125,11 @@
 		27E475AC2442413700D380FA /* AsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImage.swift; sourceTree = "<group>"; };
 		2B258E3424A7839100C6DD2E /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
 		2B2938C724E5CF3C00ED62CE /* UserDayModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDayModel.swift; sourceTree = "<group>"; };
-		2B2938D124E5E5F800ED62CE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2B3FB10824BEF8C400CC3D6D /* FBTasksStepsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBTasksStepsModel.swift; sourceTree = "<group>"; };
 		2B48F24524C4FDD900EA2CBE /* PC-Watch WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "PC-Watch WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		2B5A688924AFBD2000D66FC6 /* StepsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepsView.swift; sourceTree = "<group>"; };
 		2B5A688B24AFBD2E00D66FC6 /* TasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksView.swift; sourceTree = "<group>"; };
+		2B63745D24E78BC7006C7783 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2B706DB224ADE791001AEABE /* NotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHandler.swift; sourceTree = "<group>"; };
 		2B7CC57824DF8975002657D6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		2BC9C3EE24C9550800FEEA97 /* EventsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsModel.swift; sourceTree = "<group>"; };
@@ -194,7 +194,7 @@
 		27BF9DAA243BD385006A5466 = {
 			isa = PBXGroup;
 			children = (
-				2B2938D124E5E5F800ED62CE /* GoogleService-Info.plist */,
+				2B63745D24E78BC7006C7783 /* GoogleService-Info.plist */,
 				27BF9DB9243BD385006A5466 /* PC-Watch WatchKit App */,
 				27BF9DC8243BD389006A5466 /* PC-Watch WatchKit Extension */,
 				27BF9DB2243BD385006A5466 /* Products */,
@@ -279,13 +279,13 @@
 			isa = PBXGroup;
 			children = (
 				27BF9DF7243BD5A3006A5466 /* FirebaseGoogleService.swift */,
+				2BCB7EA324CB325E00C72A52 /* UserDay.swift */,
 				27E475A8244240B200D380FA /* ImageLoader.swift */,
 				27E475AC2442413700D380FA /* AsyncImage.swift */,
 				2B706DB224ADE791001AEABE /* NotificationHandler.swift */,
 				2BDEE38F24B3698900FCFE14 /* BackgroundServices.swift */,
 				0484C4FD24B90D55002C3F13 /* AsyncSmallImage.swift */,
 				04957BB524C5D8D10031D253 /* UrlToAsset.swift */,
-				2BCB7EA324CB325E00C72A52 /* UserDay.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -427,7 +427,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B2938D224E5E5F800ED62CE /* GoogleService-Info.plist in Resources */,
+				2B63745E24E78BC7006C7783 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -437,7 +437,7 @@
 			files = (
 				27BF9DBE243BD389006A5466 /* Assets.xcassets in Resources */,
 				27BF9DBC243BD385006A5466 /* Interface.storyboard in Resources */,
-				2B2938D324E5E5F800ED62CE /* GoogleService-Info.plist in Resources */,
+				2B63745F24E78BC7006C7783 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,7 +446,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				27BF9DD7243BD38A006A5466 /* Preview Assets.xcassets in Resources */,
-				2B2938D424E5E5F800ED62CE /* GoogleService-Info.plist in Resources */,
+				2B63746024E78BC7006C7783 /* GoogleService-Info.plist in Resources */,
 				27BF9DF4243BD58E006A5466 /* caitlin_overview_data.json in Resources */,
 				27BF9DD4243BD38A006A5466 /* Assets.xcassets in Resources */,
 			);
@@ -768,7 +768,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0.9;
-				PRODUCT_BUNDLE_IDENTIFIER = com.inifiniteoptions.caitlinwatch.watchkitapp.watchkitextension;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.infiniteoptions-manifestmy.spacewatch.watchkitapp.watchkitextension";
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
@@ -816,7 +816,7 @@
 				IBSC_MODULE = PC_Watch_WatchKit_Extension;
 				INFOPLIST_FILE = "PC-Watch WatchKit App/Info.plist";
 				MARKETING_VERSION = 1.0.9;
-				PRODUCT_BUNDLE_IDENTIFIER = com.inifiniteoptions.caitlinwatch.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.infiniteoptions-manifestmy.spacewatch.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
@@ -852,7 +852,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8V66NC2T37;
 				MARKETING_VERSION = 1.0.9;
-				PRODUCT_BUNDLE_IDENTIFIER = com.inifiniteoptions.caitlinwatch;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.infiniteoptions-manifestmy.spacewatch";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;

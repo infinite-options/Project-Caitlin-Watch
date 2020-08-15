@@ -31,7 +31,7 @@ class UserDay: ObservableObject {
     
     let manifestUserIdKey = "userIdentifier"
     let manifestUserName = "userName"
-    let manifestUserPhoto = "userPhoto"
+//    let manifestUserPhoto = "userPhoto"
     
     @Published var UserDayData = [UserDayGoalEventList]()
     
