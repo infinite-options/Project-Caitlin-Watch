@@ -9,11 +9,15 @@
 import SwiftUI
 
 struct PeopleView: View {
-    var item: ImportantPerson
+    var person: ImportantPerson
     
     var body: some View {
          VStack(alignment: .leading) {
-            Text(item.fields.name.stringValue)
+            Text(person.fields.name.stringValue)
+                .font(.system(size: 20, design: .rounded))
+            Text("Relationship: " + person.fields.relationship.stringValue)
+                .fontWeight(.light)
+                .font(.system(size: 15))
         }
     }
 }
@@ -24,10 +28,12 @@ struct ImportantPeopleView: View {
     var body: some View {
         VStack(alignment: .leading) {
             List {
-                ForEach(Array((self.model.importantPeople?.filter{ isImportantPerson(item: $0) == true }.enumerated())!), id: \.offset) { index, item in
-                    VStack(alignment: .leading) {
-                        PeopleView(item: self.model.importantPeople![index])
-                    }.listRowPlatterColor(Color.gray)
+                ForEach(Array((self.model.importantPeople?/*.filter{ isImportantPerson(item: $0) == true }*/.enumerated())!), id: \.offset) { index, person in
+                    NavigationLink(destination: PersonView(person: person)){
+                        VStack(alignment: .leading) {
+                            PeopleView(person: person)
+                        }
+                    }.listRowPlatterColor(Color.blue)
                 }
             }.listStyle(CarouselListStyle())
                 .navigationBarTitle("Important People")

@@ -26,16 +26,23 @@ struct AsyncImage<Placeholder: View>: View {
     private var image: some View {
         Group {
             if loader.image != nil {
-                Circle()
-                    .foregroundColor(Color.yellow.opacity(0.9))
-                    .frame(width: 60, height: 60)
-                    .overlay(Image(uiImage: loader.image!)
-                        .resizable()
-                        .frame(width:35, height:35)
-                        .padding(0))
-                    .overlay(Circle().stroke(Color.red, lineWidth: 1))
-                    .shadow(color: .yellow , radius: 4)
-                    .padding(EdgeInsets(top: 8, leading: 2, bottom: 0, trailing: 2))
+                Image(uiImage: loader.image!)
+                    .resizable()
+                    .frame(width: 100, height: 100)
+                    .clipShape(Circle())
+                    .overlay(Circle()
+                        .stroke(Color.yellow, lineWidth: 1))
+//                Circle()
+//                    .foregroundColor(Color.yellow.opacity(0.9))
+//                    .frame(width: 80, height: 80)
+//                    .overlay(Image(uiImage: loader.image!)
+//                        .resizable()
+//                        .clipShape(Circle())
+//                        .frame(width:75, height:75)
+//                        .padding(0))
+//                    .overlay(Circle().stroke(Color.red, lineWidth: 1))
+//                    .shadow(color: .yellow , radius: 4)
+//                    .padding(EdgeInsets(top: 8, leading: 2, bottom: 0, trailing: 2))
             } else {
                 placeholder
             }
