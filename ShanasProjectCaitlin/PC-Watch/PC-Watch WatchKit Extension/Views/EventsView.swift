@@ -11,6 +11,8 @@ import SwiftSoup
 
 struct EventsView: View {
     var event: Event?
+    @ObservedObject private var model = FirebaseGoogleService.shared
+    
     var body: some View {
         GeometryReader { geo in
             ScrollView([.vertical]) {
@@ -32,9 +34,16 @@ struct EventsView: View {
                                 .fontWeight(.light)
                                 .font(.system(size: 15))
                         Divider()
-                        Text("Created by " + self.event!.creator!.email)
-                            .fontWeight(.light)
-                            .font(.system(size: 15))
+                        if self.isImportantPerson(email: self.event!.creator!.email) {
+                            Text("Created by " + self.model.peopleEmailToNameDict[self.event!.creator!.email]!)
+                                .fontWeight(.light)
+                                .font(.system(size: 15))
+                        } else {
+                            Text("Created by " + self.event!.creator!.email)
+                                .fontWeight(.light)
+                                .font(.system(size: 15))
+                        }
+                        
                         Divider()
                         if self.event!.description != nil {
                             Text("Description: " + self.event!.description!)
@@ -55,6 +64,16 @@ struct EventsView: View {
                 }.frame(maxWidth: geo.size.width, alignment: .leading)
             }
         }.navigationBarTitle("Event")
+    }
+    
+    func isImportantPerson(email: String) -> Bool {
+        if let _ = self.model.peopleEmailToNameDict[email] {
+            print("is important true")
+            return true
+        } else {
+            print("is important false")
+            return false
+        }
     }
 }
 

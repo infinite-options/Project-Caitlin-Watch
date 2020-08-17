@@ -11,6 +11,7 @@ import SwiftUI
 
 struct AttendeeView: View {
     var item: Attendent?
+    @ObservedObject private var model = FirebaseGoogleService.shared
     
     var body: some View {
         VStack {
@@ -20,13 +21,28 @@ struct AttendeeView: View {
                     .foregroundColor(.yellow)
                 Spacer()
                 VStack(alignment: .leading) {
-                    Text(item!.email!)
-                        .font(.system(size: 18, design: .rounded))
+                    if isImportantPerson(email: item!.email!) {
+                        Text(self.model.peopleEmailToNameDict[item!.email!]!)
+                            .font(.system(size: 18, design: .rounded))
+                    } else {
+                        Text(item!.email!)
+                            .font(.system(size: 18, design: .rounded))
+                    }
                     Text(item!.responseStatus!)
                         .font(.system(size: 12, design: .rounded))
                 }
             }
             Divider()
+        }
+    }
+    
+    func isImportantPerson(email: String) -> Bool {
+        if let _ = self.model.peopleEmailToNameDict[email] {
+            print("is important true")
+            return true
+        } else {
+            print("is important false")
+            return false
         }
     }
 }

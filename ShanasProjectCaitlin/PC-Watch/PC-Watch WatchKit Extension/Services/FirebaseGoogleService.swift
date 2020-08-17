@@ -16,6 +16,7 @@ class FirebaseGoogleService: ObservableObject {
     
     //Stores important people
     @Published var importantPeople: [ImportantPerson]?
+    @Published var peopleEmailToNameDict = [String : String]()
     
     //Stores the goals and routines
     @Published var data: [Value]?
@@ -66,6 +67,12 @@ class FirebaseGoogleService: ObservableObject {
         self.getFirebaseImportantPeople() { data in
             self.importantPeople = data
             print("Got important people from Firebase. Now getting other firebase data.")
+            for person in self.importantPeople! {
+                if person.fields.emailId != nil {
+                    self.peopleEmailToNameDict[person.fields.emailId!.stringValue] = person.fields.name.stringValue
+                }
+            }
+            print(self.peopleEmailToNameDict)
         }
         
         group.notify(queue: DispatchQueue.main){
