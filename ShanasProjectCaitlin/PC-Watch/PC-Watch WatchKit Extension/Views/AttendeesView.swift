@@ -16,10 +16,6 @@ struct AttendeeView: View {
     var body: some View {
         VStack {
             HStack {
-                Image(systemName: "person.circle")
-                    .font(.system(size:44))
-                    .foregroundColor(.yellow)
-                Spacer()
                 VStack(alignment: .leading) {
                     if isImportantPerson(email: item!.email!) {
                         Text(self.model.peopleEmailToNameDict[item!.email!]!)
@@ -31,6 +27,10 @@ struct AttendeeView: View {
                     Text(item!.responseStatus!)
                         .font(.system(size: 12, design: .rounded))
                 }
+                Spacer()
+                Image(systemName: "person.circle")
+                    .font(.system(size:44))
+                    .foregroundColor(.yellow)
             }
             Divider()
         }
