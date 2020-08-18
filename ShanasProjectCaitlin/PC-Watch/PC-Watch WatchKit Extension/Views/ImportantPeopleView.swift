@@ -24,20 +24,38 @@ struct PeopleView: View {
 
 struct ImportantPeopleView: View {
     @ObservedObject private var model = FirebaseGoogleService.shared
+    @ObservedObject private var user = UserDay.shared
     
     var body: some View {
-        VStack(alignment: .leading) {
-            List {
-                ForEach(Array((self.model.importantPeople?/*.filter{ isImportantPerson(item: $0) == true }*/.enumerated())!), id: \.offset) { index, person in
-                    NavigationLink(destination: PersonView(person: person)){
-                        VStack(alignment: .leading) {
-                            PeopleView(person: person)
-                        }
-                    }.listRowPlatterColor(Color.blue)
+        VStack {
+            if(self.user.isUserSignedIn != .signedIn){
+                VStack(alignment: .center) {
+                    Text("You're not signed in yet.")
+                        .fontWeight(.bold)
+                        .font(.system(size: 20, design: .rounded))
+                    Spacer()
                 }
-            }.listStyle(CarouselListStyle())
-                .navigationBarTitle("Important People")
-        }.padding(0)
+            } else if (self.model.importantPeople == nil){
+                VStack(alignment: .center) {
+                    Text("You do not have any important people yet.")
+                        .fontWeight(.bold)
+                        .font(.system(size: 20, design: .rounded))
+                    Spacer()
+                }
+            } else {
+                VStack(alignment: .leading) {
+                    List {
+                        ForEach(Array((self.model.importantPeople?/*.filter{ isImportantPerson(item: $0) == true }*/.enumerated())!), id: \.offset) { index, person in
+                            NavigationLink(destination: PersonView(person: person)){
+                                VStack(alignment: .leading) {
+                                    PeopleView(person: person)
+                                }
+                            }.listRowPlatterColor(Color.blue)
+                        }
+                    }.listStyle(CarouselListStyle())
+                }.padding(0)
+            }
+        }.navigationBarTitle("Important People")
     }
     
     private func isImportantPerson(item: ImportantPerson) -> Bool{

@@ -38,7 +38,7 @@ class BackgroundService: NSObject {
     }
     
     func updateGoals( session: URLSession, completion: (URLSessionDownloadTask) -> ())  {
-        let goalUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.UserDayData.User
+        let goalUrl = "https://firestore.googleapis.com/v1/projects/manifestmylife/databases/(default)/documents/users/" + self.UserDayData.User
         guard let url = URL(string: goalUrl) else { return }
         let backgroundTask = session.downloadTask(with: url)
         backgroundTasKID[0] = backgroundTask.taskIdentifier
@@ -46,7 +46,7 @@ class BackgroundService: NSObject {
     }
     
     func updateEvents(session: URLSession, completion: (URLSessionDownloadTask) -> ()) {
-        guard let url = URL(string: "https://us-central1-myspace-db.cloudfunctions.net/GetEventsForTheDay") else { return }
+        guard let url = URL(string: "https://us-central1-manifestmylife.cloudfunctions.net/GetEventsForTheDay") else { return }
         
         //Get the components for today's date
         var currComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: Date())
