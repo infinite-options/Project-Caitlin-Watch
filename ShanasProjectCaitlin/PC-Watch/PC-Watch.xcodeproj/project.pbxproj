@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0428A2F924EDE3D200C96949 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0428A2F824EDE3D200C96949 /* GoogleService-Info.plist */; };
+		0428A2FA24EDE3D200C96949 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0428A2F824EDE3D200C96949 /* GoogleService-Info.plist */; };
+		0428A2FB24EDE3D200C96949 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0428A2F824EDE3D200C96949 /* GoogleService-Info.plist */; };
 		0448610F24CB8A1400C0C844 /* AttendeesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0448610E24CB8A1400C0C844 /* AttendeesView.swift */; };
 		046D8CB924E4AA6600D33871 /* ImportantPeopleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D8CB824E4AA6600D33871 /* ImportantPeopleView.swift */; };
 		046D8CBB24E9D3D700D33871 /* PersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D8CBA24E9D3D700D33871 /* PersonView.swift */; };
@@ -35,9 +38,6 @@
 		2B3FB10924BEF8C400CC3D6D /* FBTasksStepsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3FB10824BEF8C400CC3D6D /* FBTasksStepsModel.swift */; };
 		2B5A688A24AFBD2000D66FC6 /* StepsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5A688924AFBD2000D66FC6 /* StepsView.swift */; };
 		2B5A688C24AFBD2E00D66FC6 /* TasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5A688B24AFBD2E00D66FC6 /* TasksView.swift */; };
-		2B6FD22F24E5CCFC0056E21E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B6FD22E24E5CCFC0056E21E /* GoogleService-Info.plist */; };
-		2B6FD23024E5CCFC0056E21E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B6FD22E24E5CCFC0056E21E /* GoogleService-Info.plist */; };
-		2B6FD23124E5CCFC0056E21E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B6FD22E24E5CCFC0056E21E /* GoogleService-Info.plist */; };
 		2B706DB324ADE791001AEABE /* NotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B706DB224ADE791001AEABE /* NotificationHandler.swift */; };
 		2B7CC57924DF8975002657D6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7CC57824DF8975002657D6 /* ViewController.swift */; };
 		2BC9C3EF24C9550800FEEA97 /* EventsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC9C3EE24C9550800FEEA97 /* EventsModel.swift */; };
@@ -98,6 +98,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0428A2F824EDE3D200C96949 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0448610E24CB8A1400C0C844 /* AttendeesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendeesView.swift; sourceTree = "<group>"; };
 		046D8CB824E4AA6600D33871 /* ImportantPeopleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportantPeopleView.swift; sourceTree = "<group>"; };
 		046D8CBA24E9D3D700D33871 /* PersonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonView.swift; sourceTree = "<group>"; };
@@ -131,7 +132,6 @@
 		2B48F24524C4FDD900EA2CBE /* PC-Watch WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "PC-Watch WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		2B5A688924AFBD2000D66FC6 /* StepsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepsView.swift; sourceTree = "<group>"; };
 		2B5A688B24AFBD2E00D66FC6 /* TasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksView.swift; sourceTree = "<group>"; };
-		2B6FD22E24E5CCFC0056E21E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2B706DB224ADE791001AEABE /* NotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHandler.swift; sourceTree = "<group>"; };
 		2B7CC57824DF8975002657D6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		2BC9C3EE24C9550800FEEA97 /* EventsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsModel.swift; sourceTree = "<group>"; };
@@ -196,7 +196,7 @@
 		27BF9DAA243BD385006A5466 = {
 			isa = PBXGroup;
 			children = (
-				2B6FD22E24E5CCFC0056E21E /* GoogleService-Info.plist */,
+				0428A2F824EDE3D200C96949 /* GoogleService-Info.plist */,
 				27BF9DB9243BD385006A5466 /* PC-Watch WatchKit App */,
 				27BF9DC8243BD389006A5466 /* PC-Watch WatchKit Extension */,
 				27BF9DB2243BD385006A5466 /* Products */,
@@ -430,7 +430,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B6FD22F24E5CCFC0056E21E /* GoogleService-Info.plist in Resources */,
+				0428A2F924EDE3D200C96949 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,7 +440,7 @@
 			files = (
 				27BF9DBE243BD389006A5466 /* Assets.xcassets in Resources */,
 				27BF9DBC243BD385006A5466 /* Interface.storyboard in Resources */,
-				2B6FD23024E5CCFC0056E21E /* GoogleService-Info.plist in Resources */,
+				0428A2FA24EDE3D200C96949 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -449,7 +449,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				27BF9DD7243BD38A006A5466 /* Preview Assets.xcassets in Resources */,
-				2B6FD23124E5CCFC0056E21E /* GoogleService-Info.plist in Resources */,
+				0428A2FB24EDE3D200C96949 /* GoogleService-Info.plist in Resources */,
 				27BF9DF4243BD58E006A5466 /* caitlin_overview_data.json in Resources */,
 				27BF9DD4243BD38A006A5466 /* Assets.xcassets in Resources */,
 			);

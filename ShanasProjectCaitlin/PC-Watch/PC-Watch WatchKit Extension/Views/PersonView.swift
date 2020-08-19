@@ -35,9 +35,24 @@ struct PersonView: View {
             }
             Spacer()
             if self.person.fields.phoneNumber?.stringValue != nil {
-                Image(systemName: "phone.circle")
-                    .font(.system(size:40))
-                    .foregroundColor(.green)
+//                Button(action: {
+//                    let number = "tel:" + self.person.fields.phoneNumber!.stringValue
+//                    if let telURL = URL(string: number) {
+//                        let wkExtension = WKExtension.shared()
+//                        wkExtension.openSystemURL(telURL)
+//                    }
+//                }) {
+                    Image(systemName: "phone.circle")
+                        .font(.system(size:50))
+                        .foregroundColor(.green)
+                        .onTapGesture {
+                            let number = "tel:" + self.person.fields.phoneNumber!.stringValue
+                            if let telURL = URL(string: number) {
+                                let wkExtension = WKExtension.shared()
+                                wkExtension.openSystemURL(telURL)
+                            }
+                        }
+//                }
             }
         }.navigationBarTitle(self.person.fields.name.stringValue)
     }
