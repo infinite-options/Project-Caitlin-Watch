@@ -28,12 +28,16 @@ struct ImportantPeopleView: View {
     
     var body: some View {
         VStack {
-            if(self.user.isUserSignedIn != .signedIn){
+            if(self.user.isUserSignedIn != .signedIn || self.user.isUserSignedIn == .signedOut) {
                 VStack(alignment: .center) {
                     Text("You're not signed in yet.")
                         .fontWeight(.bold)
                         .font(.system(size: 20, design: .rounded))
                     Spacer()
+                    NavigationLink(destination: SignInView()) {
+                        Text("Sign In")
+                            .foregroundColor(Color.yellow)
+                    }
                 }
             } else if (self.model.importantPeople == nil){
                 VStack(alignment: .center) {

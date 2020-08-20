@@ -16,9 +16,9 @@ class HostingController: WKHostingController<RootView> {
     }
 }
 
-class SecondHostingController: WKHostingController<HomeView> {
-    override var body: HomeView {
-        return HomeView()
+class SecondHostingController: WKHostingController<AboutMeView> {
+    override var body: AboutMeView {
+        return AboutMeView()
     }
     
 }
