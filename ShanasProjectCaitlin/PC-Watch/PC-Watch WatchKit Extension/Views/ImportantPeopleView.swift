@@ -12,13 +12,18 @@ struct PeopleView: View {
     var person: ImportantPerson
     
     var body: some View {
-         VStack(alignment: .leading) {
-            Text(person.fields.name.stringValue)
-                .font(.system(size: 20, design: .rounded))
-            Text("Relationship: " + person.fields.relationship.stringValue)
-                .fontWeight(.light)
-                .font(.system(size: 15))
-        }
+        NavigationLink(destination: PersonView(person: person)) {
+            if self.person.fields.havePic.booleanValue == false {
+                Image(systemName: "person.circle")
+                    .font(.system(size:40))
+                    .foregroundColor(.yellow)
+            }
+            else {
+                AsyncSmallImage(
+                    url: URL(string: self.person.fields.pic!.stringValue)!,
+                    placeholder: Image(systemName: "person.circle"))
+            }
+        }.buttonStyle(PlainButtonStyle())
     }
 }
 
@@ -27,9 +32,9 @@ struct ImportantPeopleView: View {
     @ObservedObject private var user = UserDay.shared
     
     var body: some View {
-        VStack {
+        VStack(alignment: .center) {
             if(self.user.isUserSignedIn != .signedIn || self.user.isUserSignedIn == .signedOut) {
-                VStack(alignment: .center) {
+                VStack {
                     Text("You're not signed in yet.")
                         .fontWeight(.bold)
                         .font(.system(size: 20, design: .rounded))
@@ -40,35 +45,40 @@ struct ImportantPeopleView: View {
                     }
                 }
             } else if (self.model.importantPeople == nil){
-                VStack(alignment: .center) {
+                VStack {
                     Text("You do not have any important people yet.")
                         .fontWeight(.bold)
                         .font(.system(size: 20, design: .rounded))
                     Spacer()
                 }
             } else {
-                VStack(alignment: .leading) {
-                    List {
-                        ForEach(Array((self.model.importantPeople?/*.filter{ isImportantPerson(item: $0) == true }*/.enumerated())!), id: \.offset) { index, person in
-                            NavigationLink(destination: PersonView(person: person)){
-                                VStack(alignment: .leading) {
-                                    PeopleView(person: person)
-                                }
-                            }.listRowPlatterColor(Color.blue)
+                ScrollView([.vertical]) {
+                    ForEach(Array((self.model.importantPeople?.enumerated())!), id: \.offset) { index, person in
+                        HStack(alignment: .center) {
+                            if index % 2 == 0 {
+                                PeopleView(person: person)
+                                PeopleView(person: person)
+                                PeopleView(person: person)
+                            } else {
+                                PeopleView(person: person)
+                                PeopleView(person: person)
+                                PeopleView(person: person)
+                                PeopleView(person: person)
+                            }
                         }
-                    }.listStyle(CarouselListStyle())
-                }.padding(0)
+                    }
+                }
             }
         }.navigationBarTitle("Important People")
     }
     
-    private func isImportantPerson(item: ImportantPerson) -> Bool{
-        if item.fields.important.booleanValue == true {
-            return true
-        } else {
-            return false
-        }
-    }
+//    private func isImportantPerson(item: ImportantPerson) -> Bool{
+//        if item.fields.important.booleanValue == true {
+//            return true
+//        } else {
+//            return false
+//        }
+//    }
 }
 
 struct ImportantPeopleView_Previews: PreviewProvider {

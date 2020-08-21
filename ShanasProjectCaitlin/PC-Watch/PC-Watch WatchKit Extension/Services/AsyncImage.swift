@@ -31,7 +31,7 @@ struct AsyncImage<Placeholder: View>: View {
                     .frame(width: 100, height: 100)
                     .clipShape(Circle())
                     .overlay(Circle()
-                        .stroke(Color.yellow, lineWidth: 1))
+                        .stroke(Color.white, lineWidth: 1))
 //                Circle()
 //                    .foregroundColor(Color.yellow.opacity(0.9))
 //                    .frame(width: 80, height: 80)
@@ -45,6 +45,10 @@ struct AsyncImage<Placeholder: View>: View {
 //                    .padding(EdgeInsets(top: 8, leading: 2, bottom: 0, trailing: 2))
             } else {
                 placeholder
+                    .frame(width: 100, height: 100)
+                    .clipShape(Circle())
+                    .overlay(Circle()
+                        .stroke(Color.white, lineWidth: 1))
             }
         }
     }

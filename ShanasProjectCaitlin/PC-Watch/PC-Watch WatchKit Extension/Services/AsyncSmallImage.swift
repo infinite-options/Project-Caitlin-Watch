@@ -26,25 +26,28 @@ struct AsyncSmallImage<Placeholder: View>: View {
     private var image: some View {
         Group {
             if loader.image != nil {
-                Circle()
-                    .foregroundColor(Color.yellow.opacity(0.9))
+                Image(uiImage: loader.image!)
+                    .resizable()
                     .frame(width: 40, height: 40)
-                    .overlay(Image(uiImage: loader.image!)
-                        .resizable()
-                        .frame(width:25, height:25)
-                        .padding(0))
-                    .overlay(Circle().stroke(Color.red, lineWidth: 1))
-                    .shadow(color: .yellow , radius: 4)
-                    .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 2))
+                    .clipShape(Circle())
+                    .overlay(Circle()
+                        .stroke(Color.white, lineWidth: 1))
+//                Circle()
+//                    .foregroundColor(Color.yellow.opacity(0.9))
+//                    .frame(width: 40, height: 40)
+//                    .overlay(Image(uiImage: loader.image!)
+//                        .resizable()
+//                        .frame(width:25, height:25)
+//                        .padding(0))
+//                    .overlay(Circle().stroke(Color.red, lineWidth: 1))
+//                    .shadow(color: .yellow , radius: 4)
+//                    .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 2))
             } else {
-                Circle()
-                    .foregroundColor(Color.yellow.opacity(0.9))
+                placeholder
                     .frame(width: 40, height: 40)
-                    .overlay(placeholder)
-                    .overlay(Circle().stroke(Color.red, lineWidth: 1))
-                    .shadow(color: .yellow , radius: 4)
-                    .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 2))
-                
+                    .clipShape(Circle())
+                    .overlay(Circle()
+                        .stroke(Color.white, lineWidth: 1))
             }
         }
     }
