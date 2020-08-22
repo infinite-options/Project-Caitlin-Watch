@@ -8,6 +8,56 @@
 
 import SwiftUI
 
+struct PeopleRow: Identifiable {
+    let id = UUID()
+    var cells = [Cell]()
+    
+    init(cells: [Cell]) {
+        self.cells = cells
+    }
+}
+
+extension PeopleRow {
+    static func populate(people: [ImportantPerson]) -> [PeopleRow] {
+        var rows = [PeopleRow]()
+        var i = 0
+        var col = 0
+        while i < people.count {
+            let dif = people.count - 1 - i
+            if dif > 2 {
+                if (col % 2 == 0) {
+                    rows.append(PeopleRow(cells: [Cell(person: people[i]), Cell(person: people[i+1]), Cell(person: people[i+2])]))
+                    i+=3
+                    col+=1
+                } else {
+                    rows.append(PeopleRow(cells: [Cell(person: people[i]), Cell(person: people[i+1]), Cell(person: people[i+2]), Cell(person: people[i+3])]))
+                    i+=4
+                    col+=1
+                }
+            } else if dif == 2 {
+                rows.append(PeopleRow(cells: [Cell(person: people[i]), Cell(person: people[i+1]), Cell(person: people[i+2])]))
+                i+=3
+            } else if dif == 1 {
+                rows.append(PeopleRow(cells: [Cell(person: people[i]), Cell(person: people[i+1])]))
+                i+=2
+            } else {
+                rows.append(PeopleRow(cells: [Cell(person: people[i])]))
+                i+=1
+            }
+        }
+        return rows
+    }
+}
+
+struct Cell: Identifiable {
+    let id = UUID()
+    var person: ImportantPerson
+    
+    init(person: ImportantPerson) {
+        self.person = person
+    }
+}
+
 struct PeopleView: View {
     var person: ImportantPerson
     
@@ -31,6 +81,8 @@ struct ImportantPeopleView: View {
     @ObservedObject private var model = FirebaseGoogleService.shared
     @ObservedObject private var user = UserDay.shared
     
+    let rows = PeopleRow.populate(people: (FirebaseGoogleService.shared.importantPeople!))
+    
     var body: some View {
         VStack(alignment: .center) {
             if(self.user.isUserSignedIn != .signedIn || self.user.isUserSignedIn == .signedOut) {
@@ -53,17 +105,10 @@ struct ImportantPeopleView: View {
                 }
             } else {
                 ScrollView([.vertical]) {
-                    ForEach(Array((self.model.importantPeople?.enumerated())!), id: \.offset) { index, person in
+                    ForEach(rows) { row in
                         HStack(alignment: .center) {
-                            if index % 2 == 0 {
-                                PeopleView(person: person)
-                                PeopleView(person: person)
-                                PeopleView(person: person)
-                            } else {
-                                PeopleView(person: person)
-                                PeopleView(person: person)
-                                PeopleView(person: person)
-                                PeopleView(person: person)
+                            ForEach(row.cells) { cell in
+                                PeopleView(person: cell.person)
                             }
                         }
                     }
