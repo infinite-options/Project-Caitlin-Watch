@@ -47,11 +47,6 @@ struct AboutMeView: View {
                                 .onTapGesture {
                                     self.User.isUserSignedIn = .signedOut
                                     self.User.User = ""
-//                                    self.User.UserInfo = nil
-//                                    self.User.UserPhoto = nil
-//                                    self.User.UserDayData = []
-//                                    self.User.UserDayBlockData = []
-//                                    self.User.loadingUser = false
                                     self.User.manifestSuite?.set(self.User.User, forKey: self.User.manifestUserIdKey)
                                 }
                         }
