@@ -34,9 +34,11 @@ struct AboutMeView: View {
                                 .clipShape(Circle())
                                 .overlay(Circle().stroke(Color.yellow, lineWidth: 1))
                         }
-                        Text("\(self.fullName!)")
-                            .fontWeight(.bold)
-                            .font(.system(size: 19, design: .rounded))
+                        if self.fullName != nil {
+                            Text("\(self.fullName!)")
+                                .fontWeight(.bold)
+                                .font(.system(size: 19, design: .rounded))
+                        }
                         NavigationLink(destination: SignInView()) {
                             Text("Switch Accounts")
                                 .foregroundColor(Color.green)
