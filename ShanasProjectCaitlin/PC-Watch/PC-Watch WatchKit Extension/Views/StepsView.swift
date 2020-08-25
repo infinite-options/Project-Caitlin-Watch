@@ -43,14 +43,14 @@ struct StepView: View {
                         AssetImage(urlName: self.step!.mapValue.fields.photo.stringValue, placeholder: Image("default-step"))
                             .aspectRatio(contentMode: .fit)
                     }
-                    VStack(alignment: .leading) {
+                    VStack {
                         Text(self.step!.mapValue.fields.title.stringValue)
                             .frame(width: 110)
-                            .font(.system(size: 15, design: .rounded))
+                            .font(.system(size: 16, design: .rounded))
                             .lineLimit(2)
                         Text("Takes: " + self.step!.mapValue.fields.expectedCompletionTime!.stringValue)
                             .frame(width: 110)
-                            .font(.system(size: 10))
+                            .font(.system(size: 13))
                     }
                 }
                 Spacer()
