@@ -235,7 +235,7 @@ struct HomeView_Previews: PreviewProvider {
 //
 //struct EventInfoView: View {
 //    var item: Event?
-//    
+//
 //    var body: some View{
 //        VStack(alignment: .leading){
 //            Text(self.item!.summary!)
@@ -262,13 +262,13 @@ struct HomeView_Previews: PreviewProvider {
 //                            .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
 //                            .foregroundColor(.green))
 //                }
-//                
+//
 //                VStack(alignment: .leading) {
 //                    Text("Start " + DayDateObj.formatter.string(from: ISO8601DateFormatter().date(from: self.item!.start!.dateTime)!))
 //                        .fontWeight(.light)
 //                        .fixedSize(horizontal: false, vertical: true)
 //                        .font(.system(size: 15))
-//                        
+//
 //                    Text("End " + DayDateObj.formatter.string(from: ISO8601DateFormatter().date(from: self.item!.end!.dateTime)!))
 //                        .fontWeight(.light)
 //                        .fixedSize(horizontal: false, vertical: true)
@@ -277,7 +277,7 @@ struct HomeView_Previews: PreviewProvider {
 //            }
 //        }
 //    }
-//    
+//
 //    private func isNow(item: Event) -> Bool {
 //        if DayDateObj.ISOFormatter.date(from: item.end!.dateTime)! < Date() {
 //            return false
@@ -290,7 +290,7 @@ struct HomeView_Previews: PreviewProvider {
 //    //TODO: doesnt update complete until reload the app because passed by value
 //    var item: Value?
 //    @ObservedObject private var model = FirebaseGoogleService.shared
-//    
+//
 //    var body: some View {
 //        VStack(alignment: .leading) {
 //            HStack {
@@ -340,10 +340,10 @@ struct HomeView_Previews: PreviewProvider {
 //struct HomeView: View {
 //    // below has goals and routines
 //    @ObservedObject private var model = UserDay.shared
-//    
+//
 //    @State var fullDay = false
 //    @State var showLess = true
-//    
+//
 //    var body: some View {
 //
 //        GeometryReader { geo in
@@ -437,7 +437,7 @@ struct HomeView_Previews: PreviewProvider {
 //            }
 //        }
 //    }
-//    
+//
 //    private func isEvent(item: UserDayGoalEventList) -> Bool{
 //        if item is Event {
 //            return true
