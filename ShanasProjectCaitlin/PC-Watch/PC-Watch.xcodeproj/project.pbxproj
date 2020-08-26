@@ -13,6 +13,7 @@
 		0473E06724F7117F00A73A69 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0473E06624F7117F00A73A69 /* GoogleService-Info.plist */; };
 		0473E06824F7117F00A73A69 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0473E06624F7117F00A73A69 /* GoogleService-Info.plist */; };
 		0473E06924F7118000A73A69 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0473E06624F7117F00A73A69 /* GoogleService-Info.plist */; };
+		0473E06B24F7213000A73A69 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0473E06A24F7213000A73A69 /* RatingView.swift */; };
 		0484C4FE24B90D55002C3F13 /* AsyncSmallImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0484C4FD24B90D55002C3F13 /* AsyncSmallImage.swift */; };
 		04957BB424C5350C0031D253 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04957BB324C5350C0031D253 /* Enums.swift */; };
 		04957BB624C5D8D10031D253 /* UrlToAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04957BB524C5D8D10031D253 /* UrlToAsset.swift */; };
@@ -102,6 +103,7 @@
 		046D8CB824E4AA6600D33871 /* ImportantPeopleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportantPeopleView.swift; sourceTree = "<group>"; };
 		046D8CBA24E9D3D700D33871 /* PersonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonView.swift; sourceTree = "<group>"; };
 		0473E06624F7117F00A73A69 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0473E06A24F7213000A73A69 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		0484C4FD24B90D55002C3F13 /* AsyncSmallImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncSmallImage.swift; sourceTree = "<group>"; };
 		04957BB324C5350C0031D253 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		04957BB524C5D8D10031D253 /* UrlToAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlToAsset.swift; sourceTree = "<group>"; };
@@ -302,6 +304,7 @@
 				27BF9DFD243BD600006A5466 /* HomeView.swift */,
 				2B5A688B24AFBD2E00D66FC6 /* TasksView.swift */,
 				2B5A688924AFBD2000D66FC6 /* StepsView.swift */,
+				0473E06A24F7213000A73A69 /* RatingView.swift */,
 				2BCB7EA524CB474D00C72A52 /* EventsView.swift */,
 				0448610E24CB8A1400C0C844 /* AttendeesView.swift */,
 				2BF95D7224E0BB5E00787EE6 /* LoadingView.swift */,
@@ -559,6 +562,7 @@
 				2B258E3524A7839100C6DD2E /* ComplicationController.swift in Sources */,
 				2BF95D7524E0BBF900787EE6 /* LaunchScreenView.swift in Sources */,
 				27BF9DD0243BD389006A5466 /* NotificationController.swift in Sources */,
+				0473E06B24F7213000A73A69 /* RatingView.swift in Sources */,
 				27E475AD2442413700D380FA /* AsyncImage.swift in Sources */,
 				2BDEE39024B3698900FCFE14 /* BackgroundServices.swift in Sources */,
 				0484C4FE24B90D55002C3F13 /* AsyncSmallImage.swift in Sources */,
