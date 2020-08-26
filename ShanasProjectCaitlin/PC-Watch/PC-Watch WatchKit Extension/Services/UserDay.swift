@@ -65,7 +65,7 @@ class UserDay: ObservableObject {
     }
     
     func getUserFromEmail(email: String, completion: @escaping (Int) -> () ){
-        guard let url = URL(string: "https://us-central1-manifestmylife.cloudfunctions.net/GetUserFromEmail") else { return }
+        guard let url = URL(string: "https://us-central1-myspace-db.cloudfunctions.net/GetUserFromEmail") else { return }
         
         let jsonData = getUserIdBody(email: email)
         let finalJsonData = try? JSONEncoder().encode(jsonData)
