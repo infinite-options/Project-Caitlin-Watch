@@ -67,14 +67,15 @@ class FirebaseGoogleService: ObservableObject {
         
         self.getFirebaseImportantPeople() { data in
             self.importantPeople = data
+            print(self.importantPeople)
             print("Got important people from Firebase. Now getting other firebase data.")
             if self.importantPeople != nil {
                 for person in self.importantPeople! {
-                    if person.fields.emailId != nil {
-                        self.peopleEmailToNameDict[person.fields.emailId!.stringValue] = person.fields.name.stringValue
+                    if person.fields.email != nil {
+                        self.peopleEmailToNameDict[person.fields.email!.stringValue] = person.fields.name.stringValue
                     }
                 }
-                self.peopleRow = PeopleRow.populate(people: (FirebaseGoogleService.shared.importantPeople!))
+                self.peopleRow = PeopleRow.populate(people: self.importantPeople!)
             }
             print(self.peopleEmailToNameDict)
         }
@@ -238,8 +239,9 @@ class FirebaseGoogleService: ObservableObject {
     }
     
     func getFirebaseImportantPeople(completion: @escaping ([ImportantPerson]?) -> ()) {
-        let TaskUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.UserDayData.User + "/people/"
-        guard let url = URL(string: TaskUrl) else { return }
+        let peopleUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.UserDayData.User + "/people/"
+        guard let url = URL(string: peopleUrl) else { return }
+        print(peopleUrl)
 
             URLSession.shared.dataTask(with: url) { (data, _, error) in
                 if let error = error {
@@ -248,12 +250,15 @@ class FirebaseGoogleService: ObservableObject {
 
                 if let data = data {
                     do {
+                        // where the issue is occuring
                         let data = try JSONDecoder().decode(People.self, from: data)
                         DispatchQueue.main.async {
                             completion(data.documents)
+                            print(data.documents)
                         }
                     }
                     catch _ {
+                        print("couldn't retrieve people")
                         completion(nil)
                     }
                 }

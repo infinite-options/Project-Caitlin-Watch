@@ -64,7 +64,7 @@ struct ImportantPerson: Codable {
 
 // MARK: - ImportantPersonValue
 struct ImportantPersonFields: Codable {
-    var emailId: EmailID?
+    var email: EmailID?
     var havePic: HavePic
     var important: HavePic
     var name: EmailID
@@ -76,7 +76,7 @@ struct ImportantPersonFields: Codable {
     
     enum CodingKeys: String, CodingKey {
         case havePic = "have_pic"
-        case emailId = "email_id"
+        case email
         case important
         case name
         case phoneNumber = "phone_number"
