@@ -30,7 +30,6 @@ struct PeopleView: View {
 struct ImportantPeopleView: View {
     @ObservedObject private var model = FirebaseGoogleService.shared
     @ObservedObject private var user = UserDay.shared
-    private var rows = FirebaseGoogleService.shared.peopleRow
 
     var body: some View {
         VStack(alignment: .center) {
@@ -45,7 +44,7 @@ struct ImportantPeopleView: View {
                             .foregroundColor(Color.yellow)
                     }
                 }
-            } else if (self.model.importantPeople == nil || rows == nil){
+            } else if (self.model.importantPeople == nil || FirebaseGoogleService.shared.peopleRow == nil){
                 VStack {
                     Text("You do not have any important people yet.")
                         .fontWeight(.bold)
@@ -54,7 +53,7 @@ struct ImportantPeopleView: View {
                 }
             } else {
                 ScrollView([.vertical]) {
-                    ForEach(rows!) { row in
+                    ForEach(FirebaseGoogleService.shared.peopleRow!) { row in
                         HStack(alignment: .center) {
                             ForEach(row.cells) { cell in
                                 PeopleView(person: cell.person)
