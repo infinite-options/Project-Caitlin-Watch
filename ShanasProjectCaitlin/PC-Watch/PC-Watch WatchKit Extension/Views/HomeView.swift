@@ -129,6 +129,10 @@ struct HomeView: View {
                     .fontWeight(.bold)
                     .font(.system(size: 20, design: .rounded))
                     Spacer()
+                    NavigationLink(destination: SignInView()) {
+                        Text("Sign In")
+                            .foregroundColor(Color.yellow)
+                    }
                 }.frame(width: geo.size.width, height: geo.size.height, alignment: .center)
                 .navigationBarTitle(self.model.navBar)
             }

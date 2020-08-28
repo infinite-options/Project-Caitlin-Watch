@@ -14,6 +14,7 @@
 		0473E06824F7117F00A73A69 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0473E06624F7117F00A73A69 /* GoogleService-Info.plist */; };
 		0473E06924F7118000A73A69 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0473E06624F7117F00A73A69 /* GoogleService-Info.plist */; };
 		0473E06B24F7213000A73A69 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0473E06A24F7213000A73A69 /* RatingView.swift */; };
+		0473E06D24F8870E00A73A69 /* PeopleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0473E06C24F8870E00A73A69 /* PeopleRow.swift */; };
 		0484C4FE24B90D55002C3F13 /* AsyncSmallImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0484C4FD24B90D55002C3F13 /* AsyncSmallImage.swift */; };
 		04957BB424C5350C0031D253 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04957BB324C5350C0031D253 /* Enums.swift */; };
 		04957BB624C5D8D10031D253 /* UrlToAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04957BB524C5D8D10031D253 /* UrlToAsset.swift */; };
@@ -104,6 +105,7 @@
 		046D8CBA24E9D3D700D33871 /* PersonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonView.swift; sourceTree = "<group>"; };
 		0473E06624F7117F00A73A69 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0473E06A24F7213000A73A69 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
+		0473E06C24F8870E00A73A69 /* PeopleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleRow.swift; sourceTree = "<group>"; };
 		0484C4FD24B90D55002C3F13 /* AsyncSmallImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncSmallImage.swift; sourceTree = "<group>"; };
 		04957BB324C5350C0031D253 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		04957BB524C5D8D10031D253 /* UrlToAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlToAsset.swift; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 				2BF4E09B24AC015300215138 /* Formatters.swift */,
 				2BC9C3EE24C9550800FEEA97 /* EventsModel.swift */,
 				2BDB37A124CF755700493F9D /* StartCompleteGRATISModel.swift */,
+				0473E06C24F8870E00A73A69 /* PeopleRow.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -568,6 +571,7 @@
 				0484C4FE24B90D55002C3F13 /* AsyncSmallImage.swift in Sources */,
 				2BCAEB0D24E0116D003E8917 /* AboutMeView.swift in Sources */,
 				2B5A688A24AFBD2000D66FC6 /* StepsView.swift in Sources */,
+				0473E06D24F8870E00A73A69 /* PeopleRow.swift in Sources */,
 				27E475A9244240B200D380FA /* ImageLoader.swift in Sources */,
 				2B5A688C24AFBD2E00D66FC6 /* TasksView.swift in Sources */,
 				046D8CB924E4AA6600D33871 /* ImportantPeopleView.swift in Sources */,
@@ -745,7 +749,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0.15;
+				MARKETING_VERSION = 1.0.16;
 				PRODUCT_BUNDLE_IDENTIFIER = com.infiniteoptions.caitlinwatch.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -775,7 +779,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0.15;
+				MARKETING_VERSION = 1.0.16;
 				PRODUCT_BUNDLE_IDENTIFIER = com.infiniteoptions.caitlinwatch.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -799,7 +803,7 @@
 				DEVELOPMENT_TEAM = 8V66NC2T37;
 				IBSC_MODULE = PC_Watch_WatchKit_Extension;
 				INFOPLIST_FILE = "PC-Watch WatchKit App/Info.plist";
-				MARKETING_VERSION = 1.0.15;
+				MARKETING_VERSION = 1.0.16;
 				PRODUCT_BUNDLE_IDENTIFIER = com.infiniteoptions.caitlinwatch.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -823,7 +827,7 @@
 				DEVELOPMENT_TEAM = 8V66NC2T37;
 				IBSC_MODULE = PC_Watch_WatchKit_Extension;
 				INFOPLIST_FILE = "PC-Watch WatchKit App/Info.plist";
-				MARKETING_VERSION = 1.0.15;
+				MARKETING_VERSION = 1.0.16;
 				PRODUCT_BUNDLE_IDENTIFIER = com.infiniteoptions.caitlinwatch.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -843,7 +847,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8V66NC2T37;
-				MARKETING_VERSION = 1.0.15;
+				MARKETING_VERSION = 1.0.16;
 				PRODUCT_BUNDLE_IDENTIFIER = com.infiniteoptions.caitlinwatch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -859,7 +863,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8V66NC2T37;
-				MARKETING_VERSION = 1.0.15;
+				MARKETING_VERSION = 1.0.16;
 				PRODUCT_BUNDLE_IDENTIFIER = com.infiniteoptions.caitlinwatch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

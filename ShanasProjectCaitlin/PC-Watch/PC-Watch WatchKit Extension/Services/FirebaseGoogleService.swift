@@ -16,6 +16,7 @@ class FirebaseGoogleService: ObservableObject {
     
     //Stores important people
     @Published var importantPeople: [ImportantPerson]?
+    @Published var peopleRow: [PeopleRow]?
     @Published var peopleEmailToNameDict = [String : String]()
     
     //Stores the goals and routines
@@ -73,6 +74,7 @@ class FirebaseGoogleService: ObservableObject {
                         self.peopleEmailToNameDict[person.fields.emailId!.stringValue] = person.fields.name.stringValue
                     }
                 }
+                self.peopleRow = PeopleRow.populate(people: (FirebaseGoogleService.shared.importantPeople!))
             }
             print(self.peopleEmailToNameDict)
         }
