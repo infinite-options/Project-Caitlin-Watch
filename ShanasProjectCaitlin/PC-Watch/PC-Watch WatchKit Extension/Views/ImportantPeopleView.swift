@@ -44,7 +44,7 @@ struct ImportantPeopleView: View {
                             .foregroundColor(Color.yellow)
                     }
                 }
-            } else if (self.model.importantPeople == nil || FirebaseGoogleService.shared.peopleRow == nil){
+            } else if (self.model.importantPeople == nil){
                 VStack {
                     Text("You do not have any important people yet.")
                         .fontWeight(.bold)

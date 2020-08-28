@@ -34,18 +34,8 @@ struct LaunchScreenView: View {
                     Text("Sign In")
                         .foregroundColor(Color.yellow)
                 }
-                
-//                Button(action: {
-//                    self.showSignIn = true
-//                }){
-//                    Text("Sign In")
-//                        .foregroundColor(Color.yellow)
-//                }.sheet(isPresented: self.$showSignIn) {
-//                    SignInView()
-//                }
-
             }.navigationBarTitle("Welcome")
-            .frame(maxHeight: geo.size.height)
+             .frame(maxHeight: geo.size.height)
         }
     }
 }
