@@ -19,7 +19,7 @@ struct EventInfoView: View {
                     Text(DayDateObj.formatter.string(from: ISO8601DateFormatter().date(from: self.item!.start!.dateTime)!) + " - " + DayDateObj.formatter.string(from: ISO8601DateFormatter().date(from: self.item!.end!.dateTime)!))
                         .fontWeight(.light)
                         .fixedSize(horizontal: false, vertical: true)
-                        .font(.system(size: 15))
+                        .font(.system(size: 12))
                         .foregroundColor(.black)
                     Text(self.item!.summary!)
                         .fontWeight(.bold)
@@ -31,17 +31,17 @@ struct EventInfoView: View {
                 
                 if self.isNow(item: item!) {
                     Image(systemName: "calendar")
-                        .font(.system(size:40))
+                        .font(.system(size:30))
                         .imageScale(.small)
                         .foregroundColor(.black)
                 } else {
                     Image(systemName: "calendar")
-                        .font(.system(size:40))
+                        .font(.system(size:30))
                         .imageScale(.small)
                         .foregroundColor(.black)
                         .opacity(0.5)
                         .overlay(Image(systemName: "checkmark.circle")
-                            .font(.system(size:44))
+                            .font(.system(size:33))
                             .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
                             .foregroundColor(.green))
                 }
@@ -65,30 +65,30 @@ struct infoView: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                VStack {
-                    HStack {
-                        Text(self.item!.mapValue!.fields.title.stringValue)
-                            .fontWeight(.bold)
-                            .font(.system(size: 18, design: .rounded))
-                            .foregroundColor(.black)
-                        Spacer()
-                        if (!(self.model.goalsSubtasks[item!.mapValue!.fields.id.stringValue] == nil)) {
-                            Image(systemName: "plus.circle")
-                                .font(.subheadline)
-                                .imageScale(.small)
-                                .foregroundColor(.black)
-                        }
-                    }
-                    (item!.mapValue!.fields.isPersistent.booleanValue ? Text("Starts at " + DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: self.item!.mapValue!.fields.startDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15)) : Text("Takes me " + self.item!.mapValue!.fields.expectedCompletionTime.stringValue).fontWeight(.light).font(.system(size: 15)))
+                VStack(alignment: .leading) {
+                    Text(self.item!.mapValue!.fields.title.stringValue)
+                        .fontWeight(.bold)
+                        .font(.system(size: 18, design: .rounded))
+                        .foregroundColor(.black)
+                    (item!.mapValue!.fields.isPersistent.booleanValue ? Text("Starts at " + DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: self.item!.mapValue!.fields.startDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 12)) : Text("Takes me " + self.item!.mapValue!.fields.expectedCompletionTime.stringValue).fontWeight(.light).font(.system(size: 12
+                        
+                        )))
                         .foregroundColor(.black)
                 }
+//                Spacer()
+//                if (!(self.model.goalsSubtasks[item!.mapValue!.fields.id.stringValue] == nil)) {
+//                    Image(systemName: "plus.circle")
+//                        .font(.subheadline)
+//                        .imageScale(.small)
+//                        .foregroundColor(.black)
+//                }
                 Spacer()
                 if ((self.item!.mapValue!.fields.isComplete?.booleanValue) == true){
                     SmallAssetImage(urlName: self.item!.mapValue!.fields.photo.stringValue, placeholder: Image("default-goal"))
                         .aspectRatio(contentMode: .fit)
                         .opacity(0.40)
                         .overlay(Image(systemName: "checkmark.circle")
-                            .font(.system(size:44))
+                            .font(.system(size:33))
                             .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
                             .foregroundColor(.green))
                 } else if (self.item!.mapValue!.fields.isInProgress?.booleanValue == true) {
@@ -96,14 +96,14 @@ struct infoView: View {
                         .aspectRatio(contentMode: .fit)
                         .opacity(0.40)
                         .overlay(Image(systemName: "arrow.2.circlepath.circle")
-                            .font(.system(size:44))
+                            .font(.system(size:33))
                             .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
                             .foregroundColor(.yellow))
                 } else {
                     SmallAssetImage(urlName: self.item!.mapValue!.fields.photo.stringValue, placeholder: Image("default-goal"))
                         .aspectRatio(contentMode: .fit)
                 }
-            }
+            }//.padding(EdgeInsets(top: 0, leading: 2, bottom: 8, trailing: 0))
         }
     }
 }
@@ -169,7 +169,7 @@ struct HomeView: View {
                                     self.showLess = true
                                 }) {
                                     Text("Show less")
-                                        .foregroundColor(.yellow)
+                                        //.foregroundColor(.yellow)
                                         .frame(maxWidth: geo.size.width, alignment: .center)
                                 }
                             }.listStyle(CarouselListStyle())
@@ -203,7 +203,7 @@ struct HomeView: View {
                                     self.showLess = false
                                 }) {
                                     Text("Show full day")
-                                        .foregroundColor(.yellow)
+//                                        .foregroundColor(.black)
                                 }
                             }.listStyle(CarouselListStyle())
                                 .navigationBarTitle(self.model.navBar)

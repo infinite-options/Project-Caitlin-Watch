@@ -66,10 +66,10 @@ struct SmallAssetImage<Placeholder: View>: View {
             if photoUrlToAssetImage[urlName] != nil && photoUrlToAssetImage[urlName] != "" {
                 Circle()
                     .foregroundColor(Color.yellow.opacity(0.9))
-                    .frame(width: 40, height: 40)
+                    .frame(width: 30, height: 30)
                     .overlay(Image(photoUrlToAssetImage[urlName]!)
                         .resizable()
-                        .frame(width:25, height:25)
+                        .frame(width:22, height:22)
                         .padding(0))
                     .overlay(Circle().stroke(Color.red, lineWidth: 1))
                     .shadow(color: .yellow , radius: 4)
@@ -77,7 +77,7 @@ struct SmallAssetImage<Placeholder: View>: View {
             } else {
                 Circle()
                     .foregroundColor(Color.yellow.opacity(0.9))
-                    .frame(width: 40, height: 40)
+                    .frame(width: 30, height: 30)
                     .overlay(placeholder)
                     .overlay(Circle().stroke(Color.red, lineWidth: 1))
                     .shadow(color: .yellow , radius: 4)
