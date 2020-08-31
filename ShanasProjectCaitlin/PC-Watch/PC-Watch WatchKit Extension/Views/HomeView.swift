@@ -13,42 +13,37 @@ struct EventInfoView: View {
     var item: Event?
     
     var body: some View{
-        VStack(alignment: .leading){
-            Text(self.item!.summary!)
-                .fontWeight(.bold)
-                .font(.system(size: 20, design: .rounded))
-                .lineLimit(2)
-            Spacer()
-            HStack{
+        VStack(alignment: .leading) {
+            HStack(alignment: .center) {
+                VStack(alignment: .leading) {
+                    Text(DayDateObj.formatter.string(from: ISO8601DateFormatter().date(from: self.item!.start!.dateTime)!) + " - " + DayDateObj.formatter.string(from: ISO8601DateFormatter().date(from: self.item!.end!.dateTime)!))
+                        .fontWeight(.light)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .font(.system(size: 15))
+                        .foregroundColor(.black)
+                    Text(self.item!.summary!)
+                        .fontWeight(.bold)
+                        .foregroundColor(.black)
+                        .font(.system(size: 18, design: .rounded))
+                        .lineLimit(2)
+                }
+                Spacer()
+                
                 if self.isNow(item: item!) {
-                    SmallAssetImage(urlName: "",
-                                placeholder: Image("calendar")
-                                    .resizable()
-                                    .frame(width:25, height:25)
-                                    .padding(0))
+                    Image(systemName: "calendar")
+                        .font(.system(size:40))
+                        .imageScale(.small)
+                        .foregroundColor(.black)
                 } else {
-                    SmallAssetImage(urlName: "",
-                                placeholder: Image("calendar")
-                                    .resizable()
-                                    .frame(width:25, height:25)
-                                    .padding(0))
-                        .opacity(0.40)
+                    Image(systemName: "calendar")
+                        .font(.system(size:40))
+                        .imageScale(.small)
+                        .foregroundColor(.black)
+                        .opacity(0.5)
                         .overlay(Image(systemName: "checkmark.circle")
                             .font(.system(size:44))
                             .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
                             .foregroundColor(.green))
-                }
-                
-                VStack(alignment: .leading) {
-                    Text("Start " + DayDateObj.formatter.string(from: ISO8601DateFormatter().date(from: self.item!.start!.dateTime)!))
-                        .fontWeight(.light)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .font(.system(size: 15))
-                        
-                    Text("End " + DayDateObj.formatter.string(from: ISO8601DateFormatter().date(from: self.item!.end!.dateTime)!))
-                        .fontWeight(.light)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .font(.system(size: 15))
                 }
             }
         }
@@ -70,19 +65,24 @@ struct infoView: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Text(self.item!.mapValue!.fields.title.stringValue)
-                    .fontWeight(.bold)
-                    .font(.system(size: 20, design: .rounded))
-                Spacer()
-                if (!(self.model.goalsSubtasks[item!.mapValue!.fields.id.stringValue] == nil)) {
-                    Image(systemName: "plus.circle")
-                        .font(.subheadline)
-                        .imageScale(.small)
-                        .accentColor(.white)
+                VStack {
+                    HStack {
+                        Text(self.item!.mapValue!.fields.title.stringValue)
+                            .fontWeight(.bold)
+                            .font(.system(size: 18, design: .rounded))
+                            .foregroundColor(.black)
+                        Spacer()
+                        if (!(self.model.goalsSubtasks[item!.mapValue!.fields.id.stringValue] == nil)) {
+                            Image(systemName: "plus.circle")
+                                .font(.subheadline)
+                                .imageScale(.small)
+                                .foregroundColor(.black)
+                        }
+                    }
+                    (item!.mapValue!.fields.isPersistent.booleanValue ? Text("Starts at " + DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: self.item!.mapValue!.fields.startDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15)) : Text("Takes me " + self.item!.mapValue!.fields.expectedCompletionTime.stringValue).fontWeight(.light).font(.system(size: 15)))
+                        .foregroundColor(.black)
                 }
-            }
-            Spacer()
-            HStack {
+                Spacer()
                 if ((self.item!.mapValue!.fields.isComplete?.booleanValue) == true){
                     SmallAssetImage(urlName: self.item!.mapValue!.fields.photo.stringValue, placeholder: Image("default-goal"))
                         .aspectRatio(contentMode: .fit)
@@ -102,11 +102,6 @@ struct infoView: View {
                 } else {
                     SmallAssetImage(urlName: self.item!.mapValue!.fields.photo.stringValue, placeholder: Image("default-goal"))
                         .aspectRatio(contentMode: .fit)
-                }
-                //Text(formatter.string(from: timeLeft.date(from: self.item!.mapValue.fields.startDayAndTime.stringValue)!)  + " - " + formatter.string(from: timeLeft.date(from: self.item!.mapValue.fields.endDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15))
-                VStack(alignment: .leading) {
-                    Text("Takes " + self.item!.mapValue!.fields.expectedCompletionTime.stringValue).fontWeight(.light).font(.system(size: 15))
-                    Text("Ends: " + DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: self.item!.mapValue!.fields.endDayAndTime.stringValue)!)).fontWeight(.light).font(.system(size: 15))
                 }
             }
         }
@@ -156,17 +151,18 @@ struct HomeView: View {
                                             NavigationLink (destination: EventsView(event: (item as! Event))){
                                                 EventInfoView(item: (item as! Event))
                                             }.frame(height: 80)
-                                            .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
+                                            //.padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
                                         }
                                         else {
                                             NavigationLink(destination: TasksView(goalOrRoutine: (item as! Value), goalOrRoutineIndex: index, fullDayArray: true)) {
                                             HStack {
                                                 infoView(item: (item as! Value))
                                             }.frame(height: 80)
-                                                .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
+                                                //.padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
                                             }
                                         }
-                                    }.listRowPlatterColor((item is Event) ? Color.yellow.opacity(0.75) : (item.mapValue!.fields.isPersistent.booleanValue ? Color.gray : Color(Color.RGBColorSpace.sRGB, red: 0.68, green: 0.68, blue: 0.68, opacity: 0.3)))
+                                    }.listRowPlatterColor((item is Event) ? Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1) : Color.white)
+                                        //(item.mapValue!.fields.isPersistent.booleanValue ? Color.gray : Color(Color.RGBColorSpace.sRGB, red: 0.68, green: 0.68, blue: 0.68, opacity: 0.3)))
                                 }
                                 Button(action: {
                                     self.fullDay = false
@@ -189,17 +185,18 @@ struct HomeView: View {
                                             NavigationLink (destination: EventsView(event: (item as! Event))){
                                                 EventInfoView(item: (item as! Event))
                                             }.frame(height: 80)
-                                            .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
+                                            //.padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
                                         }
                                         else {
                                             NavigationLink(destination: TasksView(goalOrRoutine: (item as! Value), goalOrRoutineIndex: index, fullDayArray: false)) {
                                             HStack {
                                                 infoView(item: (item as! Value))
                                             }.frame(height: 80)
-                                                .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
+                                                //.padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
                                             }
                                         }
-                                    }.listRowPlatterColor((item is Event) ? Color.yellow.opacity(0.75) : (item.mapValue!.fields.isPersistent.booleanValue ? Color.gray : Color(Color.RGBColorSpace.sRGB, red: 0.68, green: 0.68, blue: 0.68, opacity: 0.3)))
+                                    }.listRowPlatterColor((item is Event) ? Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1) : Color.white)
+                                        //(item.mapValue!.fields.isPersistent.booleanValue ? Color.gray : Color(Color.RGBColorSpace.sRGB, red: 0.68, green: 0.68, blue: 0.68, opacity: 0.3)))
                                 }
                                 Button(action: {
                                     self.fullDay = true
