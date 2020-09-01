@@ -131,7 +131,7 @@ struct HomeView: View {
                             .foregroundColor(Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1))
                     }
                 }.frame(width: geo.size.width, height: geo.size.height, alignment: .center)
-                .navigationBarTitle(self.model.navBar)
+                 .navigationBarTitle("My Day")
             }
             else if (self.model.UserDayData.count == 0){
                 VStack(alignment: .center) {
@@ -140,7 +140,7 @@ struct HomeView: View {
                     .font(.system(size: 20, design: .rounded))
                     Spacer()
                 }.frame(width: geo.size.width, height: geo.size.height, alignment: .center)
-                .navigationBarTitle(self.model.navBar)
+                 .navigationBarTitle("My Day")
             }
             else {
                 VStack {
@@ -175,7 +175,7 @@ struct HomeView: View {
                                         .frame(maxWidth: geo.size.width, alignment: .center)
                                 }
                             }.listStyle(CarouselListStyle())
-                                .navigationBarTitle(self.model.navBar)
+                             .navigationBarTitle("My Day")
                         }.padding(0)
                     }
                     if self.showLess {
@@ -208,7 +208,7 @@ struct HomeView: View {
                                         .foregroundColor(Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1))
                                 }
                             }.listStyle(CarouselListStyle())
-                                .navigationBarTitle(self.model.navBar)
+                             .navigationBarTitle("My Day")
                         }.padding(0)
                     }
                 }.navigationBarTitle("My Day")
