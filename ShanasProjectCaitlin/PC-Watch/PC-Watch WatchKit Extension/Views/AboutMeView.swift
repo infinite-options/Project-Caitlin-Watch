@@ -25,27 +25,23 @@ struct AboutMeView: View {
                         if self.User.UserPhoto == nil {
                             Image(systemName: "person.circle")
                                 .font(.system(size:50))
-                                .foregroundColor(.yellow)
+                                .foregroundColor(Color.white)
                         }
                         else{
                             Image(uiImage: self.User.UserPhoto ?? UIImage())
                                 .resizable()
                                 .frame(width: 80, height: 80)
                                 .clipShape(Circle())
-                                .overlay(Circle().stroke(Color.yellow, lineWidth: 1))
+                                .overlay(Circle().stroke(Color.white, lineWidth: 1))
                         }
                         if self.fullName != nil {
                             Text("\(self.fullName!)")
                                 .fontWeight(.bold)
                                 .font(.system(size: 19, design: .rounded))
                         }
-//                        NavigationLink(destination: SignInView()) {
-//                            Text("Switch Accounts")
-//                                .foregroundColor(Color.green)
-//                        }
                         NavigationLink(destination: SignInView()) {
                             Text("Sign Out")
-                                .foregroundColor(Color.yellow)
+                                .foregroundColor(Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1))
                                 .onTapGesture {
                                     self.User.isUserSignedIn = .signedOut
                                     self.User.User = ""

@@ -41,7 +41,7 @@ struct ImportantPeopleView: View {
                     Spacer()
                     NavigationLink(destination: SignInView()) {
                         Text("Sign In")
-                            .foregroundColor(Color.yellow)
+                            .foregroundColor(Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1))
                     }
                 }
             } else if (self.model.importantPeople == nil){

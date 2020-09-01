@@ -30,7 +30,7 @@ struct AttendeeView: View {
                 Spacer()
                 Image(systemName: "person.circle")
                     .font(.system(size:44))
-                    .foregroundColor(.yellow)
+                    .foregroundColor(Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1))
             }
             Divider()
         }

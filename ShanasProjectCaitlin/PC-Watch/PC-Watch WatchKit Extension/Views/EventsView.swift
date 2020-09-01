@@ -20,14 +20,14 @@ struct EventsView: View {
                     HStack {
                         Text(self.event!.summary!)
                             .fontWeight(.bold)
+                            .foregroundColor(Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1))
                             .font(.system(size: 20, design: .rounded))
                             .fixedSize(horizontal: false, vertical: true)
                         Spacer()
-                            SmallAssetImage(urlName: "",
-                                            placeholder: Image("calendar")
-                                                .resizable()
-                                                .frame(width:25, height:25)
-                                                .padding(0))
+                        Image(systemName: "calendar")
+                            .font(.system(size:30))
+                            .imageScale(.small)
+                            .foregroundColor(Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1))
                     }
                     VStack(alignment: .leading) {
                         Text(DayDateObj.formatter.string(from: ISO8601DateFormatter().date(from: self.event!.start!.dateTime)!) + " - " + DayDateObj.formatter.string(from: ISO8601DateFormatter().date(from: self.event!.end!.dateTime)!))
@@ -59,7 +59,7 @@ struct EventsView: View {
                     Divider()
                     NavigationLink(destination: AtendeesView(event: self.event)) {
                         Text("Attendees")
-                            .foregroundColor(.yellow)
+                            .foregroundColor(Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1))
                     }
                 }.frame(maxWidth: geo.size.width, alignment: .leading)
             }

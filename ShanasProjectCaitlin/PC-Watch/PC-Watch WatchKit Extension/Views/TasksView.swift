@@ -212,11 +212,14 @@ struct TasksView: View {
                         }
                         Spacer()
                         if(!self.done && (self.goalOrRoutine!.mapValue!.fields.isComplete!.booleanValue == true)){
-                            Text("Task Completed")
-                                .overlay(RoundedRectangle(cornerSize: CGSize(width: 120, height: 30), style: .continuous)
-                                    .stroke(Color.green, lineWidth: 1)
-                                    .frame(width:140, height:25))
-                                .foregroundColor(.green)
+                            RoundedRectangle(cornerSize: CGSize(width: 120, height: 30), style: .continuous)
+                                .stroke(Color.green, lineWidth: 1)
+                                .frame(width:140, height:25)
+                                .overlay(Text("Task Completed")
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.green)
+                                    .font(.system(size: 16, design: .rounded)))
+                                .padding(2)
                         }
                     }.padding(.bottom, 0)
                     ForEach(Array(self.model.goalsSubtasks[self.goalOrRoutine!.mapValue!.fields.id.stringValue]!!.enumerated()), id: \.offset) { index, item in

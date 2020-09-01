@@ -123,12 +123,12 @@ struct HomeView: View {
             if(self.model.isUserSignedIn != .signedIn){
                 VStack(alignment: .center) {
                     Text("Please sign in to view your day!")
-                    .fontWeight(.bold)
-                    .font(.system(size: 20, design: .rounded))
+                        .fontWeight(.bold)
+                        .font(.system(size: 20, design: .rounded))
                     Spacer()
                     NavigationLink(destination: SignInView()) {
                         Text("Sign In")
-                            .foregroundColor(Color.yellow)
+                            .foregroundColor(Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1))
                     }
                 }.frame(width: geo.size.width, height: geo.size.height, alignment: .center)
                 .navigationBarTitle(self.model.navBar)
@@ -171,7 +171,7 @@ struct HomeView: View {
                                     self.showLess = true
                                 }) {
                                     Text("Show less")
-                                        //.foregroundColor(.yellow)
+                                        .foregroundColor(Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1))
                                         .frame(maxWidth: geo.size.width, alignment: .center)
                                 }
                             }.listStyle(CarouselListStyle())
@@ -205,13 +205,13 @@ struct HomeView: View {
                                     self.showLess = false
                                 }) {
                                     Text("Show full day")
-//                                        .foregroundColor(.black)
+                                        .foregroundColor(Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1))
                                 }
                             }.listStyle(CarouselListStyle())
                                 .navigationBarTitle(self.model.navBar)
                         }.padding(0)
                     }
-                }.navigationBarTitle(self.model.navBar)
+                }.navigationBarTitle("My Day")
             }
         }
     }
