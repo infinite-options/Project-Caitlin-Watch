@@ -32,28 +32,28 @@ struct EventsView: View {
                     VStack(alignment: .leading) {
                         Text(DayDateObj.formatter.string(from: ISO8601DateFormatter().date(from: self.event!.start!.dateTime)!) + " - " + DayDateObj.formatter.string(from: ISO8601DateFormatter().date(from: self.event!.end!.dateTime)!))
                                 .fontWeight(.light)
-                                .font(.system(size: 15))
+                                .font(.system(size: 15, design: .rounded))
                         Divider()
                         if self.isImportantPerson(email: self.event!.creator!.email) {
                             Text("Created by " + self.model.peopleEmailToNameDict[self.event!.creator!.email]!)
                                 .fontWeight(.light)
-                                .font(.system(size: 15))
+                                .font(.system(size: 15, design: .rounded))
                         } else {
                             Text("Created by " + self.event!.creator!.email)
                                 .fontWeight(.light)
-                                .font(.system(size: 15))
+                                .font(.system(size: 15, design: .rounded))
                         }
                         
                         Divider()
                         if self.event!.description != nil {
                             Text("Description: " + self.event!.description!)
                                 .fontWeight(.light)
-                                .font(.system(size: 15))
+                                .font(.system(size: 15, design: .rounded))
                         }
                         else{
                             Text("No description available.")
                                 .fontWeight(.light)
-                                .font(.system(size: 15))
+                                .font(.system(size: 15, design: .rounded))
                         }
                     }
                     Divider()

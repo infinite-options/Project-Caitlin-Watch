@@ -31,7 +31,7 @@ struct PersonView: View {
                             .font(.system(size: 20, design: .rounded))
                         Text(self.person.fields.relationship.stringValue)
                             .fontWeight(.light)
-                            .font(.system(size: 15))
+                            .font(.system(size: 15, design: .rounded))
                     }
                     Spacer()
                     Image(systemName: "phone.circle")
@@ -50,7 +50,7 @@ struct PersonView: View {
                     .font(.system(size: 20, design: .rounded))
                 Text(self.person.fields.relationship.stringValue)
                     .fontWeight(.light)
-                    .font(.system(size: 15))
+                    .font(.system(size: 15, design: .rounded))
 
             }
         }.navigationBarTitle(self.person.fields.name.stringValue)
