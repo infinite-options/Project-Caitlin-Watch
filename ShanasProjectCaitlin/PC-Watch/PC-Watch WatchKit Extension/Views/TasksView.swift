@@ -108,7 +108,7 @@ struct TaskItem: View {
                     Text("Done?")
                         .fontWeight(.bold)
                         .font(.system(size: 16, design: .rounded))
-                        .foregroundColor(Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1))
+                        .foregroundColor(.green)
                 }.padding(2)
             } else {
                 RoundedRectangle(cornerSize: CGSize(width: 120, height: 30), style: .continuous)
@@ -176,14 +176,19 @@ struct TasksView: View {
                             self.done = true
                         }) {
                             Text("Done?")
+                                .fontWeight(.bold)
+                                .font(.system(size: 16, design: .rounded))
                                 .foregroundColor(.green)
-                        }
+                        }.padding(2)
                     } else {
-                        Text("Goal Completed")
-                            .overlay(RoundedRectangle(cornerSize: CGSize(width: 120, height: 30), style: .continuous)
-                                .stroke(Color.green, lineWidth: 1)
-                                .frame(width:140, height:25))
+                        RoundedRectangle(cornerSize: CGSize(width: 120, height: 30), style: .continuous)
+                        .stroke(Color.green, lineWidth: 1)
+                        .frame(width:140, height:25)
+                        .overlay(Text("Goal Completed")
+                            .fontWeight(.bold)
                             .foregroundColor(.green)
+                            .font(.system(size: 16, design: .rounded)))
+                        .padding(2)
                     }
                 }
             } else {
