@@ -9,9 +9,15 @@
 import SwiftUI
 
 struct RatingView: View {
+    
+    var notificationController: RatingNotificationController
+    
     var body: some View {
         VStack {
-            Text("How are you feeling?")
+            Text("How are you")
+                .fontWeight(.bold)
+                .font(.system(size: 19, design: .rounded))
+            Text("feeling?")
                 .fontWeight(.bold)
                 .font(.system(size: 19, design: .rounded))
 //            HStack {
@@ -27,21 +33,33 @@ struct RatingView: View {
                 Image("frown")
                     .resizable()
                     .frame(width: 50, height: 50)
+                    .onTapGesture {
+                        print("sad")
+                        self.notificationController.performDismissAction()
+                    }
                 Spacer()
                 Image("meh")
                     .resizable()
                     .frame(width: 50, height: 50)
+                    .onTapGesture {
+                        print("ok")
+                        self.notificationController.performDismissAction()
+                    }
                 Spacer()
                 Image("smile")
                     .resizable()
                     .frame(width: 50, height: 50)
+                    .onTapGesture {
+                        print("happy")
+                        self.notificationController.performDismissAction()
+                    }
             }.padding(10)
         }
     }
 }
 
-struct RatingView_Previews: PreviewProvider {
-    static var previews: some View {
-        RatingView()
-    }
-}
+//struct RatingView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        RatingView()
+//    }
+//}
