@@ -7,8 +7,10 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 struct TaskItem: View {
+    var extensionDelegate = ExtensionDelegate()
     @State var showSteps: Bool = false
     var task: ValueTask?
     var index: Int?
@@ -84,6 +86,8 @@ struct TaskItem: View {
                                                   routineNumber: self.goalOrRoutineIndex!,
                                                   taskNumber: -1,
                                                   stepNumber: -1)
+
+                        self.extensionDelegate.scheduleNotification()
                     } else {
                         print("goal not complete yet")
                         // goal is not complete so set to in progress, update model
@@ -127,10 +131,11 @@ struct TaskItem: View {
 struct TasksView: View {
     @ObservedObject private var model = FirebaseGoogleService.shared
     @ObservedObject private var user = UserDay.shared
-    //    @Binding var showTasks: Bool
     var goalOrRoutine: Value?
     var goalOrRoutineIndex: Int?
     var fullDayArray: Bool
+    var notificationCenter = NotificationCenter()
+    var extensionDelegate = ExtensionDelegate()
     @State var done = false
     
     var body: some View {
@@ -174,6 +179,7 @@ struct TasksView: View {
                                 self.user.UserDayBlockData[self.goalOrRoutineIndex!].mapValue!.fields.isComplete!.booleanValue = true
                             }
                             self.done = true
+                            self.extensionDelegate.scheduleNotification()
                         }) {
                             Text("Done?")
                                 .fontWeight(.bold)

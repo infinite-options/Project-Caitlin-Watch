@@ -9,8 +9,7 @@
 import SwiftUI
 
 struct RatingView: View {
-    
-    var notificationController: RatingNotificationController
+    var notificationController: NotificationController
     
     var body: some View {
         VStack {
@@ -35,6 +34,7 @@ struct RatingView: View {
                     .frame(width: 50, height: 50)
                     .onTapGesture {
                         print("sad")
+                        // eventually will send this information to TA
                         self.notificationController.performDismissAction()
                     }
                 Spacer()
@@ -43,6 +43,7 @@ struct RatingView: View {
                     .frame(width: 50, height: 50)
                     .onTapGesture {
                         print("ok")
+                        // eventually will send this information to TA
                         self.notificationController.performDismissAction()
                     }
                 Spacer()
@@ -51,15 +52,10 @@ struct RatingView: View {
                     .frame(width: 50, height: 50)
                     .onTapGesture {
                         print("happy")
+                        // eventually will send this information to TA
                         self.notificationController.performDismissAction()
                     }
             }.padding(10)
         }
     }
 }
-
-//struct RatingView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        RatingView()
-//    }
-//}

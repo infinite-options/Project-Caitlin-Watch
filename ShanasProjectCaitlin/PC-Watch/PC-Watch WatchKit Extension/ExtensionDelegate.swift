@@ -31,6 +31,25 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
         }
         Messaging.messaging().delegate = self
         
+        // Create mood category
+        let category = UNNotificationCategory(identifier: "moodCategory", actions: [], intentIdentifiers: [], options: [])
+        // Add category to notification framework
+        UNUserNotificationCenter.current().setNotificationCategories([category])
+    }
+    
+    func scheduleNotification() {
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        let content = UNMutableNotificationContent()
+        content.title = "Checking In"
+        content.body = "How are you feeling?"
+        content.sound = UNNotificationSound.default
+        content.categoryIdentifier = "moodCategory"
+        let request = UNNotificationRequest(identifier: "moodNotification", content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request) { (error: Error?) in
+            if let error = error {
+                print(error.localizedDescription)
+            }
+        }
     }
     
     func applicationDidBecomeActive() {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="16097.2" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="NBu-mt-KyX">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="16097.3" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="NBu-mt-KyX">
     <device id="watch38"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -24,7 +24,7 @@
                     <items>
                         <label alignment="left" text="Alert Label" numberOfLines="0" id="IdU-wH-bcW"/>
                     </items>
-                    <notificationCategory key="notificationCategory" identifier="myCategory" id="JfB-70-Muf"/>
+                    <notificationCategory key="notificationCategory" identifier="moodCategory" id="JfB-70-Muf" propertyAccessControl="none"/>
                     <connections>
                         <outlet property="notificationAlertLabel" destination="IdU-wH-bcW" id="JKC-fr-R95"/>
                         <segue destination="eXb-UN-Cd0" kind="relationship" relationship="dynamicInteractiveNotificationInterface" id="mpB-YA-K8N"/>
@@ -57,29 +57,6 @@
                 <hostingController id="byJ-mt-Qmh" customClass="ThirdHostingController" customModule="PC_Watch_WatchKit_App" customModuleProvider="target"/>
             </objects>
             <point key="canvasLocation" x="766" y="137"/>
-        </scene>
-        <!--Static Notification Interface Controller-->
-        <scene sceneID="OSL-E8-e0E">
-            <objects>
-                <notificationController id="uS1-6H-7Tm">
-                    <items>
-                        <label width="1" alignment="left" text="How are you feeling?" textAlignment="center" numberOfLines="2" id="Zx3-Jd-mvx"/>
-                    </items>
-                    <notificationCategory key="notificationCategory" identifier="InteractiveMoodNotification" id="GOS-2l-9tX"/>
-                    <connections>
-                        <outlet property="notificationAlertLabel" destination="Zx3-Jd-mvx" id="qod-FN-Jca"/>
-                        <segue destination="H6U-cR-8v7" kind="relationship" relationship="dynamicInteractiveNotificationInterface" id="XIe-qF-8Q7"/>
-                    </connections>
-                </notificationController>
-            </objects>
-            <point key="canvasLocation" x="90" y="-240"/>
-        </scene>
-        <!--Rating Notification Controller-->
-        <scene sceneID="mqf-dL-1Uj">
-            <objects>
-                <controller id="H6U-cR-8v7" customClass="RatingNotificationController" customModule="PC_Watch_WatchKit_App" customModuleProvider="target"/>
-            </objects>
-            <point key="canvasLocation" x="428" y="-240"/>
         </scene>
     </scenes>
 </document>
