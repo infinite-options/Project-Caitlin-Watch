@@ -58,7 +58,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                     
                     handler(timelineEntry)
                 } else {
-                    var time = DayDateObj.goalStartUTC.date(from: model.UserDayData[0].mapValue!.fields.startDayAndTime.stringValue)
+                    var time = DayDateObj.goalStartUTC.date(from: userDay[0].mapValue!.fields.startDayAndTime.stringValue)
                     
                     let dateComponents = Calendar.current.dateComponents([.hour, .minute, .second], from: time!)
                     
@@ -116,7 +116,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                     
                     handler(timelineEntry)
                 } else {
-                    var time = DayDateObj.goalStartUTC.date(from: model.UserDayData[0].mapValue!.fields.startDayAndTime.stringValue)
+                    var time = DayDateObj.goalStartUTC.date(from: userDay[0].mapValue!.fields.startDayAndTime.stringValue)
                     
                     let dateComponents = Calendar.current.dateComponents([.hour, .minute, .second], from: time!)
                     
@@ -196,10 +196,19 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             if (userDay.count > 0) {
                 for index in 0...(userDay.count-2) {
                     if userDay[index] is Event {
+                        var time: Date
+                        if index == 0 {
+                            time = DayDateObj.ISOFormatter.date(from: userDay[index].start!.dateTime)!
+                        } else {
+                            if userDay[index - 1] is Event {
+                                time = DayDateObj.ISOFormatter.date(from: userDay[index - 1].end!.dateTime)!
+                            } else {
+                                time = DayDateObj.goalStartUTC.date(from: userDay[index - 1].mapValue!.fields.endDayAndTime.stringValue)!
+                            }
+                        }
+                        
                         let start = userDay[index].start!.dateTime
                         let end = userDay[index].end!.dateTime
-                        
-                        let time = DayDateObj.ISOFormatter.date(from: userDay[index].start!.dateTime)
                         
                         let startTime = DayDateObj.formatter.string(from: DayDateObj.ISOFormatter.date(from: start)!)
                         
@@ -212,14 +221,25 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                         modularLarge.body2TextProvider = CLKSimpleTextProvider(text: "Ends at " + endTime)
                                 
                         let template = modularLarge
-                        let timelineEntry = CLKComplicationTimelineEntry(date: time!, complicationTemplate: template)
+                        let timelineEntry = CLKComplicationTimelineEntry(date: time, complicationTemplate: template)
                         
-                        print("Here: \(model.UserDayData[index].summary!) :: \(time!)")
+                        print("Here: \(userDay[index].summary!) :: \(time)")
                         timeLineEntries.append(timelineEntry)
                     } else {
-                        var time = DayDateObj.goalStartUTC.date(from: model.UserDayData[index].mapValue!.fields.startDayAndTime.stringValue)
+                        var time: Date
+                        if index == 0 {
+                            time = DayDateObj.goalStartUTC.date(from: userDay[index].mapValue!.fields.startDayAndTime.stringValue)!
+                        } else {
+                            if userDay[index - 1] is Event {
+                                time = DayDateObj.ISOFormatter.date(from: userDay[index - 1].end!.dateTime)!
+                            } else {
+                                time = DayDateObj.goalStartUTC.date(from: userDay[index - 1].mapValue!.fields.endDayAndTime.stringValue)!
+                            }
+                        }
                         
-                        let dateComponents = Calendar.current.dateComponents([.hour, .minute, .second], from: time!)
+                        //var time = DayDateObj.goalStartUTC.date(from: starts)
+                        
+                        let dateComponents = Calendar.current.dateComponents([.hour, .minute, .second], from: time)
                         
                         var currentDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: Date())
                         
@@ -227,15 +247,15 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                         currentDate.minute = dateComponents.minute
                         currentDate.second = dateComponents.second
                         
-                        time = Calendar.current.date(from: currentDate)
+                        time = Calendar.current.date(from: currentDate)!
                         
-                        let times = DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: model.UserDayData[index].mapValue!.fields.startDayAndTime.stringValue)!)  + " - " + DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: model.UserDayData[index].mapValue!.fields.endDayAndTime.stringValue)!)
+                        let times = DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: userDay[index].mapValue!.fields.startDayAndTime.stringValue)!)  + " - " + DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: userDay[index].mapValue!.fields.endDayAndTime.stringValue)!)
                         
                         let modularLarge = CLKComplicationTemplateModularLargeStandardBody()
-                        modularLarge.headerTextProvider = CLKSimpleTextProvider(text: model.UserDayData[index].mapValue!.fields.title.stringValue)
-                        if ((model.UserDayData[index].mapValue!.fields.isInProgress?.booleanValue) == true) {
+                        modularLarge.headerTextProvider = CLKSimpleTextProvider(text: userDay[index].mapValue!.fields.title.stringValue)
+                        if ((userDay[index].mapValue!.fields.isInProgress?.booleanValue) == true) {
                             modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "is in progress.")
-                        } else if ((model.UserDayData[index].mapValue!.fields.isComplete?.booleanValue) == true) {
+                        } else if ((userDay[index].mapValue!.fields.isComplete?.booleanValue) == true) {
                             modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "is complete.")
                         } else {
                             modularLarge.body1TextProvider = CLKSimpleTextProvider(text: "is ready to begin.")
@@ -243,8 +263,8 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                         modularLarge.body2TextProvider = CLKSimpleTextProvider(text: times)
                                 
                         let template = modularLarge
-                        let timelineEntry = CLKComplicationTimelineEntry(date: time!, complicationTemplate: template)
-                        print("Here: \(model.UserDayData[index].mapValue!.fields.title.stringValue) :: \(time!)")
+                        let timelineEntry = CLKComplicationTimelineEntry(date: time, complicationTemplate: template)
+                        print("Here: \(userDay[index].mapValue!.fields.title.stringValue) :: \(time)")
                         timeLineEntries.append(timelineEntry)
                     }
                 }
@@ -256,10 +276,19 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             if (userDay.count > 0) {
                 for index in 0...(userDay.count-2) {
                     if userDay[index] is Event {
+                        var time: Date
+                        if index == 0 {
+                            time = DayDateObj.ISOFormatter.date(from: userDay[index].start!.dateTime)!
+                        } else {
+                            if userDay[index - 1] is Event {
+                                time = DayDateObj.ISOFormatter.date(from: userDay[index - 1].end!.dateTime)!
+                            } else {
+                                time = DayDateObj.goalStartUTC.date(from: userDay[index - 1].mapValue!.fields.endDayAndTime.stringValue)!
+                            }
+                        }
+                        
                         let start = userDay[index].start!.dateTime
                         let end = userDay[index].end!.dateTime
-                        
-                        let time = DayDateObj.ISOFormatter.date(from: userDay[index].start!.dateTime)
                         
                         let startTime = DayDateObj.formatter.string(from: DayDateObj.ISOFormatter.date(from: start)!)
                         
@@ -272,14 +301,25 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                         graphicRectangular.body2TextProvider = CLKSimpleTextProvider(text: "Ends at " + endTime)
                                 
                         let template = graphicRectangular
-                        let timelineEntry = CLKComplicationTimelineEntry(date: time!, complicationTemplate: template)
+                        let timelineEntry = CLKComplicationTimelineEntry(date: time, complicationTemplate: template)
                         
-                        print("Here: \(model.UserDayData[index].summary!) :: \(time!)")
+                        print("Here: \(userDay[index].summary!) :: \(time)")
                         timeLineEntries.append(timelineEntry)
                     } else {
-                        var time = DayDateObj.goalStartUTC.date(from: model.UserDayData[index].mapValue!.fields.startDayAndTime.stringValue)
+                        var time: Date
+                        if index == 0 {
+                            time = DayDateObj.goalStartUTC.date(from: userDay[index].mapValue!.fields.startDayAndTime.stringValue)!
+                        } else {
+                            if userDay[index - 1] is Event {
+                                time = DayDateObj.ISOFormatter.date(from: userDay[index - 1].end!.dateTime)!
+                            } else {
+                                time = DayDateObj.goalStartUTC.date(from: userDay[index - 1].mapValue!.fields.endDayAndTime.stringValue)!
+                            }
+                        }
                         
-                        let dateComponents = Calendar.current.dateComponents([.hour, .minute, .second], from: time!)
+                        //var time = DayDateObj.goalStartUTC.date(from: starts)
+                        
+                        let dateComponents = Calendar.current.dateComponents([.hour, .minute, .second], from: time)
                         
                         var currentDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: Date())
                         
@@ -287,15 +327,15 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                         currentDate.minute = dateComponents.minute
                         currentDate.second = dateComponents.second
                         
-                        time = Calendar.current.date(from: currentDate)
+                        time = Calendar.current.date(from: currentDate)!
                         
-                        let times = DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: model.UserDayData[index].mapValue!.fields.startDayAndTime.stringValue)!)  + " - " + DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: model.UserDayData[index].mapValue!.fields.endDayAndTime.stringValue)!)
+                        let times = DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: userDay[index].mapValue!.fields.startDayAndTime.stringValue)!)  + " - " + DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: userDay[index].mapValue!.fields.endDayAndTime.stringValue)!)
                         
                         let graphicRectangular = CLKComplicationTemplateGraphicRectangularStandardBody()
-                        graphicRectangular.headerTextProvider = CLKSimpleTextProvider(text: model.UserDayData[index].mapValue!.fields.title.stringValue)
-                        if ((model.UserDayData[index].mapValue!.fields.isInProgress?.booleanValue) == true) {
+                        graphicRectangular.headerTextProvider = CLKSimpleTextProvider(text: userDay[index].mapValue!.fields.title.stringValue)
+                        if ((userDay[index].mapValue!.fields.isInProgress?.booleanValue) == true) {
                             graphicRectangular.body1TextProvider = CLKSimpleTextProvider(text: "is in progress.")
-                        } else if ((model.UserDayData[index].mapValue!.fields.isComplete?.booleanValue) == true) {
+                        } else if ((userDay[index].mapValue!.fields.isComplete?.booleanValue) == true) {
                             graphicRectangular.body1TextProvider = CLKSimpleTextProvider(text: "is complete.")
                         } else {
                             graphicRectangular.body1TextProvider = CLKSimpleTextProvider(text: "is ready to begin.")
@@ -303,8 +343,8 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                         graphicRectangular.body2TextProvider = CLKSimpleTextProvider(text: times)
                                 
                         let template = graphicRectangular
-                        let timelineEntry = CLKComplicationTimelineEntry(date: time!, complicationTemplate: template)
-                        print("Here: \(model.UserDayData[index].mapValue!.fields.title.stringValue) :: \(time!)")
+                        let timelineEntry = CLKComplicationTimelineEntry(date: time, complicationTemplate: template)
+                        print("Here: \(userDay[index].mapValue!.fields.title.stringValue) :: \(time)")
                         timeLineEntries.append(timelineEntry)
                     }
                 }
