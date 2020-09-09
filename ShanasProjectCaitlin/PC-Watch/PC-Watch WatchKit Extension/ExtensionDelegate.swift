@@ -31,10 +31,22 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
         }
         Messaging.messaging().delegate = self
         
-        // Create mood category
-        let category = UNNotificationCategory(identifier: "moodCategory", actions: [], intentIdentifiers: [], options: [])
+        
+        //Create Actions
+//        let yesAction = UNNotificationAction(identifier: "YES_ACTION",
+//                                             title: "Yes",
+//                                             options: UNNotificationActionOptions(rawValue: 0))
+//        let noAction = UNNotificationAction(identifier: "NO_ACTION",
+//                                            title: "No",
+//                                            options: UNNotificationActionOptions(rawValue: 0))
+        
+        // Create categories
+        let moodCategory = UNNotificationCategory(identifier: "moodCategory", actions: [], intentIdentifiers: [], options: [])
+        
+        let checkInCategory = UNNotificationCategory(identifier: "checkInCategory", actions: [], intentIdentifiers: [], options: [])
+        
         // Add category to notification framework
-        UNUserNotificationCenter.current().setNotificationCategories([category])
+        UNUserNotificationCenter.current().setNotificationCategories([moodCategory, checkInCategory])
     }
     
     func scheduleMoodNotification() {
@@ -45,6 +57,21 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
         content.sound = UNNotificationSound.default
         content.categoryIdentifier = "moodCategory"
         let request = UNNotificationRequest(identifier: "moodNotification", content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request) { (error: Error?) in
+            if let error = error {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    func scheduleCheckInNotification(title: String) {
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        let content = UNMutableNotificationContent()
+        content.title = "Checking In"
+        content.body = "Are you still working on " + title + "?"
+        content.sound = UNNotificationSound.default
+        content.categoryIdentifier = "checkInCategory"
+        let request = UNNotificationRequest(identifier: "checkInCategory", content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request) { (error: Error?) in
             if let error = error {
                 print(error.localizedDescription)

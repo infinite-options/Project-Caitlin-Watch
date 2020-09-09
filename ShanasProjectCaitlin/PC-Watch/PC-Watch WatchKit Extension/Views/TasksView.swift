@@ -246,6 +246,7 @@ struct TasksView: View {
                             if !self.started && (self.goalOrRoutine!.mapValue!.fields.isInProgress!.booleanValue == false){
                                 Button(action: {
                                     self.extensionDelegate.scheduleMoodNotification()
+                                    self.extensionDelegate.scheduleCheckInNotification(title: self.goalOrRoutine!.mapValue!.fields.title.stringValue)
                                     self.started = true
                                     if self.fullDayArray {
                                         self.user.UserDayData[self.goalOrRoutineIndex!].mapValue!.fields.isInProgress!.booleanValue = true

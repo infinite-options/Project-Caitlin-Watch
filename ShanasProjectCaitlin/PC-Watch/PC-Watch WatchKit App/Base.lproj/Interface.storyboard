@@ -58,5 +58,28 @@
             </objects>
             <point key="canvasLocation" x="766" y="137"/>
         </scene>
+        <!--Static Notification Interface Controller-->
+        <scene sceneID="9oy-TD-hgZ">
+            <objects>
+                <notificationController id="nMV-5J-1wP">
+                    <items>
+                        <label alignment="left" text="Alert Label" id="bs5-Km-NL7"/>
+                    </items>
+                    <notificationCategory key="notificationCategory" identifier="checkInCategory" id="Nu7-uu-Vfs" propertyAccessControl="none"/>
+                    <connections>
+                        <outlet property="notificationAlertLabel" destination="bs5-Km-NL7" id="9Wu-yR-6xz"/>
+                        <segue destination="xWC-rd-1P6" kind="relationship" relationship="dynamicInteractiveNotificationInterface" id="WEh-xN-mTs"/>
+                    </connections>
+                </notificationController>
+            </objects>
+            <point key="canvasLocation" x="90" y="-174"/>
+        </scene>
+        <!--Notification Controller2-->
+        <scene sceneID="IUL-1t-Kbq">
+            <objects>
+                <controller id="xWC-rd-1P6" customClass="NotificationController2" customModule="PC_Watch_WatchKit_App" customModuleProvider="target"/>
+            </objects>
+            <point key="canvasLocation" x="428" y="-174"/>
+        </scene>
     </scenes>
 </document>
