@@ -37,8 +37,8 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
         UNUserNotificationCenter.current().setNotificationCategories([category])
     }
     
-    func scheduleNotification() {
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+    func scheduleMoodNotification() {
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 3, repeats: false)
         let content = UNMutableNotificationContent()
         content.title = "Checking In"
         content.body = "How are you feeling?"

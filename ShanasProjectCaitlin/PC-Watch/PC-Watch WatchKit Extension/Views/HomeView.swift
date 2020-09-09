@@ -113,6 +113,7 @@ struct infoView: View {
 struct HomeView: View {
     // below has goals and routines
     @ObservedObject private var model = UserDay.shared
+    var extensionDelegate = ExtensionDelegate()
     
     @State var fullDay = false
     @State var showLess = true
@@ -153,14 +154,17 @@ struct HomeView: View {
                                             NavigationLink (destination: EventsView(event: (item as! Event))){
                                                 EventInfoView(item: (item as! Event))
                                             }.frame(height: 80)
-                                            //.padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
                                         }
                                         else {
                                             NavigationLink(destination: TasksView(goalOrRoutine: (item as! Value), goalOrRoutineIndex: index, fullDayArray: true)) {
-                                            HStack {
-                                                infoView(item: (item as! Value))
-                                            }.frame(height: 80)
-                                                //.padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
+                                                HStack {
+                                                    infoView(item: (item as! Value))
+                                                }.frame(height: 80)
+//                                                 .onTapGesture {
+//                                                   if self.hasNotStarted(item: item as! Value) {
+//                                                      self.extensionDelegate.scheduleMoodNotification()
+//                                                   }
+//                                                 }
                                             }
                                         }
                                     }.listRowPlatterColor((item is Event) ? Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1) : Color.white)
@@ -187,14 +191,17 @@ struct HomeView: View {
                                             NavigationLink (destination: EventsView(event: (item as! Event))){
                                                 EventInfoView(item: (item as! Event))
                                             }.frame(height: 80)
-                                            //.padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
                                         }
                                         else {
                                             NavigationLink(destination: TasksView(goalOrRoutine: (item as! Value), goalOrRoutineIndex: index, fullDayArray: false)) {
-                                            HStack {
-                                                infoView(item: (item as! Value))
-                                            }.frame(height: 80)
-                                                //.padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 0))
+                                                HStack {
+                                                    infoView(item: (item as! Value))
+                                                }.frame(height: 80)
+//                                                 .onTapGesture {
+//                                                    if self.hasNotStarted(item: item as! Value) {
+//                                                       self.extensionDelegate.scheduleMoodNotification()
+//                                                    }
+//                                                 }
                                             }
                                         }
                                     }.listRowPlatterColor((item is Event) ? Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1) : Color.white)
@@ -221,6 +228,16 @@ struct HomeView: View {
             return true
         } else {
             return false
+        }
+    }
+    
+    private func hasNotStarted(item: Value) -> Bool{
+        if item.mapValue!.fields.isComplete!.booleanValue {
+            return false
+        } else if item.mapValue!.fields.isInProgress!.booleanValue {
+            return false
+        } else {
+            return true
         }
     }
 }

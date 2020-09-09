@@ -91,7 +91,7 @@ struct TaskItem: View {
                                                       taskNumber: -1,
                                                       stepNumber: -1)
 
-                            self.extensionDelegate.scheduleNotification()
+                            self.extensionDelegate.scheduleMoodNotification()
                         } else {
                             print("goal not complete yet")
                             // goal is not complete so set to in progress, update model
@@ -147,6 +147,7 @@ struct TasksView: View {
     var notificationCenter = NotificationCenter()
     var extensionDelegate = ExtensionDelegate()
     @State var done = false
+    @State var started = false
     
     var body: some View {
         GeometryReader { geo in
@@ -189,7 +190,7 @@ struct TasksView: View {
                                 self.user.UserDayBlockData[self.goalOrRoutineIndex!].mapValue!.fields.isComplete!.booleanValue = true
                             }
                             self.done = true
-                            self.extensionDelegate.scheduleNotification()
+                            self.extensionDelegate.scheduleMoodNotification()
                         }) {
                             Text("Done?")
                                 .fontWeight(.bold)
@@ -241,6 +242,40 @@ struct TasksView: View {
                                     .foregroundColor(.green)
                                     .font(.system(size: 16, design: .rounded)))
                                 .padding(2)
+                        } else {
+                            if !self.started && (self.goalOrRoutine!.mapValue!.fields.isInProgress!.booleanValue == false){
+                                Button(action: {
+                                    self.extensionDelegate.scheduleMoodNotification()
+                                    self.started = true
+                                    if self.fullDayArray {
+                                        self.user.UserDayData[self.goalOrRoutineIndex!].mapValue!.fields.isInProgress!.booleanValue = true
+                                    }
+                                    else {
+                                        self.user.UserDayBlockData[self.goalOrRoutineIndex!].mapValue!.fields.isInProgress!.booleanValue = true
+                                    }
+                                    // start goal
+                                    self.model.startGoalOrRoutine(userId: self.user.User,
+                                                           routineId: self.goalOrRoutine!.mapValue!.fields.id.stringValue,
+                                                           taskId: "NA",
+                                                           routineNumber: self.goalOrRoutineIndex!,
+                                                           taskNumber: -1,
+                                                           stepNumber: -1)
+                                }) {
+                                    Text("Start")
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.yellow)
+                                        .font(.system(size: 16, design: .rounded))
+                                }
+                            } else {
+                                RoundedRectangle(cornerSize: CGSize(width: 120, height: 30), style: .continuous)
+                                .stroke(Color.yellow, lineWidth: 1)
+                                .frame(width:140, height:25)
+                                .overlay(Text("Started")
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.yellow)
+                                    .font(.system(size: 16, design: .rounded)))
+                                .padding(2)
+                            }
                         }
                     }.padding(.bottom, 0)
                     ForEach(Array(self.model.goalsSubtasks[self.goalOrRoutine!.mapValue!.fields.id.stringValue]!!.enumerated()), id: \.offset) { index, item in
