@@ -60,11 +60,11 @@ struct TaskItem: View {
                     // complete task
                     if self.previousTaskIsComplete! == true {
                         self.model.completeActionOrTask(userId: self.user.User,
-                                                  routineId: self.goalOrRoutineID!,
-                                                  taskId: self.task!.mapValue.fields.id.stringValue,
-                                                  routineNumber: -1,
-                                                  taskNumber: self.index!,
-                                                  stepNumber: -1)
+                                                        routineId: self.goalOrRoutineID!,
+                                                        taskId: self.task!.mapValue.fields.id.stringValue,
+                                                        routineNumber: -1,
+                                                        taskNumber: self.index!,
+                                                        stepNumber: -1)
                         print("task complete")
                         // update task in model
                         self.model.goalsSubtasks[self.goalOrRoutineID!]!![self.index!].mapValue.fields.isComplete?.booleanValue = true
@@ -85,11 +85,11 @@ struct TaskItem: View {
                             }
                             // set goal to complete
                             self.model.completeGoalOrRoutine(userId: self.user.User,
-                                                      routineId: self.goalOrRoutineID!,
-                                                      taskId: "NA",
-                                                      routineNumber: self.goalOrRoutineIndex!,
-                                                      taskNumber: -1,
-                                                      stepNumber: -1)
+                                                             routineId: self.goalOrRoutineID!,
+                                                             taskId: "NA",
+                                                             routineNumber: self.goalOrRoutineIndex!,
+                                                             taskNumber: -1,
+                                                             stepNumber: -1)
 
                             self.extensionDelegate.scheduleMoodNotification()
                         } else {
@@ -104,11 +104,11 @@ struct TaskItem: View {
                             }
                             // start goal
                             self.model.startGoalOrRoutine(userId: self.user.User,
-                                                   routineId: self.goalOrRoutineID!,
-                                                   taskId: "NA",
-                                                   routineNumber: self.goalOrRoutineIndex!,
-                                                   taskNumber: -1,
-                                                   stepNumber: -1)
+                                                          routineId: self.goalOrRoutineID!,
+                                                          taskId: "NA",
+                                                          routineNumber: self.goalOrRoutineIndex!,
+                                                          taskNumber: -1,
+                                                          stepNumber: -1)
                         }
                         self.done = true
                         self.showSteps = false
@@ -164,28 +164,25 @@ struct TasksView: View {
                     } else {
                         AssetImage(urlName: self.goalOrRoutine!.mapValue!.fields.photo.stringValue, placeholder: Image("default-goal"))
                             .aspectRatio(contentMode: .fit)
-//                            .alignmentGuide(.center) { d in d[HorizontalAlignment.center] }
                     }
                     Text(self.goalOrRoutine!.mapValue!.fields.title.stringValue)
                         .fontWeight(.bold)
                         .lineLimit(nil)
                         .padding()
                         .font(.system(size: 18, design: .rounded))
-//                        .alignmentGuide(.center) { d in d[HorizontalAlignment.center] }
                     Text("Takes me " + self.goalOrRoutine!.mapValue!.fields.expectedCompletionTime.stringValue)
                         .fontWeight(.light)
                         .font(.system(size: 12, design: .rounded))
-//                        .alignmentGuide(.center) { d in d[HorizontalAlignment.center] }
                     Spacer()
                     if(!self.done && (self.goalOrRoutine!.mapValue!.fields.isComplete!.booleanValue == false)){
                         Button(action: {
                             print("done button clicked")
                             self.model.completeGoalOrRoutine(userId: self.user.User,
-                                                      routineId: self.goalOrRoutine!.mapValue!.fields.id.stringValue,
-                                                      taskId: "NA",
-                                                      routineNumber: self.goalOrRoutineIndex!,
-                                                      taskNumber: -1,
-                                                      stepNumber: -1)
+                                                             routineId: self.goalOrRoutine!.mapValue!.fields.id.stringValue,
+                                                             taskId: "NA",
+                                                             routineNumber: self.goalOrRoutineIndex!,
+                                                             taskNumber: -1,
+                                                             stepNumber: -1)
                             if self.fullDayArray {
                                 self.user.UserDayData[self.goalOrRoutineIndex!].mapValue!.fields.isComplete!.booleanValue = true
                             }
@@ -200,17 +197,14 @@ struct TasksView: View {
                                 .font(.system(size: 16, design: .rounded))
                                 .foregroundColor(.green)
                         }.padding(2)
-//                        .alignmentGuide(.center) { d in d[HorizontalAlignment.center] }
                     } else {
                         RoundedRectangle(cornerSize: CGSize(width: 120, height: 30), style: .continuous)
-                        .stroke(Color.green, lineWidth: 1)
-                        .frame(width:140, height:25)
-                        .overlay(Text("Goal Completed")
-                            .fontWeight(.bold)
-                            .foregroundColor(.green)
-                            .font(.system(size: 16, design: .rounded)))
+                            .stroke(Color.green, lineWidth: 1)
+                            .overlay(Text("Goal Completed")
+                                .fontWeight(.bold)
+                                .foregroundColor(.green)
+                                .font(.system(size: 16, design: .rounded)))
                             .padding(2)
-//                            .alignmentGuide(.center) { d in d[HorizontalAlignment.center] }
                     }
                 }
             } else {
@@ -261,11 +255,11 @@ struct TasksView: View {
                                     }
                                     // start goal
                                     self.model.startGoalOrRoutine(userId: self.user.User,
-                                                           routineId: self.goalOrRoutine!.mapValue!.fields.id.stringValue,
-                                                           taskId: "NA",
-                                                           routineNumber: self.goalOrRoutineIndex!,
-                                                           taskNumber: -1,
-                                                           stepNumber: -1)
+                                                                  routineId: self.goalOrRoutine!.mapValue!.fields.id.stringValue,
+                                                                  taskId: "NA",
+                                                                  routineNumber: self.goalOrRoutineIndex!,
+                                                                  taskNumber: -1,
+                                                                  stepNumber: -1)
                                 }) {
                                     Text("Start")
                                         .fontWeight(.bold)
@@ -274,13 +268,13 @@ struct TasksView: View {
                                 }
                             } else {
                                 RoundedRectangle(cornerSize: CGSize(width: 120, height: 30), style: .continuous)
-                                .stroke(Color.yellow, lineWidth: 1)
-                                .frame(width:140, height:25)
-                                .overlay(Text("Started")
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.yellow)
-                                    .font(.system(size: 16, design: .rounded)))
-                                .padding(2)
+                                    .stroke(Color.yellow, lineWidth: 1)
+                                    .frame(width:140, height:25)
+                                    .overlay(Text("Started")
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.yellow)
+                                        .font(.system(size: 16, design: .rounded)))
+                                    .padding(2)
                             }
                         }
                     }.padding(.bottom, 0)
@@ -292,8 +286,8 @@ struct TasksView: View {
                         }
                     }
                 }.frame(height: geo.size.height)
-                    .padding(0)
-                    .navigationBarTitle("Steps")
+                 .padding(0)
+                 .navigationBarTitle("Steps")
             }
         }
     }
