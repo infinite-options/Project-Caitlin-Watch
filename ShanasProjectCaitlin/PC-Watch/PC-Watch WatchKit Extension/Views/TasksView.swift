@@ -164,15 +164,18 @@ struct TasksView: View {
                     } else {
                         AssetImage(urlName: self.goalOrRoutine!.mapValue!.fields.photo.stringValue, placeholder: Image("default-goal"))
                             .aspectRatio(contentMode: .fit)
+//                            .alignmentGuide(.center) { d in d[HorizontalAlignment.center] }
                     }
                     Text(self.goalOrRoutine!.mapValue!.fields.title.stringValue)
                         .fontWeight(.bold)
                         .lineLimit(nil)
                         .padding()
                         .font(.system(size: 18, design: .rounded))
+//                        .alignmentGuide(.center) { d in d[HorizontalAlignment.center] }
                     Text("Takes me " + self.goalOrRoutine!.mapValue!.fields.expectedCompletionTime.stringValue)
                         .fontWeight(.light)
                         .font(.system(size: 12, design: .rounded))
+//                        .alignmentGuide(.center) { d in d[HorizontalAlignment.center] }
                     Spacer()
                     if(!self.done && (self.goalOrRoutine!.mapValue!.fields.isComplete!.booleanValue == false)){
                         Button(action: {
@@ -197,6 +200,7 @@ struct TasksView: View {
                                 .font(.system(size: 16, design: .rounded))
                                 .foregroundColor(.green)
                         }.padding(2)
+//                        .alignmentGuide(.center) { d in d[HorizontalAlignment.center] }
                     } else {
                         RoundedRectangle(cornerSize: CGSize(width: 120, height: 30), style: .continuous)
                         .stroke(Color.green, lineWidth: 1)
@@ -205,7 +209,8 @@ struct TasksView: View {
                             .fontWeight(.bold)
                             .foregroundColor(.green)
                             .font(.system(size: 16, design: .rounded)))
-                        .padding(2)
+                            .padding(2)
+//                            .alignmentGuide(.center) { d in d[HorizontalAlignment.center] }
                     }
                 }
             } else {
@@ -246,7 +251,7 @@ struct TasksView: View {
                             if !self.started && (self.goalOrRoutine!.mapValue!.fields.isInProgress!.booleanValue == false){
                                 Button(action: {
                                     self.extensionDelegate.scheduleMoodNotification()
-                                    self.extensionDelegate.scheduleCheckInNotification(title: self.goalOrRoutine!.mapValue!.fields.title.stringValue)
+                                    self.extensionDelegate.scheduleCheckInNotification(title: self.goalOrRoutine!.mapValue!.fields.title.stringValue, time: self.goalOrRoutine!.mapValue!.fields.expectedCompletionTime.stringValue)
                                     self.started = true
                                     if self.fullDayArray {
                                         self.user.UserDayData[self.goalOrRoutineIndex!].mapValue!.fields.isInProgress!.booleanValue = true

@@ -64,8 +64,9 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
         }
     }
     
-    func scheduleCheckInNotification(title: String) {
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+    func scheduleCheckInNotification(title: String, time: String) {
+        let timeToTimeInterval = time.convertToTimeInterval()/2.0
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeToTimeInterval, repeats: false)
         let content = UNMutableNotificationContent()
         content.title = "Checking In"
         content.body = "Are you still working on " + title + "?"
