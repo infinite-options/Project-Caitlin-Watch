@@ -43,9 +43,7 @@ struct AboutMeView: View {
                             Text("Sign Out")
                                 .foregroundColor(Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1))
                                 .onTapGesture {
-                                    self.User.isUserSignedIn = .signedOut
-                                    self.User.User = ""
-                                    self.User.manifestSuite?.set(self.User.User, forKey: self.User.manifestUserIdKey)
+                                    self.User.signOutUser()
                                 }
                         }
                     }

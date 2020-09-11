@@ -36,8 +36,6 @@ class UserDay: ObservableObject {
     @Published var UserDayData = [UserDayGoalEventList]()
     
     @Published var UserDayBlockData = [UserDayGoalEventList]()
-  
-    @Published var navBar = "MyDay  (" +  TimeZone.current.abbreviation()! + ")"
     
     private init(){}
     
@@ -147,6 +145,16 @@ class UserDay: ObservableObject {
             }
             else { return }
         }.resume()
+    }
+    
+    func signOutUser() {
+        self.User = ""
+        self.UserInfo = nil
+        self.UserPhoto = nil
+        self.isUserSignedIn = .signedOut
+        self.UserDayData = [UserDayGoalEventList]()
+        self.UserDayBlockData  = [UserDayGoalEventList]()
+        self.manifestSuite?.set(self.User, forKey: self.manifestUserIdKey)
     }
     
     func mergeSortedGoalsEvents(goals: [Value]?, events: [Event]?) {
