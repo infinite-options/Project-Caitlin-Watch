@@ -9,8 +9,6 @@
 import SwiftUI
 
 struct AboutMeView: View {
-    
-    @ObservedObject var viewPick = ViewController.shared
     @ObservedObject var User = UserDay.shared
     @ObservedObject var model = FirebaseGoogleService.shared
     
@@ -48,6 +46,8 @@ struct AboutMeView: View {
                         }
                     }
                 }.navigationBarTitle("About Me")
+            } else {
+                SignInView()
             }
         }
     }

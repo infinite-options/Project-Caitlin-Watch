@@ -17,7 +17,7 @@ struct RootView: View {
     var body: some View {
         ZStack {
             if self.User.isUserSignedIn == .signedIn {
-                AboutMeView()
+                HomeView()
             }
             else if self.viewPick.showView == .showLaunch {
                 LaunchScreenView()

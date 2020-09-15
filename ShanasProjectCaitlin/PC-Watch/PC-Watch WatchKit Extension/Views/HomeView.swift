@@ -59,6 +59,7 @@ struct EventInfoView: View {
 struct infoView: View {
     //TODO: doesnt update complete until reload the app because passed by value
     var item: Value?
+    @ObservedObject var viewPick = ViewController.shared
     @ObservedObject private var model = FirebaseGoogleService.shared
     
     var body: some View {
@@ -77,13 +78,6 @@ struct infoView: View {
                             .font(.system(size: 12, design: .rounded)))
                         .foregroundColor(.black)
                 }
-//                Spacer()
-//                if (!(self.model.goalsSubtasks[item!.mapValue!.fields.id.stringValue] == nil)) {
-//                    Image(systemName: "plus.circle")
-//                        .font(.subheadline)
-//                        .imageScale(.small)
-//                        .foregroundColor(.black)
-//                }
                 Spacer()
                 if ((self.item!.mapValue!.fields.isComplete?.booleanValue) == true){
                     SmallAssetImage(urlName: self.item!.mapValue!.fields.photo.stringValue, placeholder: Image("default-goal"))

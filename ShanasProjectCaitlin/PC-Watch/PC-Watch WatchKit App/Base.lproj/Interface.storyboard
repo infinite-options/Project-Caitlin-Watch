@@ -6,16 +6,16 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="16012"/>
     </dependencies>
     <scenes>
-        <!--Hosting Controller-->
+        <!--Home-->
         <scene sceneID="RUd-og-cv4">
             <objects>
-                <hostingController id="NBu-mt-KyX" customClass="HostingController" customModule="PC_Watch_WatchKit_App" customModuleProvider="target">
+                <hostingController identifier="Home" title="Home" id="NBu-mt-KyX" customClass="HostingController" customModule="PC_Watch_WatchKit_App" customModuleProvider="target">
                     <connections>
-                        <segue destination="AXK-o7-3qk" kind="relationship" relationship="nextPage" id="9gX-CP-hZt"/>
+                        <segue destination="AXK-o7-3qk" kind="relationship" relationship="nextPage" id="Wha-XD-uxa"/>
                     </connections>
                 </hostingController>
             </objects>
-            <point key="canvasLocation" x="90" y="137"/>
+            <point key="canvasLocation" x="90" y="216"/>
         </scene>
         <!--Static Notification Interface Controller-->
         <scene sceneID="AEw-b0-oYE">
@@ -31,32 +31,32 @@
                     </connections>
                 </notificationController>
             </objects>
-            <point key="canvasLocation" x="90" y="462"/>
+            <point key="canvasLocation" x="90" y="693"/>
         </scene>
         <!--Notification Controller-->
         <scene sceneID="Niz-AI-uX2">
             <objects>
                 <controller id="eXb-UN-Cd0" customClass="NotificationController" customModule="PC_Watch_WatchKit_App" customModuleProvider="target"/>
             </objects>
-            <point key="canvasLocation" x="428" y="462"/>
+            <point key="canvasLocation" x="428" y="693"/>
         </scene>
-        <!--Second Hosting Controller-->
+        <!--AboutMe-->
         <scene sceneID="74q-nb-jCS">
             <objects>
-                <hostingController id="AXK-o7-3qk" customClass="SecondHostingController" customModule="PC_Watch_WatchKit_App" customModuleProvider="target">
+                <hostingController identifier="AboutMe" title="AboutMe" id="AXK-o7-3qk" customClass="SecondHostingController" customModule="PC_Watch_WatchKit_App" customModuleProvider="target">
                     <connections>
-                        <segue destination="byJ-mt-Qmh" kind="relationship" relationship="nextPage" id="vko-YA-Bpw"/>
+                        <segue destination="byJ-mt-Qmh" kind="relationship" relationship="nextPage" id="VcM-XX-SEE"/>
                     </connections>
                 </hostingController>
             </objects>
-            <point key="canvasLocation" x="428" y="137"/>
+            <point key="canvasLocation" x="428" y="216"/>
         </scene>
-        <!--Third Hosting Controller-->
+        <!--Important People-->
         <scene sceneID="F4g-rP-j4L">
             <objects>
-                <hostingController id="byJ-mt-Qmh" customClass="ThirdHostingController" customModule="PC_Watch_WatchKit_App" customModuleProvider="target"/>
+                <hostingController identifier="ImportantPeople" title="Important People" id="byJ-mt-Qmh" customClass="ThirdHostingController" customModule="PC_Watch_WatchKit_App" customModuleProvider="target"/>
             </objects>
-            <point key="canvasLocation" x="766" y="137"/>
+            <point key="canvasLocation" x="769" y="216"/>
         </scene>
         <!--Static Notification Interface Controller-->
         <scene sceneID="9oy-TD-hgZ">
