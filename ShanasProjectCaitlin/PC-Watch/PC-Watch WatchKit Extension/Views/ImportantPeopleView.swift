@@ -34,23 +34,14 @@ struct ImportantPeopleView: View {
     var body: some View {
         VStack(alignment: .center) {
             if(self.user.isUserSignedIn != .signedIn || self.user.isUserSignedIn == .signedOut) {
-                VStack {
-                    Text("You're not signed in yet.")
-                        .fontWeight(.bold)
-                        .font(.system(size: 20, design: .rounded))
-                    Spacer()
-                    NavigationLink(destination: SignInView()) {
-                        Text("Sign In")
-                            .foregroundColor(Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1))
-                    }
-                }
+                LaunchScreenView()
             } else if (self.model.importantPeople == nil){
                 VStack {
                     Text("You do not have any important people yet.")
                         .fontWeight(.bold)
                         .font(.system(size: 20, design: .rounded))
                     Spacer()
-                }
+                }.navigationBarTitle("Important People")
             } else {
                 ScrollView([.vertical]) {
                     ForEach(FirebaseGoogleService.shared.peopleRow!) { row in
@@ -60,9 +51,9 @@ struct ImportantPeopleView: View {
                             }
                         }
                     }
-                }
+                }.navigationBarTitle("Important People")
             }
-        }.navigationBarTitle("Important People")
+        }
     }
 
 //    private func isImportantPerson(item: ImportantPerson) -> Bool{

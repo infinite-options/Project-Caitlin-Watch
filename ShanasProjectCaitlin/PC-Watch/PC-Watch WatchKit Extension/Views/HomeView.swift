@@ -57,7 +57,6 @@ struct EventInfoView: View {
 }
 
 struct infoView: View {
-    //TODO: doesnt update complete until reload the app because passed by value
     var item: Value?
     @ObservedObject var viewPick = ViewController.shared
     @ObservedObject private var model = FirebaseGoogleService.shared
@@ -105,7 +104,6 @@ struct infoView: View {
 }
 
 struct HomeView: View {
-    // below has goals and routines
     @ObservedObject private var model = UserDay.shared
     var extensionDelegate = ExtensionDelegate()
     
@@ -115,20 +113,7 @@ struct HomeView: View {
     var body: some View {
 
         GeometryReader { geo in
-            if(self.model.isUserSignedIn != .signedIn){
-                VStack(alignment: .center) {
-                    Text("Please sign in to view your day!")
-                        .fontWeight(.bold)
-                        .font(.system(size: 20, design: .rounded))
-                    Spacer()
-                    NavigationLink(destination: SignInView()) {
-                        Text("Sign In")
-                            .foregroundColor(Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1))
-                    }
-                }.frame(width: geo.size.width, height: geo.size.height, alignment: .center)
-                 .navigationBarTitle("My Day")
-            }
-            else if (self.model.UserDayData.count == 0){
+            if (self.model.UserDayData.count == 0){
                 VStack(alignment: .center) {
                     Text("You dont have anything on your schedule!")
                     .fontWeight(.bold)
@@ -136,8 +121,7 @@ struct HomeView: View {
                     Spacer()
                 }.frame(width: geo.size.width, height: geo.size.height, alignment: .center)
                  .navigationBarTitle("My Day")
-            }
-            else {
+            } else {
                 VStack {
                     if (self.fullDay) {
                         VStack(alignment: .leading) {
@@ -162,7 +146,6 @@ struct HomeView: View {
                                             }
                                         }
                                     }.listRowPlatterColor((item is Event) ? Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1) : Color.white)
-                                        //(item.mapValue!.fields.isPersistent.booleanValue ? Color.gray : Color(Color.RGBColorSpace.sRGB, red: 0.68, green: 0.68, blue: 0.68, opacity: 0.3)))
                                 }
                                 Button(action: {
                                     self.fullDay = false
@@ -199,7 +182,6 @@ struct HomeView: View {
                                             }
                                         }
                                     }.listRowPlatterColor((item is Event) ? Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1) : Color.white)
-                                        //(item.mapValue!.fields.isPersistent.booleanValue ? Color.gray : Color(Color.RGBColorSpace.sRGB, red: 0.68, green: 0.68, blue: 0.68, opacity: 0.3)))
                                 }
                                 Button(action: {
                                     self.fullDay = true

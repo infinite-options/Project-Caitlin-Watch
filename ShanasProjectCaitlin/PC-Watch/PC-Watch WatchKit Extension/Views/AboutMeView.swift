@@ -47,7 +47,7 @@ struct AboutMeView: View {
                     }
                 }.navigationBarTitle("About Me")
             } else {
-                SignInView()
+                LaunchScreenView()
             }
         }
     }

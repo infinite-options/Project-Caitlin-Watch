@@ -10,20 +10,20 @@ import WatchKit
 import Foundation
 import SwiftUI
 
-class SecondHostingController: WKHostingController<AboutMeView> {
-    override var body: AboutMeView {
-        return AboutMeView()
-    }
-}
-
 class HostingController: WKHostingController<RootView> {
     override var body: RootView {
         return RootView()
     }
 }
 
-class ThirdHostingController: WKHostingController<ImportantPeopleView> {
+class SecondHostingController: WKHostingController<ImportantPeopleView> {
     override var body: ImportantPeopleView {
         return ImportantPeopleView()
+    }
+}
+
+class ThirdHostingController: WKHostingController<AboutMeView> {
+    override var body: AboutMeView {
+        return AboutMeView()
     }
 }
