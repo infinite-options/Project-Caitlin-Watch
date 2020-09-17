@@ -24,7 +24,7 @@ struct LaunchScreenView: View {
                     .frame(width: 40, height: 40)
                     .padding([.top, .bottom], 10)
                 
-                Text("Manifest MySpace")
+                Text("Manifest MyLife")
                     .fontWeight(.bold)
                     .font(.system(size: 19, design: .rounded))
 

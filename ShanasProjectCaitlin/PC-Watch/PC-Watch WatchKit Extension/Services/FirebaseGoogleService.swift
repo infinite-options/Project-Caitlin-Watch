@@ -159,7 +159,7 @@ class FirebaseGoogleService: ObservableObject {
     }
     
     func getEventsFromGoogleCalendar(completion: @escaping ([Event]?) -> ()){
-        guard let url = URL(string: "https://us-central1-myspace-db.cloudfunctions.net/GetEventsForTheDay") else { return }
+        guard let url = URL(string: "https://us-central1-manifestmylife.cloudfunctions.net/GetEventsForTheDay") else { return }
         
         //Get the components for today's date
         var currComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: Date())
@@ -212,7 +212,7 @@ class FirebaseGoogleService: ObservableObject {
     }
     
     func getFirebaseData(completion: @escaping (Firebase?) -> ()) {
-        var goalUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/"
+        var goalUrl = "https://firestore.googleapis.com/v1/projects/manifestmylife/databases/(default)/documents/users/"
         goalUrl.append(self.UserDayData.User)
         
         guard let url = URL(string: goalUrl) else { return }
@@ -239,7 +239,7 @@ class FirebaseGoogleService: ObservableObject {
     }
     
     func getFirebaseImportantPeople(completion: @escaping ([ImportantPerson]?) -> ()) {
-        let peopleUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.UserDayData.User + "/people/"
+        let peopleUrl = "https://firestore.googleapis.com/v1/projects/manifestmylife/databases/(default)/documents/users/" + self.UserDayData.User + "/people/"
         guard let url = URL(string: peopleUrl) else { return }
         print(peopleUrl)
 
@@ -267,7 +267,7 @@ class FirebaseGoogleService: ObservableObject {
     }
     
     func getFirebaseTasks(goalID: String, completion: @escaping ([ValueTask]?) -> ()) {
-        let TaskUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.UserDayData.User + "/goals&routines/" + goalID
+        let TaskUrl = "https://firestore.googleapis.com/v1/projects/manifestmylife/databases/(default)/documents/users/" + self.UserDayData.User + "/goals&routines/" + goalID
         guard let url = URL(string: TaskUrl) else { return }
         
             URLSession.shared.dataTask(with: url) { (data, _, error) in
@@ -293,7 +293,7 @@ class FirebaseGoogleService: ObservableObject {
     }
     
     func getFirebaseStep(stepID: String, goalID: String, completion: @escaping ([ValueTask]?) -> ()) {
-        let StepUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.UserDayData.User + "/goals&routines/" + goalID + "/actions&tasks/" + stepID
+        let StepUrl = "https://firestore.googleapis.com/v1/projects/manifestmylife/databases/(default)/documents/users/" + self.UserDayData.User + "/goals&routines/" + goalID + "/actions&tasks/" + stepID
         guard let url = URL(string: StepUrl) else { return }
         
         URLSession.shared.dataTask(with: url) { (data, _, error) in
@@ -319,7 +319,7 @@ class FirebaseGoogleService: ObservableObject {
     }
     
     func startGoalOrRoutine(userId: String, routineId: String, taskId: String?, routineNumber: Int?, taskNumber: Int?, stepNumber: Int?) {
-        guard let url = URL(string: "https://us-central1-myspace-db.cloudfunctions.net/StartGoalOrRoutine") else { return }
+        guard let url = URL(string: "https://us-central1-manifestmylife.cloudfunctions.net/StartGoalOrRoutine") else { return }
         
         let jsonData = StartCompleteGRATISBody(data: Fields(userId: userId,
                                                     routineId: routineId,
@@ -356,7 +356,7 @@ class FirebaseGoogleService: ObservableObject {
     
     func startActionOrTask(userId: String, routineId: String, taskId: String?, routineNumber: Int?, taskNumber: Int?, stepNumber: Int?) {
         
-        guard let url = URL(string: "https://us-central1-myspace-db.cloudfunctions.net/StartActionOrTask") else { return }
+        guard let url = URL(string: "https://us-central1-manifestmylife.cloudfunctions.net/StartActionOrTask") else { return }
         
         let jsonData = StartCompleteGRATISBody(data: Fields(userId: userId,
                                                     routineId: routineId,
@@ -393,7 +393,7 @@ class FirebaseGoogleService: ObservableObject {
     
     func startInstructionOrStep(userId: String, routineId: String, taskId: String?, routineNumber: Int?, taskNumber: Int?, stepNumber: Int?) {
         
-        guard let url = URL(string: "https://us-central1-myspace-db.cloudfunctions.net/StartInstructionOrStep") else { return }
+        guard let url = URL(string: "https://us-central1-manifestmylife.cloudfunctions.net/StartInstructionOrStep") else { return }
         
         let jsonData = StartCompleteGRATISBody(data: Fields(userId: userId,
                                                     routineId: routineId,
@@ -430,7 +430,7 @@ class FirebaseGoogleService: ObservableObject {
     
     func completeGoalOrRoutine(userId: String, routineId: String, taskId: String?, routineNumber: Int?, taskNumber: Int?, stepNumber: Int?) {
         
-        guard let url = URL(string: "https://us-central1-myspace-db.cloudfunctions.net/CompleteGoalOrRoutine") else { return }
+        guard let url = URL(string: "https://us-central1-manifestmylife.cloudfunctions.net/CompleteGoalOrRoutine") else { return }
         
         let jsonData = StartCompleteGRATISBody(data: Fields(userId: userId,
                                                     routineId: routineId,
@@ -467,7 +467,7 @@ class FirebaseGoogleService: ObservableObject {
     
     func completeActionOrTask(userId: String, routineId: String, taskId: String?, routineNumber: Int?, taskNumber: Int?, stepNumber: Int?) {
         
-        guard let url = URL(string: "https://us-central1-myspace-db.cloudfunctions.net/CompleteActionOrTask") else { return }
+        guard let url = URL(string: "https://us-central1-manifestmylife.cloudfunctions.net/CompleteActionOrTask") else { return }
         
         let jsonData = StartCompleteGRATISBody(data: Fields(userId: userId,
                                                     routineId: routineId,
@@ -504,7 +504,7 @@ class FirebaseGoogleService: ObservableObject {
     
     func completeInstructionOrStep(userId: String, routineId: String, taskId: String?, routineNumber: Int?, taskNumber: Int?, stepNumber: Int?) {
         
-        guard let url = URL(string: "https://us-central1-myspace-db.cloudfunctions.net/CompleteInstructionOrStep") else { return }
+        guard let url = URL(string: "https://us-central1-manifestmylife.cloudfunctions.net/CompleteInstructionOrStep") else { return }
         
         let jsonData = StartCompleteGRATISBody(data: Fields(userId: userId,
                                                     routineId: routineId,

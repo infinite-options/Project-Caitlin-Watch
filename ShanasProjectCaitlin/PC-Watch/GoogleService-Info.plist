@@ -3,34 +3,34 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>287117315224-jeecsittuv57dv492l1rhlg91rd532d9.apps.googleusercontent.com</string>
+	<string>717980399518-12ukgrd01ukdalg7gh4v7msau4gl6jvv.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.287117315224-jeecsittuv57dv492l1rhlg91rd532d9</string>
+	<string>com.googleusercontent.apps.717980399518-12ukgrd01ukdalg7gh4v7msau4gl6jvv</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBVL_e1HgBIxiowmtPOzKn03M-qUpPchgg</string>
+	<string>AIzaSyCaP60NxgZHb3xyjDodlTPVHk1eI57VNk4</string>
 	<key>GCM_SENDER_ID</key>
-	<string>287117315224</string>
+	<string>717980399518</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.infiniteoptions.caitlinwatch</string>
+	<string>com.infiniteoptions.mylifewatch</string>
 	<key>PROJECT_ID</key>
-	<string>myspace-db</string>
+	<string>manifestmylife</string>
 	<key>STORAGE_BUCKET</key>
-	<string>myspace-db.appspot.com</string>
+	<string>manifestmylife.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:287117315224:ios:2e5284ad3f17558bab54ed</string>
+	<string>1:717980399518:ios:d102a1da83a1bdb60d088f</string>
 	<key>DATABASE_URL</key>
-	<string>https://myspace-db.firebaseio.com</string>
+	<string>https://manifestmylife.firebaseio.com</string>
 </dict>
 </plist>
