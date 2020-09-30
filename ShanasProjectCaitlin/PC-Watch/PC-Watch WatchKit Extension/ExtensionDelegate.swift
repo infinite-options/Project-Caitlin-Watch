@@ -90,11 +90,13 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
                 UserModel.User = UserModel.manifestSuite?.string(forKey: UserModel.manifestUserIdKey)! as! String
                 DataSource.updateDataModel {
                     print("Populated data model")
-                    UserModel.UserDayData = []
-                    UserModel.UserDayBlockData = []
-                    
-                    UserModel.mergeSortedGoalsEvents(goals: DataSource.data ?? [Value](), events: DataSource.events ?? [Event]())
-                    UserModel.loadingUser = false
+                    DispatchQueue.main.async {
+                        UserModel.UserDayData = []
+                        UserModel.UserDayBlockData = []
+                        UserModel.mergeSortedGoalsEvents(goals: DataSource.data ?? [Value](), events: DataSource.events ?? [Event]())
+                        UserModel.loadingUser = false
+                    }
+
                     NotificationHandler().scheduleNotifications()
                 }
             }

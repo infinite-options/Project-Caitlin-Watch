@@ -11,6 +11,7 @@
 import Foundation
 import Combine
 import WatchKit
+import ClockKit
 
 class BackgroundService: NSObject {
     

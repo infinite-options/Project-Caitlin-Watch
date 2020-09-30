@@ -41,104 +41,130 @@ class FirebaseGoogleService: ObservableObject {
     
     @Published var isMustDoTasks = [String: Int]()
 //    @Published var isMustDoSteps = [String: Int]()
-    
-    private init() {
-//        updateDataModel {
-//            print("Populated data model")
-//            self.UserDayData.mergeSortedGoalsEvents(goals: self.data ?? [Value](), events: self.events ?? [Event]())
-//            self.UserDayData.loadingUser = false
-//            NotificationHandler().scheduleNotifications()
-//        }
-    }
-
     func updateDataModel(completion: @escaping () -> ()) {
-        print("In updating model...")
-        let group = DispatchGroup()
-        group.enter()
-        getEventsFromGoogleCalendar(){ (data) in
-            self.events = data
-            print("Got events from Google Calendar. Now getting firebase data.")
-            if self.events != nil{
-                self.events?.sort(by: self.sortEvents)
-            }
-            group.leave()
+        /// get goals and rountines for current user (28)
+        getGoalsAndRoutines(){ data in
             
         }
-        
-        self.getFirebaseImportantPeople() { data in
-            self.importantPeople = data
-            print(self.importantPeople)
-            print("Got important people from Firebase. Now getting other firebase data.")
-            if self.importantPeople != nil {
-                for person in self.importantPeople! {
-                    if person.fields.email != nil {
-                        self.peopleEmailToNameDict[person.fields.email!.stringValue] = person.fields.name.stringValue
-                    }
-                }
-                self.peopleRow = PeopleRow.populate(people: self.importantPeople!)
-            }
-            print(self.peopleEmailToNameDict)
-        }
-        
-        group.notify(queue: DispatchQueue.main){
-            self.getFirebaseData(){
-                
-                (data) in self.UserDayData.UserInfo = data!
-                
-                self.getUserProfilePhoto(url: self.UserDayData.UserInfo?.fields.aboutMe?.mapValue.fields.pic.stringValue ?? "") { (image) in
-                    self.UserDayData.UserPhoto = image
-                    print("Stored the image")
-                }
-                
-                self.data = data!.fields.goalsRoutines.arrayValue.values
-                
-                if let data = self.data {
-                    self.data!.sort(by: self.sortGoals)
-                    for goal in data {
-                        group.enter()
-                        self.getFirebaseTasks(goalID: (goal.mapValue!.fields.id.stringValue)){
-                            (tasks) in self.tasks = tasks
-                            if let tasks = tasks {
-                                self.goalsSubtasks[goal.mapValue!.fields.id.stringValue] = tasks
-                                self.goalSubtasksLeft[goal.mapValue!.fields.id.stringValue] = tasks.count
-                                self.isMustDoTasks[goal.mapValue!.fields.id.stringValue] = 0
-                                for task in tasks {
-                                    if task.mapValue.fields.isComplete?.booleanValue == true {
-                                        self.goalSubtasksLeft[goal.mapValue!.fields.id.stringValue]! -= 1
-                                    }
-                                    if task.mapValue.fields.isMustDo?.booleanValue == true {
-                                        self.isMustDoTasks[goal.mapValue!.fields.id.stringValue]! += 1
-                                    }
-                                    
-                                    group.enter()
-                                    self.getFirebaseStep(stepID: task.mapValue.fields.id.stringValue, goalID: goal.mapValue!.fields.id.stringValue){
-                                        (steps) in self.steps = steps
-                                        if let steps = steps{
-                                            self.taskSteps[task.mapValue.fields.id.stringValue] = steps
-                                            self.taskStepsLeft[task.mapValue.fields.id.stringValue] = steps.count
-                                            for step in steps {
-                                                if step.mapValue.fields.isComplete?.booleanValue == true {
-                                                    self.taskStepsLeft[task.mapValue.fields.id.stringValue]! -=  1
-                                                }
-//                                                if step.mapValue.fields.isMustDo?.booleanValue == true {
-//                                                    self.isMustDoSteps[task.mapValue.fields.id.stringValue]! += 1
-//                                                }
-                                            }
-                                        }
-                                    }
-                                    group.leave()
-                                }
-                            }
-                            group.leave()
-                        }
-                    }
-                    group.notify(queue: DispatchQueue.main) {
-                        completion()
-                    }
-                }
-            }
-        }
     }
+    /// RDS Database
+    /// Custom function to try decoding RDS Database
+    /// returns optional :   message: String and  result: [Goal]
+    func getGoalsAndRoutines(completion: @escaping (GoalsAndRoutines?) -> ()) {
+        var goalUrl = "https://3s3sftsr90.execute-api.us-west-1.amazonaws.com/dev/api/v2/getgoalsandroutines/"
+        goalUrl.append("100-000028")
+        guard let url = URL(string: goalUrl) else { return }
+        URLSession.shared.dataTask(with: url) { (data, _, error) in
+            if let error = error {
+                print("Generic networking error: \(error)")
+            }
+            if let data = data {
+                do {
+                    let data = try JSONDecoder().decode(GoalsAndRoutines.self, from: data)
+                    DispatchQueue.main.async {
+                        completion(data)
+                    }
+                }
+                catch _ {
+                    print("Error in parsing Goals data")
+                    completion(nil)
+                }
+            }
+        }
+        .resume()
+    }
+
+//    func updateDataModel(completion: @escaping () -> ()) {
+//        print("In updating model...")
+//        let group = DispatchGroup()
+//        group.enter()
+//        getEventsFromGoogleCalendar(){ (data) in
+//            self.events = data
+//            print("Got events from Google Calendar. Now getting firebase data.")
+//            if self.events != nil{
+//                self.events?.sort(by: self.sortEvents)
+//            }
+//            group.leave()
+//
+//        }
+//
+//        self.getGoalsAndRoutines(){ data in
+//        }
+//
+//        self.getFirebaseImportantPeople() { data in
+//            self.importantPeople = data
+//            print(self.importantPeople)
+//            print("Got important people from Firebase. Now getting other firebase data.")
+//            if self.importantPeople != nil {
+//                for person in self.importantPeople! {
+//                    if person.fields.email != nil {
+//                        self.peopleEmailToNameDict[person.fields.email!.stringValue] = person.fields.name.stringValue
+//                    }
+//                }
+//                self.peopleRow = PeopleRow.populate(people: self.importantPeople!)
+//            }
+//            print(self.peopleEmailToNameDict)
+//        }
+//
+//        group.notify(queue: DispatchQueue.main){
+//            self.getGoalsAndRoutines(){ (data) in
+//                guard let data = data else {print("Not getting any data!"); return}
+//                //self.UserDayData.UserInfo = data
+//
+//                self.getUserProfilePhoto(url: self.UserDayData.UserInfo?.fields.aboutMe?.mapValue.fields.pic.stringValue ?? "") { (image) in
+//                    self.UserDayData.UserPhoto = image
+//                    print("Stored the image")
+//                }
+//
+//                //self.data = data.fields.goalsRoutines.arrayValue.values
+//
+//                if let data = self.data {
+//                    self.data!.sort(by: self.sortGoals)
+//                    for goal in data {
+//                        group.enter()
+//                        self.getFirebaseTasks(goalID: (goal.mapValue!.fields.id.stringValue)){
+//                            (tasks) in self.tasks = tasks
+//                            if let tasks = tasks {
+//                                self.goalsSubtasks[goal.mapValue!.fields.id.stringValue] = tasks
+//                                self.goalSubtasksLeft[goal.mapValue!.fields.id.stringValue] = tasks.count
+//                                self.isMustDoTasks[goal.mapValue!.fields.id.stringValue] = 0
+//                                for task in tasks {
+//                                    if task.mapValue.fields.isComplete?.booleanValue == true {
+//                                        self.goalSubtasksLeft[goal.mapValue!.fields.id.stringValue]! -= 1
+//                                    }
+//                                    if task.mapValue.fields.isMustDo?.booleanValue == true {
+//                                        self.isMustDoTasks[goal.mapValue!.fields.id.stringValue]! += 1
+//                                    }
+//
+//                                    group.enter()
+//                                    self.getFirebaseStep(stepID: task.mapValue.fields.id.stringValue, goalID: goal.mapValue!.fields.id.stringValue){
+//                                        (steps) in self.steps = steps
+//                                        if let steps = steps{
+//                                            self.taskSteps[task.mapValue.fields.id.stringValue] = steps
+//                                            self.taskStepsLeft[task.mapValue.fields.id.stringValue] = steps.count
+//                                            for step in steps {
+//                                                if step.mapValue.fields.isComplete?.booleanValue == true {
+//                                                    self.taskStepsLeft[task.mapValue.fields.id.stringValue]! -=  1
+//                                                }
+////                                                if step.mapValue.fields.isMustDo?.booleanValue == true {
+////                                                    self.isMustDoSteps[task.mapValue.fields.id.stringValue]! += 1
+////                                                }
+//                                            }
+//                                        }
+//                                    }
+//                                    group.leave()
+//                                }
+//                            }
+//                            group.leave()
+//                        }
+//                    }
+//                    group.notify(queue: DispatchQueue.main) {
+//                        completion()
+//                    }
+//                }
+//            }
+//        }
+//    }
     
     func getUserProfilePhoto(url: String, completion: @escaping (UIImage) -> () ) {
         guard let photoUrl = URL(string: url) else { return }
@@ -211,16 +237,18 @@ class FirebaseGoogleService: ObservableObject {
         .resume()
     }
     
+
+    
     func getFirebaseData(completion: @escaping (Firebase?) -> ()) {
         var goalUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/"
         goalUrl.append(self.UserDayData.User)
-        
+
         guard let url = URL(string: goalUrl) else { return }
         URLSession.shared.dataTask(with: url) { (data, _, error) in
             if let error = error {
                 print("Generic networking error: \(error)")
             }
-            
+
             if let data = data {
                 do {
                     let data = try JSONDecoder().decode(Firebase.self, from: data)
@@ -236,6 +264,9 @@ class FirebaseGoogleService: ObservableObject {
             }
         }
         .resume()
+    }
+    func getImportantPeople(completion: @escaping (ImportantPeople?) -> ()) {
+    
     }
     
     func getFirebaseImportantPeople(completion: @escaping ([ImportantPerson]?) -> ()) {

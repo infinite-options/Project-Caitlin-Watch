@@ -5,6 +5,10 @@
 //  Created by Harshit Trehan on 7/24/20.
 //  Copyright © 2020 Infinite Options. All rights reserved.
 //
+//endpoint (email -> userID https://3s3sftsr90.execute-api.us-west-1.amazonaws.com/dev/api/v2/userLogin/
+//user email iodevcalendar@gmail.com
+//to get user email -> UserDayData.UserInfo?.fields.emailID
+
 
 import Foundation
 import SwiftUI
@@ -61,73 +65,50 @@ class UserDay: ObservableObject {
             return
         }
     }
+    struct Response: Codable{
+        var result: String
+    }
     
     func getUserFromEmail(email: String, completion: @escaping (Int) -> () ){
-        guard let url = URL(string: "https://us-central1-myspace-db.cloudfunctions.net/GetUserFromEmail") else { return }
-        
-        let jsonData = getUserIdBody(email: email)
-        let finalJsonData = try? JSONEncoder().encode(jsonData)
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.httpBody = finalJsonData
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("application/json", forHTTPHeaderField: "Accept")
-        
-        URLSession.shared.dataTask(with: request){ (data, response , error) in
+
+        //guard let url = URL(string: "https://us-central1-myspace-db.cloudfunctions.net/GetUserFromEmail") else { return }
+
+        let endPoint = "https://3s3sftsr90.execute-api.us-west-1.amazonaws.com/dev/api/v2/userLogin/"
+        let urlString = endPoint + email
+        guard let url = URL(string: urlString) else { return }
+
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let error = error {
                 print("Generic networking error: \(error)")
             }
-            
+
             if let data = data {
                 do{
                     let finalRespData = try JSONDecoder().decode(getUserFromEmailResponse.self, from: data)
-                    
-                    if(finalRespData.userId != ""){
+
+                    if(finalRespData.result != ""){
                         print("User found")
                         let GoalsEvents = FirebaseGoogleService.shared
-                        
+
                         DispatchQueue.main.async {
-                            self.User = finalRespData.userId
+                            self.User = finalRespData.result
                             self.manifestSuite?.set(self.User, forKey: self.manifestUserIdKey)
                             GoalsEvents.updateDataModel {
                                 print("Populated data model")
-                                
+
                                 let fullName = (self.UserInfo?.fields.firstName.stringValue ?? "No name") + " " + (self.UserInfo?.fields.lastName.stringValue ?? "given")
-                                
-//                                let loader = ImageLoader(url: URL(string: self.UserInfo?.fields.aboutMe?.mapValue.fields.pic.stringValue ?? "")!)
-//
-//                                loader.load()
-//
-//                                let profilePhotoData = loader.image?.pngData()
-                                
-//
-//                                var ProfileImage = AsyncImage(
-//                                    url: URL(string: self.UserInfo?.fields.aboutMe?.mapValue.fields.pic.stringValue ?? "")!,
-//                                    placeholder: Image(systemName: "person.circle"))
-                                
-//                                let group = DispatchGroup()
-//                                group.enter()
-//                                self.getUserProfilePhoto(url: self.UserInfo?.fields.aboutMe?.mapValue.fields.pic.stringValue ?? "") { (image) in
-//                                    self.UserPhoto = image
-//                                    group.leave()
-//                                }
-                                
-                                
+
                                 self.manifestSuite?.set(fullName, forKey: self.manifestUserName)
-                                
+
                                 self.UserDayData = []
                                 self.UserDayBlockData = []
                                 self.mergeSortedGoalsEvents(goals: GoalsEvents.data ?? [Value](), events: GoalsEvents.events ?? [Event]())
-                                
+
                                 self.loadingUser = false
-                                
+
                                 NotificationHandler().scheduleNotifications()
                                 self.isUserSignedIn = .signedIn
                                 completion(200)
-                                
-//                                group.notify(queue: DispatchQueue.main){
-//                                }
                             }
                         }
                     }
@@ -146,6 +127,69 @@ class UserDay: ObservableObject {
             else { return }
         }.resume()
     }
+    
+//    func getUserFromEmail(email: String, completion: @escaping (Int) -> () ){
+//        guard let url = URL(string: "https://us-central1-myspace-db.cloudfunctions.net/GetUserFromEmail") else { return }
+//
+//        let jsonData = getUserIdBody(email: email)
+//        let finalJsonData = try? JSONEncoder().encode(jsonData)
+//
+//        var request = URLRequest(url: url)
+//        request.httpMethod = "POST"
+//        request.httpBody = finalJsonData
+//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        request.setValue("application/json", forHTTPHeaderField: "Accept")
+//
+//        URLSession.shared.dataTask(with: request){ (data, response , error) in
+//            if let error = error {
+//                print("Generic networking error: \(error)")
+//            }
+//
+//            if let data = data {
+//                do{
+//                    let finalRespData = try JSONDecoder().decode(getUserFromEmailResponse.self, from: data)
+//
+//                    if(finalRespData.userId != ""){
+//                        print("User found")
+//                        let GoalsEvents = FirebaseGoogleService.shared
+//
+//                        DispatchQueue.main.async {
+//                            self.User = finalRespData.userId
+//                            self.manifestSuite?.set(self.User, forKey: self.manifestUserIdKey)
+//                            GoalsEvents.updateDataModel {
+//                                print("Populated data model")
+//
+//                                let fullName = (self.UserInfo?.fields.firstName.stringValue ?? "No name") + " " + (self.UserInfo?.fields.lastName.stringValue ?? "given")
+//
+//                                self.manifestSuite?.set(fullName, forKey: self.manifestUserName)
+//
+//                                self.UserDayData = []
+//                                self.UserDayBlockData = []
+//                                self.mergeSortedGoalsEvents(goals: GoalsEvents.data ?? [Value](), events: GoalsEvents.events ?? [Event]())
+//
+//                                self.loadingUser = false
+//
+//                                NotificationHandler().scheduleNotifications()
+//                                self.isUserSignedIn = .signedIn
+//                                completion(200)
+//                            }
+//                        }
+//                    }
+//                    else{
+//                        print("No user found!")
+//                        DispatchQueue.main.async{
+//                            self.loadingUser = false
+//                        }
+//                        completion(500)
+//                    }
+//                }
+//                catch let jsonParseError {
+//                    print("Error in parsing JSON response: \(jsonParseError)")
+//                }
+//            }
+//            else { return }
+//        }.resume()
+//    }
     
     func signOutUser() {
         self.User = ""

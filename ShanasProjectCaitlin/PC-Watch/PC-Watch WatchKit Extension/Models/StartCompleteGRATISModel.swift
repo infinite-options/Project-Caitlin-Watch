@@ -36,5 +36,5 @@ struct getUserIdBody: Codable {
 }
 
 struct getUserFromEmailResponse: Codable {
-    var userId: String
+    var result: String
 }

@@ -54,6 +54,12 @@
 		2BF95D7124E0BB2B00787EE6 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF95D7024E0BB2B00787EE6 /* RootView.swift */; };
 		2BF95D7324E0BB5F00787EE6 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF95D7224E0BB5E00787EE6 /* LoadingView.swift */; };
 		2BF95D7524E0BBF900787EE6 /* LaunchScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF95D7424E0BBF900787EE6 /* LaunchScreenView.swift */; };
+		802626302522CD3300BBD6E5 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8026262F2522CD3300BBD6E5 /* Task.swift */; };
+		802626322522CD3900BBD6E5 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802626312522CD3900BBD6E5 /* Action.swift */; };
+		8026263A2522CE7C00BBD6E5 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802626392522CE7C00BBD6E5 /* Notification.swift */; };
+		8026263F2522DD4500BBD6E5 /* GoalsAndRoutines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8026263E2522DD4500BBD6E5 /* GoalsAndRoutines.swift */; };
+		80262647252531E900BBD6E5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80262646252531E800BBD6E5 /* User.swift */; };
+		8026264F2525330B00BBD6E5 /* ImportantPeople.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8026264E2525330B00BBD6E5 /* ImportantPeople.swift */; };
 		9134401C67B33D9C28DDE5DF /* Pods_PC_Watch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C90CFFD1C9077E7E7A2884B6 /* Pods_PC_Watch.framework */; };
 		E021F20821CD2C239BADBA9C /* Pods_PC_Watch_WatchKit_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93EFEFE5C2702F40FE2E8F0D /* Pods_PC_Watch_WatchKit_Extension.framework */; };
 		F0BAB22E204CB684194D6F1B /* Pods_PC_Watch_WatchKit_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72F8750AA303CBDC6D36E48D /* Pods_PC_Watch_WatchKit_App.framework */; };
@@ -158,6 +164,12 @@
 		6A33CBD45314B4F9623EEF35 /* Pods-PC-Watch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PC-Watch.debug.xcconfig"; path = "Target Support Files/Pods-PC-Watch/Pods-PC-Watch.debug.xcconfig"; sourceTree = "<group>"; };
 		72F8750AA303CBDC6D36E48D /* Pods_PC_Watch_WatchKit_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PC_Watch_WatchKit_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DAEACF156791B7C5CF96860 /* Pods-PC-Watch WatchKit App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PC-Watch WatchKit App.debug.xcconfig"; path = "Target Support Files/Pods-PC-Watch WatchKit App/Pods-PC-Watch WatchKit App.debug.xcconfig"; sourceTree = "<group>"; };
+		8026262F2522CD3300BBD6E5 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		802626312522CD3900BBD6E5 /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
+		802626392522CE7C00BBD6E5 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		8026263E2522DD4500BBD6E5 /* GoalsAndRoutines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsAndRoutines.swift; sourceTree = "<group>"; };
+		80262646252531E800BBD6E5 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		8026264E2525330B00BBD6E5 /* ImportantPeople.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportantPeople.swift; sourceTree = "<group>"; };
 		93EFEFE5C2702F40FE2E8F0D /* Pods_PC_Watch_WatchKit_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PC_Watch_WatchKit_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C90CFFD1C9077E7E7A2884B6 /* Pods_PC_Watch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PC_Watch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA6963F249EC6DD5D6CF5A62 /* Pods-PC-Watch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PC-Watch.release.xcconfig"; path = "Target Support Files/Pods-PC-Watch/Pods-PC-Watch.release.xcconfig"; sourceTree = "<group>"; };
@@ -266,6 +278,12 @@
 		27BF9DED243BD501006A5466 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				8026263E2522DD4500BBD6E5 /* GoalsAndRoutines.swift */,
+				8026264E2525330B00BBD6E5 /* ImportantPeople.swift */,
+				80262646252531E800BBD6E5 /* User.swift */,
+				802626392522CE7C00BBD6E5 /* Notification.swift */,
+				8026262F2522CD3300BBD6E5 /* Task.swift */,
+				802626312522CD3900BBD6E5 /* Action.swift */,
 				27BF9DEF243BD501006A5466 /* FBGoalRoutineModel.swift */,
 				2B3FB10824BEF8C400CC3D6D /* FBTasksStepsModel.swift */,
 				04957BB324C5350C0031D253 /* Enums.swift */,
@@ -560,6 +578,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8026264F2525330B00BBD6E5 /* ImportantPeople.swift in Sources */,
 				04C6CC4224D9A87A0054E637 /* SignInView.swift in Sources */,
 				047A4A3825095C590031C7B8 /* CheckingInView.swift in Sources */,
 				2BC9C3EF24C9550800FEEA97 /* EventsModel.swift in Sources */,
@@ -590,10 +609,15 @@
 				27BF9DFE243BD600006A5466 /* HomeView.swift in Sources */,
 				2BF95D7324E0BB5F00787EE6 /* LoadingView.swift in Sources */,
 				2B7CC57924DF8975002657D6 /* ViewController.swift in Sources */,
+				80262647252531E900BBD6E5 /* User.swift in Sources */,
+				8026263F2522DD4500BBD6E5 /* GoalsAndRoutines.swift in Sources */,
+				802626322522CD3900BBD6E5 /* Action.swift in Sources */,
+				802626302522CD3300BBD6E5 /* Task.swift in Sources */,
 				046D8CBB24E9D3D700D33871 /* PersonView.swift in Sources */,
 				27BF9DD2243BD389006A5466 /* NotificationView.swift in Sources */,
 				04957BB624C5D8D10031D253 /* UrlToAsset.swift in Sources */,
 				04C6C502250BF8430021B4F4 /* CircularView.swift in Sources */,
+				8026263A2522CE7C00BBD6E5 /* Notification.swift in Sources */,
 				2B706DB324ADE791001AEABE /* NotificationHandler.swift in Sources */,
 				27BF9DF9243BD5A3006A5466 /* FirebaseGoogleService.swift in Sources */,
 				2BCB7EA624CB474D00C72A52 /* EventsView.swift in Sources */,
