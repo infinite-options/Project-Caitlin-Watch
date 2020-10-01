@@ -26,7 +26,8 @@ class UserDay: ObservableObject {
     @Published var User = ""
     
     //Stores the user information
-    @Published var UserInfo: Firebase?
+    @Published var UserInfo: User?
+    
     @Published var UserPhoto: UIImage?
     
     @Published var isUserSignedIn: AuthState = .undefined
@@ -70,9 +71,6 @@ class UserDay: ObservableObject {
     }
     
     func getUserFromEmail(email: String, completion: @escaping (Int) -> () ){
-
-        //guard let url = URL(string: "https://us-central1-myspace-db.cloudfunctions.net/GetUserFromEmail") else { return }
-
         let endPoint = "https://3s3sftsr90.execute-api.us-west-1.amazonaws.com/dev/api/v2/userLogin/"
         let urlString = endPoint + email
         guard let url = URL(string: urlString) else { return }
@@ -95,11 +93,8 @@ class UserDay: ObservableObject {
                             self.manifestSuite?.set(self.User, forKey: self.manifestUserIdKey)
                             GoalsEvents.updateDataModel {
                                 print("Populated data model")
-
-                                let fullName = (self.UserInfo?.fields.firstName.stringValue ?? "No name") + " " + (self.UserInfo?.fields.lastName.stringValue ?? "given")
-
+                                let fullName = (self.UserInfo?.info.userFirstName ?? "Name not found") + " " + (self.UserInfo?.info.userLastName ?? "")
                                 self.manifestSuite?.set(fullName, forKey: self.manifestUserName)
-
                                 self.UserDayData = []
                                 self.UserDayBlockData = []
                                 self.mergeSortedGoalsEvents(goals: GoalsEvents.data ?? [Value](), events: GoalsEvents.events ?? [Event]())
@@ -110,6 +105,7 @@ class UserDay: ObservableObject {
                                 self.isUserSignedIn = .signedIn
                                 completion(200)
                             }
+
                         }
                     }
                     else{
@@ -126,6 +122,16 @@ class UserDay: ObservableObject {
             }
             else { return }
         }.resume()
+    }
+    func loadImage(){
+        guard let urlString = self.UserInfo?.info.userPicture else{return}
+        guard let url = URL(string: urlString) else {return}
+        let data = try? Data(contentsOf: url)
+
+        if let imageData = data {
+            let image = UIImage(data: imageData)
+            UserPhoto = image
+        }
     }
     
 //    func getUserFromEmail(email: String, completion: @escaping (Int) -> () ){

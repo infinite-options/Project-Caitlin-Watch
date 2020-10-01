@@ -9,18 +9,18 @@
 import SwiftUI
 
 struct PeopleView: View {
-    var person: ImportantPerson
+    var person: ImportantPersonNew
 
     var body: some View {
         NavigationLink(destination: PersonView(person: person)) {
-            if self.person.fields.havePic.booleanValue == false {
+            if self.person.havePic == "False" {
                 Image(systemName: "person.circle")
                     .font(.system(size:40))
                     .foregroundColor(.yellow)
             }
             else {
                 AsyncSmallImage(
-                    url: URL(string: self.person.fields.pic!.stringValue)!,
+                    url: URL(string: self.person.pic)!,
                     placeholder: Image(systemName: "person.circle"))
             }
         }.buttonStyle(PlainButtonStyle())
@@ -55,14 +55,6 @@ struct ImportantPeopleView: View {
             }
         }
     }
-
-//    private func isImportantPerson(item: ImportantPerson) -> Bool{
-//        if item.fields.important.booleanValue == true {
-//            return true
-//        } else {
-//            return false
-//        }
-//    }
 }
 
 struct ImportantPeopleView_Previews: PreviewProvider {

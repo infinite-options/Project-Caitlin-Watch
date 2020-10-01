@@ -8,30 +8,13 @@
 
 import Foundation
 
-struct GoalsAndRoutines: Codable{
-    var message: String
-    var result: [Goal]
-}
-
-
-//
-//  RDSGoalRoutineModel.swift
-//  PC-Watch WatchKit Extension
-//
-//  Created by Karan Daryani on 28/09/20.
-//  Copyright © 2020 Infinite Options. All rights reserved.
-//
-
-
-import Foundation
-
 // MARK: - GoalsandRoutine
-struct GoalsandRoutine: Codable {
-    let message: String
-    let result: [Goal]
-}
 
-struct Goal: Codable {
+struct GoalsAndRoutinesResponse: Codable {
+    let message: String
+    let result: [GoalRoutine]
+}
+struct GoalRoutine: Codable {
     let grUniqueID, grTitle, userID, isAvailable: String
     let isComplete, isInProgress, isDisplayedToday, isPersistent: String
     let isSublistAvailable, isTimed: String

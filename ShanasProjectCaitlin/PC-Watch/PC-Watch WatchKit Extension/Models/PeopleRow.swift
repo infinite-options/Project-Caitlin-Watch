@@ -18,7 +18,7 @@ struct PeopleRow: Identifiable {
 }
 
 extension PeopleRow {
-    static func populate(people: [ImportantPerson]) -> [PeopleRow] {
+    static func populate(people: [ImportantPersonNew]) -> [PeopleRow] {
         var rows = [PeopleRow]()
         var i = 0
         var col = 0
@@ -51,9 +51,9 @@ extension PeopleRow {
 
 struct Cell: Identifiable {
     let id = UUID()
-    var person: ImportantPerson
+    var person: ImportantPersonNew
 
-    init(person: ImportantPerson) {
+    init(person: ImportantPersonNew) {
         self.person = person
     }
 }

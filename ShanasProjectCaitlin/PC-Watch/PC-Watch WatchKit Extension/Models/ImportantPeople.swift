@@ -1,17 +1,38 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//  ImportantPeople.swift
-//  PC-Watch WatchKit Extension
-//
-//  Created by Radomyr Bezghin on 9/30/20.
-//  Copyright © 2020 Infinite Options. All rights reserved.
-//
+//   let welcome = try? newJSONDecoder().decode(Welcome.self, from: jsonData)
 
 import Foundation
 
-struct ImportantPeople {
-    
+// MARK: - Welcome
+struct ImportantPeopleResponse: Codable {
+    let message: String
+    let result: WelcomeResult
 }
 
-struct ImportantPersonNew { //rename later
-    
+// MARK: - WelcomeResult
+struct WelcomeResult: Codable {
+    let message: String
+    let code: Int
+    let result: [ImportantPersonNew]
+}
+
+// MARK: - ResultElement
+struct ImportantPersonNew: Codable {
+    let userUid, userName, taPeopleID, email: String
+    let havePic, important, name, phoneNumber: String
+    let pic: String
+    let relationship: String
+
+    enum CodingKeys: String, CodingKey {
+        case userUid = "user_uid"
+        case userName = "user_name"
+        case taPeopleID = "ta_people_id"
+        case email
+        case havePic = "have_pic"
+        case important, name
+        case phoneNumber = "phone_number"
+        case pic, relationship
+    }
 }

@@ -15,7 +15,7 @@ class FirebaseGoogleService: ObservableObject {
     let UserDayData = UserDay.shared
     
     //Stores important people
-    @Published var importantPeople: [ImportantPerson]?
+    @Published var importantPeople: [ImportantPersonNew]?
     @Published var peopleRow: [PeopleRow]?
     @Published var peopleEmailToNameDict = [String : String]()
     
@@ -42,15 +42,128 @@ class FirebaseGoogleService: ObservableObject {
     @Published var isMustDoTasks = [String: Int]()
 //    @Published var isMustDoSteps = [String: Int]()
     func updateDataModel(completion: @escaping () -> ()) {
-        /// get goals and rountines for current user (28)
+        
+        let group = DispatchGroup()
+        var userInfo: UserInfo?
+        var goalsnroutines: [GoalRoutine]?
+        
+        group.enter()
         getGoalsAndRoutines(){ data in
-            
+            //print(data?.result[0])
+            goalsnroutines = data
+            group.leave()
         }
+        group.enter()
+        getUserInfo { (data) in
+            userInfo = data
+            //print(userInfo?.result[0])
+            group.leave()
+        }
+        group.wait()
+        
+        let user = User(info: userInfo!,
+                        data: goalsnroutines!,
+                        createTime: nil,
+                        updateTime: nil)
+        self.UserDayData.UserInfo = user
+        getUserProfilePhoto(url: user.info.userPicture!) { (image) in
+            self.UserDayData.UserPhoto = image
+        }
+        getImportantPeople { (importantPeople) in
+            print(importantPeople)
+            self.importantPeople = importantPeople
+            print(self.importantPeople)
+            print("Got important people from Firebase. Now getting other firebase data.")
+            if self.importantPeople != nil {
+                for person in self.importantPeople! {
+                    if person.email != nil {
+                        self.peopleEmailToNameDict[person.email] = person.name
+                    }
+                }
+                self.peopleRow = PeopleRow.populate(people: self.importantPeople!)
+            }
+            print(self.peopleEmailToNameDict)
+        }
+        
+        print("Data received")
+        
+        completion()
     }
-    /// RDS Database
-    /// Custom function to try decoding RDS Database
-    /// returns optional :   message: String and  result: [Goal]
-    func getGoalsAndRoutines(completion: @escaping (GoalsAndRoutines?) -> ()) {
+    func getImportantPeople(completion: @escaping ([ImportantPersonNew]?) -> ()) {
+        var peopleUrl = "https://3s3sftsr90.execute-api.us-west-1.amazonaws.com/dev/api/v2/listPeople/"
+        peopleUrl.append(self.UserDayData.User)
+        guard let url = URL(string: peopleUrl) else { return }
+        URLSession.shared.dataTask(with: url) { (data, _, error) in
+            if let error = error {
+                print("Generic networking error: \(error)")
+            }
+            if let data = data {
+                do {
+                    let data = try JSONDecoder().decode(ImportantPeopleResponse.self, from: data)
+                    DispatchQueue.main.async {
+                        completion(data.result.result)
+                    }
+                }
+                catch _ {
+                    print("couldn't retrieve people")
+                    completion(nil)
+                }
+            }
+        }
+        .resume()
+    }
+    
+    func getFirebaseImportantPeople(completion: @escaping ([ImportantPerson]?) -> ()) {
+        let peopleUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.UserDayData.User + "/people/"
+        guard let url = URL(string: peopleUrl) else { return }
+        print(peopleUrl)
+
+            URLSession.shared.dataTask(with: url) { (data, _, error) in
+                if let error = error {
+                    print("Generic networking error: \(error)")
+                }
+
+                if let data = data {
+                    do {
+                        // where the issue is occuring
+                        let data = try JSONDecoder().decode(People.self, from: data)
+                        DispatchQueue.main.async {
+                            completion(data.documents)
+                            print(data.documents)
+                        }
+                    }
+                    catch _ {
+                        print("couldn't retrieve people")
+                        completion(nil)
+                    }
+                }
+            }
+        .resume()
+    }
+    /// returns optinal info about the current user
+    func getUserInfo(completion: @escaping (UserInfo?) -> ()){
+        var aboutmeUrl = "https://3s3sftsr90.execute-api.us-west-1.amazonaws.com/dev/api/v2/aboutme/"
+        aboutmeUrl.append("100-000028")
+        guard let url = URL(string: aboutmeUrl) else { return }
+        URLSession.shared.dataTask(with: url) { (data, _, error) in
+            if let error = error {
+                print("Generic networking error: \(error)")
+            }
+            if let data = data {
+                do {
+                    let data = try JSONDecoder().decode(UserInfoResponse.self, from: data)
+                    completion(data.result[0])
+                }
+                catch _ {
+                    print("Error in parsing UserInfo data")
+                    completion(nil)
+                }
+            }
+        }
+        .resume()
+    }
+    /// returns optional   message: String and  result: [GoalRoutine]
+    func getGoalsAndRoutines(completion: @escaping ([GoalRoutine]?) -> ()) {
         var goalUrl = "https://3s3sftsr90.execute-api.us-west-1.amazonaws.com/dev/api/v2/getgoalsandroutines/"
         goalUrl.append("100-000028")
         guard let url = URL(string: goalUrl) else { return }
@@ -60,10 +173,8 @@ class FirebaseGoogleService: ObservableObject {
             }
             if let data = data {
                 do {
-                    let data = try JSONDecoder().decode(GoalsAndRoutines.self, from: data)
-                    DispatchQueue.main.async {
-                        completion(data)
-                    }
+                    let data = try JSONDecoder().decode(GoalsAndRoutinesResponse.self, from: data)
+                    completion(data.result)
                 }
                 catch _ {
                     print("Error in parsing Goals data")
@@ -265,37 +376,7 @@ class FirebaseGoogleService: ObservableObject {
         }
         .resume()
     }
-    func getImportantPeople(completion: @escaping (ImportantPeople?) -> ()) {
-    
-    }
-    
-    func getFirebaseImportantPeople(completion: @escaping ([ImportantPerson]?) -> ()) {
-        let peopleUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.UserDayData.User + "/people/"
-        guard let url = URL(string: peopleUrl) else { return }
-        print(peopleUrl)
 
-            URLSession.shared.dataTask(with: url) { (data, _, error) in
-                if let error = error {
-                    print("Generic networking error: \(error)")
-                }
-
-                if let data = data {
-                    do {
-                        // where the issue is occuring
-                        let data = try JSONDecoder().decode(People.self, from: data)
-                        DispatchQueue.main.async {
-                            completion(data.documents)
-                            print(data.documents)
-                        }
-                    }
-                    catch _ {
-                        print("couldn't retrieve people")
-                        completion(nil)
-                    }
-                }
-            }
-        .resume()
-    }
     
     func getFirebaseTasks(goalID: String, completion: @escaping ([ValueTask]?) -> ()) {
         let TaskUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.UserDayData.User + "/goals&routines/" + goalID

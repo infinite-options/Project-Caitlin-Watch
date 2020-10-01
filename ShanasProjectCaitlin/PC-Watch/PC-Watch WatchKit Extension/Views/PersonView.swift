@@ -9,27 +9,27 @@
 import SwiftUI
 
 struct PersonView: View {
-    var person: ImportantPerson
+    var person: ImportantPersonNew
     
     var body: some View {
         VStack(alignment: .center) {
-            if self.person.fields.havePic.booleanValue == false {
+            if self.person.havePic == "False" {
                 Image(systemName: "person.circle")
                     .font(.system(size:100))
                     .foregroundColor(.yellow)
             }
             else {
                 AsyncImage(
-                    url: URL(string: self.person.fields.pic!.stringValue)!,
+                    url: URL(string: self.person.pic)!,
                     placeholder: Image(systemName: "person.circle"))
             }
             Spacer()
-            if self.person.fields.phoneNumber?.stringValue != "" {
+            if self.person.phoneNumber != "" {
                 HStack {
                     VStack {
-                        Text(self.person.fields.name.stringValue)
+                        Text(self.person.userName)
                             .font(.system(size: 20, design: .rounded))
-                        Text(self.person.fields.relationship.stringValue)
+                        Text(self.person.relationship)
                             .fontWeight(.light)
                             .font(.system(size: 15, design: .rounded))
                     }
@@ -38,7 +38,7 @@ struct PersonView: View {
                         .font(.system(size:50))
                         .foregroundColor(.green)
                         .onTapGesture {
-                            let number = "tel:" + self.person.fields.phoneNumber!.stringValue
+                            let number = "tel:" + self.person.phoneNumber
                             if let telURL = URL(string: number) {
                                 let wkExtension = WKExtension.shared()
                                 wkExtension.openSystemURL(telURL)
@@ -46,13 +46,13 @@ struct PersonView: View {
                         }
                 }
             } else {
-                Text(self.person.fields.name.stringValue)
+                Text(self.person.name)
                     .font(.system(size: 20, design: .rounded))
-                Text(self.person.fields.relationship.stringValue)
+                Text(self.person.relationship)
                     .fontWeight(.light)
                     .font(.system(size: 15, design: .rounded))
 
             }
-        }.navigationBarTitle(self.person.fields.name.stringValue)
+        }.navigationBarTitle(self.person.name)
     }
 }
