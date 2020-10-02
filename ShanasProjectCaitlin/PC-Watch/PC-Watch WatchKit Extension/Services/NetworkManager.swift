@@ -15,7 +15,7 @@ class NetworkManager: ObservableObject {
     let User = UserManager.shared
     
     //Stores important people
-    @Published var importantPeople: [ImportantPersonNew]?
+    @Published var importantPeople: [ImportantPerson]?
     @Published var peopleRow: [PeopleRow]?
     @Published var peopleEmailToNameDict = [String : String]()
     
@@ -26,8 +26,8 @@ class NetworkManager: ObservableObject {
     @Published var events: [Event]?
     
     //Temporary variables to hold tasks and steps
-    private var tasks: [ValueTask]?
-    private var steps: [ValueTask]?
+    //private var tasks: [ValueTask]?
+    //private var steps: [ValueTask]?
     
     //New Variable to store goals and routines
     @Published var goalsRoutinesData: [GoalRoutine]?
@@ -110,7 +110,7 @@ class NetworkManager: ObservableObject {
         
         return calendar.date(from: thisStart)! < calendar.date(from: thatStart)!
     }
-    func getImportantPeople(completion: @escaping ([ImportantPersonNew]?) -> ()) {
+    func getImportantPeople(completion: @escaping ([ImportantPerson]?) -> ()) {
         var peopleUrl = "https://3s3sftsr90.execute-api.us-west-1.amazonaws.com/dev/api/v2/listPeople/"
         peopleUrl.append(self.User.User)
         guard let url = URL(string: peopleUrl) else { return }
@@ -337,7 +337,6 @@ class NetworkManager: ObservableObject {
                     }
                 }
                 catch _ {
-                    //print("No events found for user: \(self.UserDayData.User)")
                     //print("Error in parsing Events data: \(jsonParseError)" )
                     completion(nil)
                 }
@@ -345,37 +344,6 @@ class NetworkManager: ObservableObject {
         }
         .resume()
     }
-    
-
-    
-//    func getFirebaseData(completion: @escaping (Firebase?) -> ()) {
-//        var goalUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/"
-//        goalUrl.append(self.UserDayData.User)
-//
-//        guard let url = URL(string: goalUrl) else { return }
-//        URLSession.shared.dataTask(with: url) { (data, _, error) in
-//            if let error = error {
-//                print("Generic networking error: \(error)")
-//            }
-//
-//            if let data = data {
-//                do {
-//                    let data = try JSONDecoder().decode(Firebase.self, from: data)
-//                    DispatchQueue.main.async {
-//                        completion(data)
-//                    }
-//                }
-//                catch _ {
-//                    //print("No goals found for user: \(self.UserDayData.User)")
-//                    //print("Error in parsing Goals data: \(jsonParseError)")
-//                    completion(nil)
-//                }
-//            }
-//        }
-//        .resume()
-//    }
-
-    
     func getFirebaseTasks(goalID: String, completion: @escaping ([ValueTask]?) -> ()) {
         let TaskUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.User.User + "/goals&routines/" + goalID
         guard let url = URL(string: TaskUrl) else { return }

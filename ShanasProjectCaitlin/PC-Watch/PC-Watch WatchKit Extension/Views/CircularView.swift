@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-func createObjectsAroundCircle(people: [ImportantPersonNew]) {
+func createObjectsAroundCircle(people: [ImportantPerson]) {
 
 //    let center = CGPointMake(40/2 ,40/2)
     let radius : CGFloat = 40

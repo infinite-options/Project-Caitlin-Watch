@@ -15,11 +15,11 @@ struct ImportantPeopleResponse: Codable {
 struct WelcomeResult: Codable {
     let message: String
     let code: Int
-    let result: [ImportantPersonNew]
+    let result: [ImportantPerson]
 }
 
 // MARK: - ResultElement
-struct ImportantPersonNew: Codable {
+struct ImportantPerson: Codable {
     let userUid, userName, taPeopleID, email: String
     let havePic, important, name, phoneNumber: String
     let pic: String

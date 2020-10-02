@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct PeopleView: View {
-    var person: ImportantPersonNew
+    var person: ImportantPerson
 
     var body: some View {
         NavigationLink(destination: PersonView(person: person)) {
