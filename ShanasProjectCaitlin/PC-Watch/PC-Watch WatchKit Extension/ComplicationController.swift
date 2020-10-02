@@ -10,7 +10,7 @@ import ClockKit
 
 class ComplicationController: NSObject, CLKComplicationDataSource {
         
-    let model = UserDay.shared
+    let model = UserManager.shared
 
     // MARK: - Timeline Configuration
     

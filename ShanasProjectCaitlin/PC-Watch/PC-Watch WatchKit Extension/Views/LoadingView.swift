@@ -10,7 +10,7 @@ import SwiftUI
 
 struct LoadingView: View {
     @State var isLoading = false
-    @ObservedObject var User = UserDay.shared
+    @ObservedObject var User = UserManager.shared
     
     var body: some View {
         VStack{

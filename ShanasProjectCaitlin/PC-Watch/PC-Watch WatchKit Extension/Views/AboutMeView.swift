@@ -9,8 +9,8 @@
 import SwiftUI
 
 struct AboutMeView: View {
-    @ObservedObject var User = UserDay.shared
-    @ObservedObject var model = FirebaseGoogleService.shared
+    @ObservedObject var User = UserManager.shared
+    @ObservedObject var model = NetworkManager.shared
     
     let fullName = UserDefaults(suiteName: "manifestSuite")?.string(forKey: "userName")
     

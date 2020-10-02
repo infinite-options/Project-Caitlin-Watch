@@ -12,7 +12,7 @@ struct LaunchScreenView: View {
 
     @State var showSignIn = false
     @ObservedObject var viewPick = ViewController.shared
-    @ObservedObject var User = UserDay.shared
+    @ObservedObject var User = UserManager.shared
 
     var body: some View {
         GeometryReader { geo in

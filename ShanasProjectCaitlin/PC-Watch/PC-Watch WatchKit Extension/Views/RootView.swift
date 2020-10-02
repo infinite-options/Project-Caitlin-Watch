@@ -12,7 +12,7 @@ import SwiftUI
 struct RootView: View {
     
     @ObservedObject var viewPick = ViewController.shared
-    @ObservedObject var User = UserDay.shared
+    @ObservedObject var User = UserManager.shared
     
     var body: some View {
         ZStack {

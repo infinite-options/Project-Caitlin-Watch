@@ -11,7 +11,7 @@ import SwiftSoup
 
 struct EventsView: View {
     var event: Event?
-    @ObservedObject private var model = FirebaseGoogleService.shared
+    @ObservedObject private var model = NetworkManager.shared
     
     var body: some View {
         GeometryReader { geo in

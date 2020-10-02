@@ -17,16 +17,16 @@ enum AuthState {
     case undefined, signedOut, signedIn, invalidEmail
 }
 
-class UserDay: ObservableObject {
+class UserManager: ObservableObject {
     
-    static let shared = UserDay()
+    static let shared = UserManager()
     
     @Published var loadingUser = false
     
     @Published var User = ""
     
     //Stores the user information
-    @Published var UserInfo: User?
+    @Published var UserInfo: UserInfo?
     
     @Published var UserPhoto: UIImage?
     
@@ -86,14 +86,14 @@ class UserDay: ObservableObject {
 
                     if(finalRespData.result != ""){
                         print("User found")
-                        let GoalsEvents = FirebaseGoogleService.shared
+                        let GoalsEvents = NetworkManager.shared
 
                         DispatchQueue.main.async {
                             self.User = finalRespData.result
                             self.manifestSuite?.set(self.User, forKey: self.manifestUserIdKey)
                             GoalsEvents.updateDataModel {
                                 print("Populated data model")
-                                let fullName = (self.UserInfo?.info.userFirstName ?? "Name not found") + " " + (self.UserInfo?.info.userLastName ?? "")
+                                let fullName = (self.UserInfo?.userFirstName ?? "Name not found") + " " + (self.UserInfo?.userLastName ?? "")
                                 self.manifestSuite?.set(fullName, forKey: self.manifestUserName)
                                 self.UserDayData = []
                                 self.UserDayBlockData = []
@@ -124,7 +124,7 @@ class UserDay: ObservableObject {
         }.resume()
     }
     func loadImage(){
-        guard let urlString = self.UserInfo?.info.userPicture else{return}
+        guard let urlString = self.UserInfo?.userPicture else{return}
         guard let url = URL(string: urlString) else {return}
         let data = try? Data(contentsOf: url)
 
@@ -133,70 +133,7 @@ class UserDay: ObservableObject {
             UserPhoto = image
         }
     }
-    
-//    func getUserFromEmail(email: String, completion: @escaping (Int) -> () ){
-//        guard let url = URL(string: "https://us-central1-myspace-db.cloudfunctions.net/GetUserFromEmail") else { return }
-//
-//        let jsonData = getUserIdBody(email: email)
-//        let finalJsonData = try? JSONEncoder().encode(jsonData)
-//
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "POST"
-//        request.httpBody = finalJsonData
-//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//        request.setValue("application/json", forHTTPHeaderField: "Accept")
-//
-//        URLSession.shared.dataTask(with: request){ (data, response , error) in
-//            if let error = error {
-//                print("Generic networking error: \(error)")
-//            }
-//
-//            if let data = data {
-//                do{
-//                    let finalRespData = try JSONDecoder().decode(getUserFromEmailResponse.self, from: data)
-//
-//                    if(finalRespData.userId != ""){
-//                        print("User found")
-//                        let GoalsEvents = FirebaseGoogleService.shared
-//
-//                        DispatchQueue.main.async {
-//                            self.User = finalRespData.userId
-//                            self.manifestSuite?.set(self.User, forKey: self.manifestUserIdKey)
-//                            GoalsEvents.updateDataModel {
-//                                print("Populated data model")
-//
-//                                let fullName = (self.UserInfo?.fields.firstName.stringValue ?? "No name") + " " + (self.UserInfo?.fields.lastName.stringValue ?? "given")
-//
-//                                self.manifestSuite?.set(fullName, forKey: self.manifestUserName)
-//
-//                                self.UserDayData = []
-//                                self.UserDayBlockData = []
-//                                self.mergeSortedGoalsEvents(goals: GoalsEvents.data ?? [Value](), events: GoalsEvents.events ?? [Event]())
-//
-//                                self.loadingUser = false
-//
-//                                NotificationHandler().scheduleNotifications()
-//                                self.isUserSignedIn = .signedIn
-//                                completion(200)
-//                            }
-//                        }
-//                    }
-//                    else{
-//                        print("No user found!")
-//                        DispatchQueue.main.async{
-//                            self.loadingUser = false
-//                        }
-//                        completion(500)
-//                    }
-//                }
-//                catch let jsonParseError {
-//                    print("Error in parsing JSON response: \(jsonParseError)")
-//                }
-//            }
-//            else { return }
-//        }.resume()
-//    }
-    
+
     func signOutUser() {
         self.User = ""
         self.UserInfo = nil

@@ -9,10 +9,10 @@
 import Foundation
 import SwiftUI
 
-class FirebaseGoogleService: ObservableObject {
+class NetworkManager: ObservableObject {
     
-    static let shared = FirebaseGoogleService()
-    let UserDayData = UserDay.shared
+    static let shared = NetworkManager()
+    let User = UserManager.shared
     
     //Stores important people
     @Published var importantPeople: [ImportantPersonNew]?
@@ -29,6 +29,10 @@ class FirebaseGoogleService: ObservableObject {
     private var tasks: [ValueTask]?
     private var steps: [ValueTask]?
     
+    //New Variable to store goals and routines
+    @Published var goalsRoutinesData: [GoalRoutine]?
+    @Published var goalsRoutinesBlockData: [GoalRoutine]?
+    
     //Key: Goal, Value: tasks
     @Published var goalsSubtasks = [String: [ValueTask]?]()
     //Key: Task, Value: steps
@@ -41,18 +45,27 @@ class FirebaseGoogleService: ObservableObject {
     
     @Published var isMustDoTasks = [String: Int]()
 //    @Published var isMustDoSteps = [String: Int]()
+    
+    private init() {
+        self.goalsRoutinesData = []
+        self.goalsRoutinesBlockData = []
+    }
+    
     func updateDataModel(completion: @escaping () -> ()) {
-        
         let group = DispatchGroup()
         var userInfo: UserInfo?
         var goalsnroutines: [GoalRoutine]?
         
         group.enter()
+        //RDS Goals and Rutines
         getGoalsAndRoutines(){ data in
-            //print(data?.result[0])
-            goalsnroutines = data
+            self.goalsRoutinesData = data
+            self.goalsRoutinesData?.sort(by: self.sortGoalsAndRoutines)
+            goalsnroutines = self.goalsRoutinesData
             group.leave()
+            print(self.goalsRoutinesData)
         }
+        
         group.enter()
         getUserInfo { (data) in
             userInfo = data
@@ -61,13 +74,12 @@ class FirebaseGoogleService: ObservableObject {
         }
         group.wait()
         
-        let user = User(info: userInfo!,
-                        data: goalsnroutines!,
-                        createTime: nil,
-                        updateTime: nil)
-        self.UserDayData.UserInfo = user
-        getUserProfilePhoto(url: user.info.userPicture!) { (image) in
-            self.UserDayData.UserPhoto = image
+        guard let info = userInfo else {return}
+        self.User.UserInfo = info
+        if let imageURLString = info.userPicture {
+            getUserProfilePhoto(url: imageURLString) { (image) in
+                self.User.UserPhoto = image
+            }
         }
         getImportantPeople { (importantPeople) in
             print(importantPeople)
@@ -89,9 +101,18 @@ class FirebaseGoogleService: ObservableObject {
         
         completion()
     }
+    func sortGoalsAndRoutines(this: GoalRoutine, that: GoalRoutine) -> Bool {
+        var calendar = Calendar.current
+        calendar.timeZone = .current
+        
+        let thisStart = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (this.startDayAndTime)) ?? Date())
+        let thatStart = calendar.dateComponents([.hour, .minute, .second], from: DayDateObj.timeLeft.date(from: (that.startDayAndTime)) ?? Date())
+        
+        return calendar.date(from: thisStart)! < calendar.date(from: thatStart)!
+    }
     func getImportantPeople(completion: @escaping ([ImportantPersonNew]?) -> ()) {
         var peopleUrl = "https://3s3sftsr90.execute-api.us-west-1.amazonaws.com/dev/api/v2/listPeople/"
-        peopleUrl.append(self.UserDayData.User)
+        peopleUrl.append(self.User.User)
         guard let url = URL(string: peopleUrl) else { return }
         URLSession.shared.dataTask(with: url) { (data, _, error) in
             if let error = error {
@@ -113,37 +134,10 @@ class FirebaseGoogleService: ObservableObject {
         .resume()
     }
     
-    func getFirebaseImportantPeople(completion: @escaping ([ImportantPerson]?) -> ()) {
-        let peopleUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.UserDayData.User + "/people/"
-        guard let url = URL(string: peopleUrl) else { return }
-        print(peopleUrl)
-
-            URLSession.shared.dataTask(with: url) { (data, _, error) in
-                if let error = error {
-                    print("Generic networking error: \(error)")
-                }
-
-                if let data = data {
-                    do {
-                        // where the issue is occuring
-                        let data = try JSONDecoder().decode(People.self, from: data)
-                        DispatchQueue.main.async {
-                            completion(data.documents)
-                            print(data.documents)
-                        }
-                    }
-                    catch _ {
-                        print("couldn't retrieve people")
-                        completion(nil)
-                    }
-                }
-            }
-        .resume()
-    }
     /// returns optinal info about the current user
     func getUserInfo(completion: @escaping (UserInfo?) -> ()){
         var aboutmeUrl = "https://3s3sftsr90.execute-api.us-west-1.amazonaws.com/dev/api/v2/aboutme/"
-        aboutmeUrl.append("100-000028")
+        aboutmeUrl.append(self.User.User)
         guard let url = URL(string: aboutmeUrl) else { return }
         URLSession.shared.dataTask(with: url) { (data, _, error) in
             if let error = error {
@@ -162,10 +156,11 @@ class FirebaseGoogleService: ObservableObject {
         }
         .resume()
     }
+
     /// returns optional   message: String and  result: [GoalRoutine]
     func getGoalsAndRoutines(completion: @escaping ([GoalRoutine]?) -> ()) {
         var goalUrl = "https://3s3sftsr90.execute-api.us-west-1.amazonaws.com/dev/api/v2/getgoalsandroutines/"
-        goalUrl.append("100-000028")
+        goalUrl.append(self.User.User)
         guard let url = URL(string: goalUrl) else { return }
         URLSession.shared.dataTask(with: url) { (data, _, error) in
             if let error = error {
@@ -184,6 +179,25 @@ class FirebaseGoogleService: ObservableObject {
         }
         .resume()
     }
+    func getUserProfilePhoto(url: String, completion: @escaping (UIImage) -> () ) {
+        guard let photoUrl = URL(string: url) else { return }
+        print(url)
+        URLSession.shared.dataTask(with: photoUrl) { (data, _, error) in
+            if let error = error {
+                print("Error in downlaoding profile image: \(error)")
+                return
+            }
+            if let data = data {
+                print("Image Download done.")
+                DispatchQueue.main.async {
+                    //self.UserDayData.manifestSuite?.set(data, forKey: self.UserDayData.manifestUserPhoto)
+                    completion( UIImage(data: data)! )
+                }
+            }
+        }.resume()
+    }
+    
+    //MARK: OLD CODE
 
 //    func updateDataModel(completion: @escaping () -> ()) {
 //        print("In updating model...")
@@ -277,23 +291,7 @@ class FirebaseGoogleService: ObservableObject {
 //        }
 //    }
     
-    func getUserProfilePhoto(url: String, completion: @escaping (UIImage) -> () ) {
-        guard let photoUrl = URL(string: url) else { return }
-        print(url)
-        URLSession.shared.dataTask(with: photoUrl) { (data, _, error) in
-            if let error = error {
-                print("Error in downlaoding profile image: \(error)")
-                return
-            }
-            if let data = data {
-                print("Image Download done.")
-                DispatchQueue.main.async {
-                    //self.UserDayData.manifestSuite?.set(data, forKey: self.UserDayData.manifestUserPhoto)
-                    completion( UIImage(data: data)! )
-                }
-            }
-        }.resume()
-    }
+
     
     func getEventsFromGoogleCalendar(completion: @escaping ([Event]?) -> ()){
         guard let url = URL(string: "https://us-central1-myspace-db.cloudfunctions.net/GetEventsForTheDay") else { return }
@@ -314,7 +312,7 @@ class FirebaseGoogleService: ObservableObject {
         let endDate = DayDateObj.ISOFormatter.string(from: Calendar.current.date(from: currComponents)!)
         
         //Create request the body
-        let jsonData = getEventsBody(id: self.UserDayData.User,
+        let jsonData = getEventsBody(id: self.User.User,
                                      start: startDate,
                                      end: endDate)
         let finalJsonData = try? JSONEncoder().encode(jsonData)
@@ -350,36 +348,36 @@ class FirebaseGoogleService: ObservableObject {
     
 
     
-    func getFirebaseData(completion: @escaping (Firebase?) -> ()) {
-        var goalUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/"
-        goalUrl.append(self.UserDayData.User)
-
-        guard let url = URL(string: goalUrl) else { return }
-        URLSession.shared.dataTask(with: url) { (data, _, error) in
-            if let error = error {
-                print("Generic networking error: \(error)")
-            }
-
-            if let data = data {
-                do {
-                    let data = try JSONDecoder().decode(Firebase.self, from: data)
-                    DispatchQueue.main.async {
-                        completion(data)
-                    }
-                }
-                catch _ {
-                    //print("No goals found for user: \(self.UserDayData.User)")
-                    //print("Error in parsing Goals data: \(jsonParseError)")
-                    completion(nil)
-                }
-            }
-        }
-        .resume()
-    }
+//    func getFirebaseData(completion: @escaping (Firebase?) -> ()) {
+//        var goalUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/"
+//        goalUrl.append(self.UserDayData.User)
+//
+//        guard let url = URL(string: goalUrl) else { return }
+//        URLSession.shared.dataTask(with: url) { (data, _, error) in
+//            if let error = error {
+//                print("Generic networking error: \(error)")
+//            }
+//
+//            if let data = data {
+//                do {
+//                    let data = try JSONDecoder().decode(Firebase.self, from: data)
+//                    DispatchQueue.main.async {
+//                        completion(data)
+//                    }
+//                }
+//                catch _ {
+//                    //print("No goals found for user: \(self.UserDayData.User)")
+//                    //print("Error in parsing Goals data: \(jsonParseError)")
+//                    completion(nil)
+//                }
+//            }
+//        }
+//        .resume()
+//    }
 
     
     func getFirebaseTasks(goalID: String, completion: @escaping ([ValueTask]?) -> ()) {
-        let TaskUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.UserDayData.User + "/goals&routines/" + goalID
+        let TaskUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.User.User + "/goals&routines/" + goalID
         guard let url = URL(string: TaskUrl) else { return }
         
             URLSession.shared.dataTask(with: url) { (data, _, error) in
@@ -405,7 +403,7 @@ class FirebaseGoogleService: ObservableObject {
     }
     
     func getFirebaseStep(stepID: String, goalID: String, completion: @escaping ([ValueTask]?) -> ()) {
-        let StepUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.UserDayData.User + "/goals&routines/" + goalID + "/actions&tasks/" + stepID
+        let StepUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.User.User + "/goals&routines/" + goalID + "/actions&tasks/" + stepID
         guard let url = URL(string: StepUrl) else { return }
         
         URLSession.shared.dataTask(with: url) { (data, _, error) in

@@ -21,8 +21,8 @@ struct TaskItem: View {
     
     @State private var showingAlert = false
     
-    @ObservedObject private var model = FirebaseGoogleService.shared
-    @ObservedObject private var user = UserDay.shared
+    @ObservedObject private var model = NetworkManager.shared
+    @ObservedObject private var user = UserManager.shared
     
     @State var done = false
     
@@ -139,8 +139,8 @@ struct TaskItem: View {
 }
 
 struct TasksView: View {
-    @ObservedObject private var model = FirebaseGoogleService.shared
-    @ObservedObject private var user = UserDay.shared
+    @ObservedObject private var model = NetworkManager.shared
+    @ObservedObject private var user = UserManager.shared
     var goalOrRoutine: Value?
     var goalOrRoutineIndex: Int?
     var fullDayArray: Bool
@@ -293,3 +293,8 @@ struct TasksView: View {
     }
 }
 
+struct newTaskView: View {
+    var body: some View {
+        Text("Hello World")
+    }
+}

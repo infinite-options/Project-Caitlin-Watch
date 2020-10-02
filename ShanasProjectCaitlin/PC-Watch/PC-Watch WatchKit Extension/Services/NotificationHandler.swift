@@ -13,7 +13,7 @@ class NotificationHandler : NSObject, UNUserNotificationCenterDelegate {
     
     let center = UNUserNotificationCenter.current()
     let content = UNMutableNotificationContent()
-    let DataModel = UserDay.shared
+    let DataModel = UserManager.shared
     var calendar = Calendar.current
     
     func scheduleNotifications(){

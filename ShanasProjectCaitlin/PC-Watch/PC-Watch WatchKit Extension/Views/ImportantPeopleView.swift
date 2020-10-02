@@ -28,8 +28,8 @@ struct PeopleView: View {
 }
 
 struct ImportantPeopleView: View {
-    @ObservedObject private var model = FirebaseGoogleService.shared
-    @ObservedObject private var user = UserDay.shared
+    @ObservedObject private var model = NetworkManager.shared
+    @ObservedObject private var user = UserManager.shared
 
     var body: some View {
         VStack(alignment: .center) {
@@ -44,7 +44,7 @@ struct ImportantPeopleView: View {
                 }.navigationBarTitle("Important People")
             } else {
                 ScrollView([.vertical]) {
-                    ForEach(FirebaseGoogleService.shared.peopleRow!) { row in
+                    ForEach(NetworkManager.shared.peopleRow!) { row in
                         HStack(alignment: .center) {
                             ForEach(row.cells) { cell in
                                 PeopleView(person: cell.person)

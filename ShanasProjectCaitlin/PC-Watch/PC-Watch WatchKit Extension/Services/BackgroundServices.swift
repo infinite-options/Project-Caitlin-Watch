@@ -17,8 +17,8 @@ class BackgroundService: NSObject {
     
     var backgroundTasKID = [-1, -1]
     static let shared = BackgroundService()
-    let model = FirebaseGoogleService.shared
-    let UserDayData = UserDay.shared
+    let model = NetworkManager.shared
+    let UserDayData = UserManager.shared
     
     // Store tasks in order to complete them when finished
     var pendingBackgroundTasks = [WKURLSessionRefreshBackgroundTask]()
@@ -116,7 +116,7 @@ extension BackgroundService : URLSessionDownloadDelegate {
         }
         
         group.notify(queue: DispatchQueue.main) {
-            UserDay.shared.mergeSortedGoalsEvents(goals: FirebaseGoogleService.shared.data ?? [Value](), events: FirebaseGoogleService.shared.events ?? [Event]())
+            UserManager.shared.mergeSortedGoalsEvents(goals: NetworkManager.shared.data ?? [Value](), events: NetworkManager.shared.events ?? [Event]())
             self.updateActiveComplication()
         }
         
@@ -129,7 +129,7 @@ extension BackgroundService : URLSessionDownloadDelegate {
         if let data = try? Data(contentsOf: file),
             let model = try? JSONDecoder().decode(Firebase.self, from: data) {
             DispatchQueue.main.async {
-                FirebaseGoogleService.shared.data = model.fields.goalsRoutines.arrayValue.values
+                NetworkManager.shared.data = model.fields.goalsRoutines.arrayValue.values
             }
             print("Processed goals successfully")
             completion()
@@ -140,7 +140,7 @@ extension BackgroundService : URLSessionDownloadDelegate {
         if let data = try? Data(contentsOf: file),
             let model = try? JSONDecoder().decode([Event].self, from: data) {
             DispatchQueue.main.async {
-                FirebaseGoogleService.shared.events = model
+                NetworkManager.shared.events = model
             }
             print("Processed events successfully")
             completion()

@@ -8,10 +8,8 @@
 
 import Foundation
 ///Keeps track of all data that is associated with user in the app
-struct User {
+struct User: Codable {
     var info: UserInfo
-    var data: [GoalRoutine]
-    var createTime, updateTime: String?
 }
 ///After decoding json
 struct UserInfoResponse: Codable {

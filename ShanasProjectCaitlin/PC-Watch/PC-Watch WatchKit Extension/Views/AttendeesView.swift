@@ -11,7 +11,7 @@ import SwiftUI
 
 struct AttendeeView: View {
     var item: Attendent?
-    @ObservedObject private var model = FirebaseGoogleService.shared
+    @ObservedObject private var model = NetworkManager.shared
     
     var body: some View {
         VStack {
