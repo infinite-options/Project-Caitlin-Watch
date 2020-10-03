@@ -20,7 +20,7 @@ struct PeopleView: View {
             }
             else {
                 AsyncSmallImage(
-                    url: URL(string: self.person.pic)!,
+                    url: URL(string: self.person.pic) ?? nil,
                     placeholder: Image(systemName: "person.circle"))
             }
         }.buttonStyle(PlainButtonStyle())

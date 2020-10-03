@@ -12,14 +12,17 @@ import Foundation
 
 class ImageLoader: ObservableObject {
     @Published var image: UIImage?
-    private let url: URL
+    private let url: URL?
     private var cancellable: AnyCancellable?
 
-    init(url: URL) {
+    init(url: URL?) {
         self.url = url
     }
 
     func load() {
+        guard  let url = url else {
+            return
+        }
         cancellable = URLSession.shared.dataTaskPublisher(for: url)
             .map { UIImage(data: $0.data) }
             .replaceError(with: nil)

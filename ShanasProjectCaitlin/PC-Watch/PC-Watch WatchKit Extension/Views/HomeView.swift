@@ -255,6 +255,7 @@ struct EventInfoView: View {
                             .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
                             .foregroundColor(.green))
                 }
+                
             }
         }
     }
@@ -316,8 +317,8 @@ struct infoView: View {
 
 struct HomeView: View {
     
-    @ObservedObject private var model = UserManager.shared
-    @ObservedObject private var newModel = NetworkManager.shared
+    @ObservedObject private var userManager = UserManager.shared
+    @ObservedObject private var networkManager = NetworkManager.shared
 
     var extensionDelegate = ExtensionDelegate()
 
@@ -326,7 +327,7 @@ struct HomeView: View {
 
     var body: some View {
         GeometryReader { geo in
-            if (self.newModel.goalsRoutinesData?.count == 0){
+            if (self.networkManager.goalsRoutinesData?.count == 0){
                 VStack(alignment: .center) {
                     Text("You dont have anything on your schedule!")
                         .fontWeight(.bold)
@@ -339,15 +340,16 @@ struct HomeView: View {
                     if (self.fullDay) {
                         VStack(alignment: .leading) {
                             List {
-                                ForEach(Array(((self.newModel.goalsRoutinesData!.enumerated()))), id: \.offset){ index, item in
+                                ForEach(Array(((self.networkManager.goalsRoutinesData!.enumerated()))), id: \.offset){ index, item in
                                     VStack(alignment: .leading){
                                         NavigationLink(destination: newTaskView()){
                                             HStack{
                                                 infoView(item: (item as GoalRoutine))
                                             }.frame(height: 80)
-                                        }.listRowPlatterColor(Color.white)
+                                        }
                                     }
                                 }
+                                .listRowPlatterColor(Color.init(hex: "C8D7E4"))
                                 Button(action: {
                                     self.fullDay = false
                                     self.showLess = true
@@ -356,22 +358,26 @@ struct HomeView: View {
                                         .foregroundColor(Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1))
                                         .frame(maxWidth: geo.size.width, alignment: .center)
                                 }
-                            }.listStyle(CarouselListStyle())
-                                .navigationBarTitle("My Day")
-                        }.padding(0)
+                            }
+                            .listStyle(CarouselListStyle())
+                            .navigationBarTitle("My Day")
+                            .listRowBackground(Color.white)
+                        }
+                        .padding(0)
                     }
                     if self.showLess {
                         VStack(alignment: .leading) {
                             List {
-                                ForEach(Array((((self.newModel.goalsRoutinesData?.enumerated())!))), id: \.offset){ index, item in
+                                ForEach(Array((((self.networkManager.goalsRoutinesData?.enumerated())!))), id: \.offset){ index, item in
                                     VStack(alignment: .leading){
                                         NavigationLink(destination: newTaskView()){
                                             HStack{
                                                 infoView(item: (item as GoalRoutine))
                                             }.frame(height: 80)
-                                        }.listRowPlatterColor(Color.white)
+                                        }
                                     }
                                 }
+                                .listRowPlatterColor(Color.init(hex: "C8D7E4"))
                                 Button(action: {
                                     self.fullDay = true
                                     self.showLess = false
@@ -379,8 +385,9 @@ struct HomeView: View {
                                     Text("Show full day")
                                         .foregroundColor(Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1))
                                 }
-                            }.listStyle(CarouselListStyle())
-                                .navigationBarTitle("My Day")
+                            }
+                            .listStyle(CarouselListStyle())
+                            .navigationBarTitle("My Day")
                         }.padding(0)
                     }
                 }.navigationBarTitle("My Day")
@@ -409,6 +416,33 @@ struct HomeView: View {
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        EventInfoView()
+    }
+}
+
+extension Color {
+    init(hex: String) {
+        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+        var int: UInt64 = 0
+        Scanner(string: hex).scanHexInt64(&int)
+        let a, r, g, b: UInt64
+        switch hex.count {
+        case 3: // RGB (12-bit)
+            (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
+        case 6: // RGB (24-bit)
+            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
+        case 8: // ARGB (32-bit)
+            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
+        default:
+            (a, r, g, b) = (1, 1, 1, 0)
+        }
+
+        self.init(
+            .sRGB,
+            red: Double(r) / 255,
+            green: Double(g) / 255,
+            blue:  Double(b) / 255,
+            opacity: Double(a) / 255
+        )
     }
 }

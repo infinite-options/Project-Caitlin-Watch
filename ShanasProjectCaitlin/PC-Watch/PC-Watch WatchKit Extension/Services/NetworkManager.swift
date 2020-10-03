@@ -12,7 +12,7 @@ import SwiftUI
 class NetworkManager: ObservableObject {
     
     static let shared = NetworkManager()
-    let User = UserManager.shared
+    let userManager = UserManager.shared
     
     //Stores important people
     @Published var importantPeople: [ImportantPerson]?
@@ -52,39 +52,33 @@ class NetworkManager: ObservableObject {
     }
     
     func updateDataModel(completion: @escaping () -> ()) {
+        
         let group = DispatchGroup()
         var userInfo: UserInfo?
-        var goalsnroutines: [GoalRoutine]?
         
         group.enter()
-        //RDS Goals and Rutines
         getGoalsAndRoutines(){ data in
             self.goalsRoutinesData = data
             self.goalsRoutinesData?.sort(by: self.sortGoalsAndRoutines)
-            goalsnroutines = self.goalsRoutinesData
             group.leave()
-            print(self.goalsRoutinesData)
         }
         
         group.enter()
         getUserInfo { (data) in
             userInfo = data
-            //print(userInfo?.result[0])
             group.leave()
         }
         group.wait()
         
         guard let info = userInfo else {return}
-        self.User.UserInfo = info
+        self.userManager.UserInfo = info
         if let imageURLString = info.userPicture {
             getUserProfilePhoto(url: imageURLString) { (image) in
-                self.User.UserPhoto = image
+                self.userManager.UserPhoto = image
             }
         }
         getImportantPeople { (importantPeople) in
-            print(importantPeople)
             self.importantPeople = importantPeople
-            print(self.importantPeople)
             print("Got important people from Firebase. Now getting other firebase data.")
             if self.importantPeople != nil {
                 for person in self.importantPeople! {
@@ -94,11 +88,8 @@ class NetworkManager: ObservableObject {
                 }
                 self.peopleRow = PeopleRow.populate(people: self.importantPeople!)
             }
-            print(self.peopleEmailToNameDict)
         }
-        
-        print("Data received")
-        
+
         completion()
     }
     func sortGoalsAndRoutines(this: GoalRoutine, that: GoalRoutine) -> Bool {
@@ -112,7 +103,7 @@ class NetworkManager: ObservableObject {
     }
     func getImportantPeople(completion: @escaping ([ImportantPerson]?) -> ()) {
         var peopleUrl = "https://3s3sftsr90.execute-api.us-west-1.amazonaws.com/dev/api/v2/listPeople/"
-        peopleUrl.append(self.User.User)
+        peopleUrl.append(self.userManager.User)
         guard let url = URL(string: peopleUrl) else { return }
         URLSession.shared.dataTask(with: url) { (data, _, error) in
             if let error = error {
@@ -137,7 +128,7 @@ class NetworkManager: ObservableObject {
     /// returns optinal info about the current user
     func getUserInfo(completion: @escaping (UserInfo?) -> ()){
         var aboutmeUrl = "https://3s3sftsr90.execute-api.us-west-1.amazonaws.com/dev/api/v2/aboutme/"
-        aboutmeUrl.append(self.User.User)
+        aboutmeUrl.append(self.userManager.User)
         guard let url = URL(string: aboutmeUrl) else { return }
         URLSession.shared.dataTask(with: url) { (data, _, error) in
             if let error = error {
@@ -160,7 +151,7 @@ class NetworkManager: ObservableObject {
     /// returns optional   message: String and  result: [GoalRoutine]
     func getGoalsAndRoutines(completion: @escaping ([GoalRoutine]?) -> ()) {
         var goalUrl = "https://3s3sftsr90.execute-api.us-west-1.amazonaws.com/dev/api/v2/getgoalsandroutines/"
-        goalUrl.append(self.User.User)
+        goalUrl.append(self.userManager.User)
         guard let url = URL(string: goalUrl) else { return }
         URLSession.shared.dataTask(with: url) { (data, _, error) in
             if let error = error {
@@ -181,7 +172,6 @@ class NetworkManager: ObservableObject {
     }
     func getUserProfilePhoto(url: String, completion: @escaping (UIImage) -> () ) {
         guard let photoUrl = URL(string: url) else { return }
-        print(url)
         URLSession.shared.dataTask(with: photoUrl) { (data, _, error) in
             if let error = error {
                 print("Error in downlaoding profile image: \(error)")
@@ -312,7 +302,7 @@ class NetworkManager: ObservableObject {
         let endDate = DayDateObj.ISOFormatter.string(from: Calendar.current.date(from: currComponents)!)
         
         //Create request the body
-        let jsonData = getEventsBody(id: self.User.User,
+        let jsonData = getEventsBody(id: self.userManager.User,
                                      start: startDate,
                                      end: endDate)
         let finalJsonData = try? JSONEncoder().encode(jsonData)
@@ -345,7 +335,7 @@ class NetworkManager: ObservableObject {
         .resume()
     }
     func getFirebaseTasks(goalID: String, completion: @escaping ([ValueTask]?) -> ()) {
-        let TaskUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.User.User + "/goals&routines/" + goalID
+        let TaskUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.userManager.User + "/goals&routines/" + goalID
         guard let url = URL(string: TaskUrl) else { return }
         
             URLSession.shared.dataTask(with: url) { (data, _, error) in
@@ -371,7 +361,7 @@ class NetworkManager: ObservableObject {
     }
     
     func getFirebaseStep(stepID: String, goalID: String, completion: @escaping ([ValueTask]?) -> ()) {
-        let StepUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.User.User + "/goals&routines/" + goalID + "/actions&tasks/" + stepID
+        let StepUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.userManager.User + "/goals&routines/" + goalID + "/actions&tasks/" + stepID
         guard let url = URL(string: StepUrl) else { return }
         
         URLSession.shared.dataTask(with: url) { (data, _, error) in
