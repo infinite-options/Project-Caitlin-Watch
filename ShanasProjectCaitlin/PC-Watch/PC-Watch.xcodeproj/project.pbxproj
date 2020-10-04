@@ -21,6 +21,7 @@
 		04957BB624C5D8D10031D253 /* UrlToAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04957BB524C5D8D10031D253 /* UrlToAsset.swift */; };
 		04C6C502250BF8430021B4F4 /* CircularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C6C501250BF8430021B4F4 /* CircularView.swift */; };
 		04C6CC4224D9A87A0054E637 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C6CC4124D9A87A0054E637 /* SignInView.swift */; };
+		25898C2E68C4BB3D5763BC82 /* Pods_PC_Watch_WatchKit_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CF54FCE58D4AB877A783250 /* Pods_PC_Watch_WatchKit_App.framework */; };
 		27BF9DB6243BD385006A5466 /* PC-Watch WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 27BF9DB5243BD385006A5466 /* PC-Watch WatchKit App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		27BF9DBC243BD385006A5466 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27BF9DBA243BD385006A5466 /* Interface.storyboard */; };
 		27BF9DBE243BD389006A5466 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27BF9DBD243BD389006A5466 /* Assets.xcassets */; };
@@ -60,9 +61,8 @@
 		8026263F2522DD4500BBD6E5 /* GoalsAndRoutines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8026263E2522DD4500BBD6E5 /* GoalsAndRoutines.swift */; };
 		80262647252531E900BBD6E5 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80262646252531E800BBD6E5 /* UserInfo.swift */; };
 		8026264F2525330B00BBD6E5 /* ImportantPeople.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8026264E2525330B00BBD6E5 /* ImportantPeople.swift */; };
-		9134401C67B33D9C28DDE5DF /* Pods_PC_Watch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C90CFFD1C9077E7E7A2884B6 /* Pods_PC_Watch.framework */; };
-		E021F20821CD2C239BADBA9C /* Pods_PC_Watch_WatchKit_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93EFEFE5C2702F40FE2E8F0D /* Pods_PC_Watch_WatchKit_Extension.framework */; };
-		F0BAB22E204CB684194D6F1B /* Pods_PC_Watch_WatchKit_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72F8750AA303CBDC6D36E48D /* Pods_PC_Watch_WatchKit_App.framework */; };
+		B953BE291D0A84946553CF26 /* Pods_PC_Watch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 600280C77BFFE27E9AD9744C /* Pods_PC_Watch.framework */; };
+		B9CC4E03B1FF90B49B4F56FB /* Pods_PC_Watch_WatchKit_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 482D9F31ECC344DC84CE37D7 /* Pods_PC_Watch_WatchKit_Extension.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -120,6 +120,7 @@
 		04957BB524C5D8D10031D253 /* UrlToAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlToAsset.swift; sourceTree = "<group>"; };
 		04C6C501250BF8430021B4F4 /* CircularView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularView.swift; sourceTree = "<group>"; };
 		04C6CC4124D9A87A0054E637 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		243E19C8209DBDA29F4C5A8D /* Pods-PC-Watch WatchKit App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PC-Watch WatchKit App.release.xcconfig"; path = "Target Support Files/Pods-PC-Watch WatchKit App/Pods-PC-Watch WatchKit App.release.xcconfig"; sourceTree = "<group>"; };
 		27BF9DB1243BD385006A5466 /* PC-Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PC-Watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		27BF9DB5243BD385006A5466 /* PC-Watch WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PC-Watch WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		27BF9DBB243BD385006A5466 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
@@ -158,21 +159,20 @@
 		2BF95D7024E0BB2B00787EE6 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		2BF95D7224E0BB5E00787EE6 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		2BF95D7424E0BBF900787EE6 /* LaunchScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenView.swift; sourceTree = "<group>"; };
-		483F3E50717BB29F1D1B93B4 /* Pods-PC-Watch WatchKit Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PC-Watch WatchKit Extension.debug.xcconfig"; path = "Target Support Files/Pods-PC-Watch WatchKit Extension/Pods-PC-Watch WatchKit Extension.debug.xcconfig"; sourceTree = "<group>"; };
-		5AB0C5770BE212CFE3FF9FA8 /* Pods-PC-Watch WatchKit App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PC-Watch WatchKit App.release.xcconfig"; path = "Target Support Files/Pods-PC-Watch WatchKit App/Pods-PC-Watch WatchKit App.release.xcconfig"; sourceTree = "<group>"; };
-		63AF61CF3D4A41B25B14DCF5 /* Pods-PC-Watch WatchKit Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PC-Watch WatchKit Extension.release.xcconfig"; path = "Target Support Files/Pods-PC-Watch WatchKit Extension/Pods-PC-Watch WatchKit Extension.release.xcconfig"; sourceTree = "<group>"; };
-		6A33CBD45314B4F9623EEF35 /* Pods-PC-Watch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PC-Watch.debug.xcconfig"; path = "Target Support Files/Pods-PC-Watch/Pods-PC-Watch.debug.xcconfig"; sourceTree = "<group>"; };
-		72F8750AA303CBDC6D36E48D /* Pods_PC_Watch_WatchKit_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PC_Watch_WatchKit_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7DAEACF156791B7C5CF96860 /* Pods-PC-Watch WatchKit App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PC-Watch WatchKit App.debug.xcconfig"; path = "Target Support Files/Pods-PC-Watch WatchKit App/Pods-PC-Watch WatchKit App.debug.xcconfig"; sourceTree = "<group>"; };
+		3608372998C6B50E1E76A42C /* Pods-PC-Watch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PC-Watch.debug.xcconfig"; path = "Target Support Files/Pods-PC-Watch/Pods-PC-Watch.debug.xcconfig"; sourceTree = "<group>"; };
+		3EED0D3B4BF2B77A8A5B12B4 /* Pods-PC-Watch WatchKit Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PC-Watch WatchKit Extension.release.xcconfig"; path = "Target Support Files/Pods-PC-Watch WatchKit Extension/Pods-PC-Watch WatchKit Extension.release.xcconfig"; sourceTree = "<group>"; };
+		482D9F31ECC344DC84CE37D7 /* Pods_PC_Watch_WatchKit_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PC_Watch_WatchKit_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		600280C77BFFE27E9AD9744C /* Pods_PC_Watch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PC_Watch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7CF54FCE58D4AB877A783250 /* Pods_PC_Watch_WatchKit_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PC_Watch_WatchKit_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8026262F2522CD3300BBD6E5 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		802626312522CD3900BBD6E5 /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		802626392522CE7C00BBD6E5 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		8026263E2522DD4500BBD6E5 /* GoalsAndRoutines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsAndRoutines.swift; sourceTree = "<group>"; };
 		80262646252531E800BBD6E5 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		8026264E2525330B00BBD6E5 /* ImportantPeople.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportantPeople.swift; sourceTree = "<group>"; };
-		93EFEFE5C2702F40FE2E8F0D /* Pods_PC_Watch_WatchKit_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PC_Watch_WatchKit_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C90CFFD1C9077E7E7A2884B6 /* Pods_PC_Watch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PC_Watch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CA6963F249EC6DD5D6CF5A62 /* Pods-PC-Watch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PC-Watch.release.xcconfig"; path = "Target Support Files/Pods-PC-Watch/Pods-PC-Watch.release.xcconfig"; sourceTree = "<group>"; };
+		D70E07855FD8AF567D6A37E2 /* Pods-PC-Watch WatchKit App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PC-Watch WatchKit App.debug.xcconfig"; path = "Target Support Files/Pods-PC-Watch WatchKit App/Pods-PC-Watch WatchKit App.debug.xcconfig"; sourceTree = "<group>"; };
+		F818EFB7EF1A5F81120871A6 /* Pods-PC-Watch WatchKit Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PC-Watch WatchKit Extension.debug.xcconfig"; path = "Target Support Files/Pods-PC-Watch WatchKit Extension/Pods-PC-Watch WatchKit Extension.debug.xcconfig"; sourceTree = "<group>"; };
+		FD31FDA4F7659FBBD3ECB380 /* Pods-PC-Watch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PC-Watch.release.xcconfig"; path = "Target Support Files/Pods-PC-Watch/Pods-PC-Watch.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,7 +180,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F0BAB22E204CB684194D6F1B /* Pods_PC_Watch_WatchKit_App.framework in Frameworks */,
+				25898C2E68C4BB3D5763BC82 /* Pods_PC_Watch_WatchKit_App.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -188,7 +188,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E021F20821CD2C239BADBA9C /* Pods_PC_Watch_WatchKit_Extension.framework in Frameworks */,
+				B9CC4E03B1FF90B49B4F56FB /* Pods_PC_Watch_WatchKit_Extension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,19 +196,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9134401C67B33D9C28DDE5DF /* Pods_PC_Watch.framework in Frameworks */,
+				B953BE291D0A84946553CF26 /* Pods_PC_Watch.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00CC80DA36D31F12968412E8 /* Frameworks */ = {
+		1B67A603CD038D270F2CCE79 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C90CFFD1C9077E7E7A2884B6 /* Pods_PC_Watch.framework */,
-				72F8750AA303CBDC6D36E48D /* Pods_PC_Watch_WatchKit_App.framework */,
-				93EFEFE5C2702F40FE2E8F0D /* Pods_PC_Watch_WatchKit_Extension.framework */,
+				600280C77BFFE27E9AD9744C /* Pods_PC_Watch.framework */,
+				7CF54FCE58D4AB877A783250 /* Pods_PC_Watch_WatchKit_App.framework */,
+				482D9F31ECC344DC84CE37D7 /* Pods_PC_Watch_WatchKit_Extension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -221,7 +221,7 @@
 				27BF9DC8243BD389006A5466 /* PC-Watch WatchKit Extension */,
 				27BF9DB2243BD385006A5466 /* Products */,
 				B86778DF86ED51A02C5DE9B5 /* Pods */,
-				00CC80DA36D31F12968412E8 /* Frameworks */,
+				1B67A603CD038D270F2CCE79 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -344,12 +344,12 @@
 		B86778DF86ED51A02C5DE9B5 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				6A33CBD45314B4F9623EEF35 /* Pods-PC-Watch.debug.xcconfig */,
-				CA6963F249EC6DD5D6CF5A62 /* Pods-PC-Watch.release.xcconfig */,
-				7DAEACF156791B7C5CF96860 /* Pods-PC-Watch WatchKit App.debug.xcconfig */,
-				5AB0C5770BE212CFE3FF9FA8 /* Pods-PC-Watch WatchKit App.release.xcconfig */,
-				483F3E50717BB29F1D1B93B4 /* Pods-PC-Watch WatchKit Extension.debug.xcconfig */,
-				63AF61CF3D4A41B25B14DCF5 /* Pods-PC-Watch WatchKit Extension.release.xcconfig */,
+				3608372998C6B50E1E76A42C /* Pods-PC-Watch.debug.xcconfig */,
+				FD31FDA4F7659FBBD3ECB380 /* Pods-PC-Watch.release.xcconfig */,
+				D70E07855FD8AF567D6A37E2 /* Pods-PC-Watch WatchKit App.debug.xcconfig */,
+				243E19C8209DBDA29F4C5A8D /* Pods-PC-Watch WatchKit App.release.xcconfig */,
+				F818EFB7EF1A5F81120871A6 /* Pods-PC-Watch WatchKit Extension.debug.xcconfig */,
+				3EED0D3B4BF2B77A8A5B12B4 /* Pods-PC-Watch WatchKit Extension.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -361,7 +361,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 27BF9DE4243BD38A006A5466 /* Build configuration list for PBXNativeTarget "PC-Watch" */;
 			buildPhases = (
-				8F46760F4CD988925F561E99 /* [CP] Check Pods Manifest.lock */,
+				0F05A4AF7FE21E6715D10CE8 /* [CP] Check Pods Manifest.lock */,
 				27BF9DAF243BD385006A5466 /* Resources */,
 				27BF9DE3243BD38A006A5466 /* Embed Watch Content */,
 				AE895028C105012E9D6166DF /* Frameworks */,
@@ -380,7 +380,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 27BF9DE0243BD38A006A5466 /* Build configuration list for PBXNativeTarget "PC-Watch WatchKit App" */;
 			buildPhases = (
-				95E3B31EE29DC8705C9A3936 /* [CP] Check Pods Manifest.lock */,
+				B1880A85AEA9AE8A76D5AC5A /* [CP] Check Pods Manifest.lock */,
 				27BF9DB3243BD385006A5466 /* Resources */,
 				27BF9DDF243BD38A006A5466 /* Embed App Extensions */,
 				2452D85A8DF1F4B8D9C54F7F /* Frameworks */,
@@ -399,11 +399,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 27BF9DDC243BD38A006A5466 /* Build configuration list for PBXNativeTarget "PC-Watch WatchKit Extension" */;
 			buildPhases = (
-				688E3E3F1E3E6DDE1A569D64 /* [CP] Check Pods Manifest.lock */,
+				73FA93792E01349ED4815930 /* [CP] Check Pods Manifest.lock */,
 				27BF9DC0243BD389006A5466 /* Sources */,
 				27BF9DC1243BD389006A5466 /* Frameworks */,
 				27BF9DC2243BD389006A5466 /* Resources */,
-				3A21189521FDBCB2ADAA59B7 /* [CP] Embed Pods Frameworks */,
+				7A6C3DF41AC057C7534CADD3 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -488,46 +488,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3A21189521FDBCB2ADAA59B7 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PC-Watch WatchKit Extension/Pods-PC-Watch WatchKit Extension-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PC-Watch WatchKit Extension/Pods-PC-Watch WatchKit Extension-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PC-Watch WatchKit Extension/Pods-PC-Watch WatchKit Extension-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		688E3E3F1E3E6DDE1A569D64 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PC-Watch WatchKit Extension-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8F46760F4CD988925F561E99 /* [CP] Check Pods Manifest.lock */ = {
+		0F05A4AF7FE21E6715D10CE8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -549,7 +510,46 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		95E3B31EE29DC8705C9A3936 /* [CP] Check Pods Manifest.lock */ = {
+		73FA93792E01349ED4815930 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PC-Watch WatchKit Extension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7A6C3DF41AC057C7534CADD3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PC-Watch WatchKit Extension/Pods-PC-Watch WatchKit Extension-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PC-Watch WatchKit Extension/Pods-PC-Watch WatchKit Extension-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PC-Watch WatchKit Extension/Pods-PC-Watch WatchKit Extension-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B1880A85AEA9AE8A76D5AC5A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -765,7 +765,7 @@
 		};
 		27BF9DDD243BD38A006A5466 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 483F3E50717BB29F1D1B93B4 /* Pods-PC-Watch WatchKit Extension.debug.xcconfig */;
+			baseConfigurationReference = F818EFB7EF1A5F81120871A6 /* Pods-PC-Watch WatchKit Extension.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_ENTITLEMENTS = "PC-Watch WatchKit Extension/PC-Watch WatchKit Extension.entitlements";
@@ -795,7 +795,7 @@
 		};
 		27BF9DDE243BD38A006A5466 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 63AF61CF3D4A41B25B14DCF5 /* Pods-PC-Watch WatchKit Extension.release.xcconfig */;
+			baseConfigurationReference = 3EED0D3B4BF2B77A8A5B12B4 /* Pods-PC-Watch WatchKit Extension.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_ENTITLEMENTS = "PC-Watch WatchKit Extension/PC-Watch WatchKit Extension.entitlements";
@@ -825,7 +825,7 @@
 		};
 		27BF9DE1243BD38A006A5466 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7DAEACF156791B7C5CF96860 /* Pods-PC-Watch WatchKit App.debug.xcconfig */;
+			baseConfigurationReference = D70E07855FD8AF567D6A37E2 /* Pods-PC-Watch WatchKit App.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = MySpaceAppIcon;
@@ -849,7 +849,7 @@
 		};
 		27BF9DE2243BD38A006A5466 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5AB0C5770BE212CFE3FF9FA8 /* Pods-PC-Watch WatchKit App.release.xcconfig */;
+			baseConfigurationReference = 243E19C8209DBDA29F4C5A8D /* Pods-PC-Watch WatchKit App.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = MySpaceAppIcon;
@@ -873,7 +873,7 @@
 		};
 		27BF9DE5243BD38A006A5466 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6A33CBD45314B4F9623EEF35 /* Pods-PC-Watch.debug.xcconfig */;
+			baseConfigurationReference = 3608372998C6B50E1E76A42C /* Pods-PC-Watch.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -889,7 +889,7 @@
 		};
 		27BF9DE6243BD38A006A5466 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CA6963F249EC6DD5D6CF5A62 /* Pods-PC-Watch.release.xcconfig */;
+			baseConfigurationReference = FD31FDA4F7659FBBD3ECB380 /* Pods-PC-Watch.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
