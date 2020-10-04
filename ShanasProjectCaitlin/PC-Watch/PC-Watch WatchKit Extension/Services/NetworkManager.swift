@@ -56,6 +56,13 @@ class NetworkManager: ObservableObject {
         let group = DispatchGroup()
         var userInfo: UserInfo?
         
+        getEventsFromGoogleCalendar { (events) in
+            if events != nil {
+                print("Received events")
+                self.events = events
+            }
+        }
+        
         group.enter()
         getGoalsAndRoutines(){ data in
             self.goalsRoutinesData = data
@@ -92,6 +99,59 @@ class NetworkManager: ObservableObject {
 
         completion()
     }
+    
+    func getEventsFromGoogleCalendar(completion: @escaping ([Event]?) -> ()){
+        guard let url = URL(string: "https://us-central1-myspace-db.cloudfunctions.net/GetEventsForTheDay") else { return }
+        
+        //Get the components for today's date
+        var currComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: Date())
+
+        //Set to 00:00:00 for 'start' of the day
+        currComponents.hour = 0
+        currComponents.minute = 0
+        currComponents.second = 0
+        let startDate = DayDateObj.ISOFormatter.string(from: Calendar.current.date(from: currComponents)!)
+        
+        //Set to 23:59:59 for 'end' of the day
+        currComponents.hour = 23
+        currComponents.minute = 59
+        currComponents.second = 59
+        let endDate = DayDateObj.ISOFormatter.string(from: Calendar.current.date(from: currComponents)!)
+        
+        //Create request the body
+        let jsonData = getEventsBody(id: self.userManager.User,
+                                     start: startDate,
+                                     end: endDate)
+        let finalJsonData = try? JSONEncoder().encode(jsonData)
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = finalJsonData
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        
+        print("Getting data now.")
+        
+        URLSession.shared.dataTask(with: request) { (data, _, error) in
+            if let error = error {
+                print("Generic networking error: \(error)")
+            }
+            if let data = data {
+                do {
+                    let data = try JSONDecoder().decode([Event].self, from: data)
+                    DispatchQueue.main.async {
+                        completion(data)
+                    }
+                }
+                catch let err {
+                    print("Error in parsing Events data \(err)" )
+                    completion(nil)
+                }
+            }
+        }
+        .resume()
+    }
+    
     func sortGoalsAndRoutines(this: GoalRoutine, that: GoalRoutine) -> Bool {
         var calendar = Calendar.current
         calendar.timeZone = .current
@@ -280,60 +340,6 @@ class NetworkManager: ObservableObject {
 //            }
 //        }
 //    }
-    
-
-    
-    func getEventsFromGoogleCalendar(completion: @escaping ([Event]?) -> ()){
-        guard let url = URL(string: "https://us-central1-myspace-db.cloudfunctions.net/GetEventsForTheDay") else { return }
-        
-        //Get the components for today's date
-        var currComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: Date())
-
-        //Set to 00:00:00 for 'start' of the day
-        currComponents.hour = 0
-        currComponents.minute = 0
-        currComponents.second = 0
-        let startDate = DayDateObj.ISOFormatter.string(from: Calendar.current.date(from: currComponents)!)
-        
-        //Set to 23:59:59 for 'end' of the day
-        currComponents.hour = 23
-        currComponents.minute = 59
-        currComponents.second = 59
-        let endDate = DayDateObj.ISOFormatter.string(from: Calendar.current.date(from: currComponents)!)
-        
-        //Create request the body
-        let jsonData = getEventsBody(id: self.userManager.User,
-                                     start: startDate,
-                                     end: endDate)
-        let finalJsonData = try? JSONEncoder().encode(jsonData)
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.httpBody = finalJsonData
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("application/json", forHTTPHeaderField: "Accept")
-        
-        print("Getting data now.")
-        
-        URLSession.shared.dataTask(with: request) { (data, _, error) in
-            if let error = error {
-                print("Generic networking error: \(error)")
-            }
-            if let data = data {
-                do {
-                    let data = try JSONDecoder().decode([Event].self, from: data)
-                    DispatchQueue.main.async {
-                        completion(data)
-                    }
-                }
-                catch _ {
-                    //print("Error in parsing Events data: \(jsonParseError)" )
-                    completion(nil)
-                }
-            }
-        }
-        .resume()
-    }
     func getFirebaseTasks(goalID: String, completion: @escaping ([ValueTask]?) -> ()) {
         let TaskUrl = "https://firestore.googleapis.com/v1/projects/myspace-db/databases/(default)/documents/users/" + self.userManager.User + "/goals&routines/" + goalID
         guard let url = URL(string: TaskUrl) else { return }

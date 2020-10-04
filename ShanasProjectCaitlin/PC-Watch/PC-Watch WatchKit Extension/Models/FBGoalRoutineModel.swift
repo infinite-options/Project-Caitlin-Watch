@@ -108,7 +108,7 @@ struct GoalsRoutinesArrayValue: Codable {
 }
 
 // MARK: - Value
-struct Value: Codable, UserDayGoalEventList {
+struct Value: Codable, GoalsRoutinesEventsProtocol {
     var mapValue: ValueMapValue?
     var start: DateTime?
     var end: DateTime?

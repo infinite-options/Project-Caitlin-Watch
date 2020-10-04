@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Event: Codable, UserDayGoalEventList {
+struct Event: Codable, GoalsRoutinesEventsProtocol {
     var summary: String?
     var start: DateTime?
     var end: DateTime?

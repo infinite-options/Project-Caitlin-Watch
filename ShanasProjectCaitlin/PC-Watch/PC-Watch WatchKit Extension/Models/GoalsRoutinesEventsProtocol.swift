@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol UserDayGoalEventList: Codable {
+protocol GoalsRoutinesEventsProtocol: Codable {
     var summary: String? { get set }
     var start: DateTime? { get set }
     var end: DateTime? { get set }

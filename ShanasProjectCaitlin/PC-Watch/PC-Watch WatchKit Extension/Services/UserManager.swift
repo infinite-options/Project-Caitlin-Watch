@@ -38,9 +38,9 @@ class UserManager: ObservableObject {
     let manifestUserName = "userName"
     let manifestUserPhoto = "userPhoto"
     
-    @Published var UserDayData = [UserDayGoalEventList]()
+    @Published var UserDayData = [GoalsRoutinesEventsProtocol]()
     
-    @Published var UserDayBlockData = [UserDayGoalEventList]()
+    @Published var UserDayBlockData = [GoalsRoutinesEventsProtocol]()
     
     private init(){}
     
@@ -86,18 +86,18 @@ class UserManager: ObservableObject {
 
                     if(finalRespData.result != ""){
                         print("User found")
-                        let GoalsEvents = NetworkManager.shared
+                        let networkManader = NetworkManager.shared
 
                         DispatchQueue.main.async {
                             self.User = finalRespData.result
                             self.manifestSuite?.set(self.User, forKey: self.manifestUserIdKey)
-                            GoalsEvents.updateDataModel {
+                            networkManader.updateDataModel {
                                 print("Populated data model")
                                 let fullName = (self.UserInfo?.userFirstName ?? "Name not found") + " " + (self.UserInfo?.userLastName ?? "")
                                 self.manifestSuite?.set(fullName, forKey: self.manifestUserName)
                                 self.UserDayData = []
                                 self.UserDayBlockData = []
-                                self.mergeSortedGoalsEvents(goals: GoalsEvents.data ?? [Value](), events: GoalsEvents.events ?? [Event]())
+                                self.mergeSortedGoalsEvents(goals: networkManader.data ?? [Value](), events: networkManader.events ?? [Event]())
 
                                 self.loadingUser = false
 
@@ -139,8 +139,8 @@ class UserManager: ObservableObject {
         self.UserInfo = nil
         self.UserPhoto = nil
         self.isUserSignedIn = .signedOut
-        self.UserDayData = [UserDayGoalEventList]()
-        self.UserDayBlockData  = [UserDayGoalEventList]()
+        self.UserDayData = [GoalsRoutinesEventsProtocol]()
+        self.UserDayBlockData  = [GoalsRoutinesEventsProtocol]()
         self.manifestSuite?.set(self.User, forKey: self.manifestUserIdKey)
     }
     

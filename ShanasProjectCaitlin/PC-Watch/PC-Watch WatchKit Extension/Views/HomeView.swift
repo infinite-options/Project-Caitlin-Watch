@@ -395,7 +395,7 @@ struct HomeView: View {
         }
     }
 
-    private func isEvent(item: UserDayGoalEventList) -> Bool{
+    private func isEvent(item: GoalsRoutinesEventsProtocol) -> Bool{
         if item is Event {
             return true
         } else {
