@@ -123,6 +123,7 @@ class UserManager: ObservableObject {
             else { return }
         }.resume()
     }
+    
     func loadImage(){
         guard let urlString = self.UserInfo?.userPicture else{return}
         guard let url = URL(string: urlString) else {return}

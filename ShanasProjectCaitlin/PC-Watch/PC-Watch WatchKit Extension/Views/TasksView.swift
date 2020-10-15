@@ -9,14 +9,14 @@
 import SwiftUI
 import UserNotifications
 
-struct TaskItem: View {
+struct newTaskItem: View {
     var extensionDelegate = ExtensionDelegate()
     @State var showSteps: Bool = false
-    var task: ValueTask?
+    var task: TaskAndActions?
     var index: Int?
     var goalOrRoutineIndex: Int?
     var goalOrRoutineID: String?
-    var previousTaskIsComplete: Bool?
+    var previousTaskIsComplete: String?
     var fullDayArray: Bool
     
     @State private var showingAlert = false
@@ -31,18 +31,18 @@ struct TaskItem: View {
             Divider()
             HStack(alignment: .center) {
                 VStack(alignment: .leading) {
-                    Text(self.task!.mapValue.fields.title.stringValue)
+                    Text(self.task!.atTitle)
                         .fontWeight(.bold)
                         .frame(width: 110)
                         .font(.system(size: 16, design: .rounded))
                         .lineLimit(2)
-                    Text("Takes me " + self.task!.mapValue.fields.expectedCompletionTime!.stringValue)
+                    Text("Takes me " + self.task!.expectedCompletionTime)
                         .fontWeight(.light)
                         .frame(width: 110)
                         .font(.system(size: 12, design: .rounded))
                 }
-                if ( self.done || self.task!.mapValue.fields.isComplete!.booleanValue == true) {
-                    AssetImage(urlName: self.task!.mapValue.fields.photo.stringValue, placeholder: Image("default-step"))
+                if ( self.done || self.task!.isComplete.lowercased() == "true") {
+                    AssetImage(urlName: self.task!.photo, placeholder: Image("default-step"))
                         .aspectRatio(contentMode: .fit)
                         .opacity(0.60)
                         .overlay(Image(systemName: "checkmark.circle")
@@ -50,65 +50,40 @@ struct TaskItem: View {
                             .padding(EdgeInsets(top: 12, leading: 0, bottom: 0, trailing: 0))
                             .foregroundColor(.green))
                 } else {
-                    AssetImage(urlName: self.task!.mapValue.fields.photo.stringValue, placeholder: Image("default-step"))
+                    AssetImage(urlName: self.task!.photo, placeholder: Image("default-step"))
                         .aspectRatio(contentMode: .fit)
                 }
             }
             Spacer()
-            if(!self.done && (self.task!.mapValue.fields.isComplete!.booleanValue == false)){
+            if(!self.done && (self.task!.isComplete.lowercased() == "false")){
                 Button(action: {
                     // complete task
-                    if self.previousTaskIsComplete! == true {
-                        self.model.completeActionOrTask(userId: self.user.User,
-                                                        routineId: self.goalOrRoutineID!,
-                                                        taskId: self.task!.mapValue.fields.id.stringValue,
-                                                        routineNumber: -1,
-                                                        taskNumber: self.index!,
-                                                        stepNumber: -1)
+                    if self.previousTaskIsComplete!.lowercased() == "true" {
+                        self.model.completeActionOrTask(actionTaskId: self.task!.atUniqueID)
                         print("task complete")
                         // update task in model
-                        self.model.goalsSubtasks[self.goalOrRoutineID!]!![self.index!].mapValue.fields.isComplete?.booleanValue = true
+                        self.model.goalsSubTasks[self.goalOrRoutineID!]!![self.index!].isComplete = "true"
                         // decrement tasks left for goal
                         self.model.goalSubtasksLeft[self.goalOrRoutineID!]! -= 1
-                        if self.model.goalsSubtasks[self.goalOrRoutineID!]!![self.index!].mapValue.fields.isMustDo!.booleanValue == true {
+                        if self.model.goalsSubTasks[self.goalOrRoutineID!]!![self.index!].isMustDo.lowercased() == "true" {
                             self.model.isMustDoTasks[self.goalOrRoutineID!]! -= 1
                         }
                         if self.model.goalSubtasksLeft[self.goalOrRoutineID!] == 0 || self.model.isMustDoTasks[self.goalOrRoutineID!] == 0{
                             print("goal complete")
                             // if no tasks left, update model
                             //self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isComplete!.booleanValue = true
-                            if self.fullDayArray {
-                                self.user.UserDayData[self.goalOrRoutineIndex!].mapValue!.fields.isComplete!.booleanValue = true
-                            }
-                            else {
-                                self.user.UserDayBlockData[self.goalOrRoutineIndex!].mapValue!.fields.isComplete!.booleanValue = true
-                            }
+                            self.model.goalsRoutinesData?[self.goalOrRoutineIndex!].isComplete = "True"
+                            self.model.goalsRoutinesBlockData?[self.goalOrRoutineIndex!].isComplete = "True"
                             // set goal to complete
-                            self.model.completeGoalOrRoutine(userId: self.user.User,
-                                                             routineId: self.goalOrRoutineID!,
-                                                             taskId: "NA",
-                                                             routineNumber: self.goalOrRoutineIndex!,
-                                                             taskNumber: -1,
-                                                             stepNumber: -1)
+                            self.model.completeGoalOrRoutine(goalRoutineId: self.goalOrRoutineID!)
 
                             self.extensionDelegate.scheduleMoodNotification()
                         } else {
                             print("goal not complete yet")
-                            // goal is not complete so set to in progress, update model
-                            //self.model.data![self.goalOrRoutineIndex!].mapValue?.fields.isInProgress!.booleanValue = true
-                            if self.fullDayArray {
-                                self.user.UserDayData[self.goalOrRoutineIndex!].mapValue!.fields.isInProgress!.booleanValue = true
-                            }
-                            else {
-                                self.user.UserDayBlockData[self.goalOrRoutineIndex!].mapValue!.fields.isInProgress!.booleanValue = true
-                            }
+                            self.model.goalsRoutinesData?[self.goalOrRoutineIndex!].isInProgress = "True"
+                            self.model.goalsRoutinesBlockData?[self.goalOrRoutineIndex!].isInProgress = "True"
                             // start goal
-                            self.model.startGoalOrRoutine(userId: self.user.User,
-                                                          routineId: self.goalOrRoutineID!,
-                                                          taskId: "NA",
-                                                          routineNumber: self.goalOrRoutineIndex!,
-                                                          taskNumber: -1,
-                                                          stepNumber: -1)
+                            self.model.startGoalOrRoutine(goalRoutineId: self.goalOrRoutineID!)
                         }
                         self.done = true
                         self.showSteps = false
@@ -138,10 +113,10 @@ struct TaskItem: View {
     }
 }
 
-struct TasksView: View {
+struct newTaskView: View{
     @ObservedObject private var model = NetworkManager.shared
     @ObservedObject private var user = UserManager.shared
-    var goalOrRoutine: Value?
+    var goalOrRoutine: GoalRoutine?
     var goalOrRoutineIndex: Int?
     var fullDayArray: Bool
     var notificationCenter = NotificationCenter()
@@ -150,11 +125,11 @@ struct TasksView: View {
     @State var started = false
     
     var body: some View {
-        GeometryReader { geo in
-            if (self.model.goalsSubtasks[self.goalOrRoutine!.mapValue!.fields.id.stringValue] == nil) {
-                VStack(alignment: .center) {
-                    if (self.done || (self.goalOrRoutine!.mapValue!.fields.isComplete!.booleanValue == true)){
-                        AssetImage(urlName: self.goalOrRoutine!.mapValue!.fields.photo.stringValue, placeholder: Image("default-goal"))
+        GeometryReader{ geo in
+            if(self.model.goalsSubTasks[self.goalOrRoutine!.grUniqueID] == nil){
+                VStack(alignment: .center){
+                    if(self.done || (self.goalOrRoutine!.isComplete.lowercased() == "true")){
+                        AssetImage(urlName: self.goalOrRoutine!.photo, placeholder: Image("default-goal"))
                             .aspectRatio(contentMode: .fit)
                             .opacity(0.60)
                             .overlay(Image(systemName: "checkmark.circle")
@@ -162,33 +137,24 @@ struct TasksView: View {
                                 .padding(EdgeInsets(top: 12, leading: 0, bottom: 0, trailing: 0))
                                 .foregroundColor(.green))
                     } else {
-                        AssetImage(urlName: self.goalOrRoutine!.mapValue!.fields.photo.stringValue, placeholder: Image("default-goal"))
+                        AssetImage(urlName: self.goalOrRoutine!.photo, placeholder: Image("default-goal"))
                             .aspectRatio(contentMode: .fit)
                     }
-                    Text(self.goalOrRoutine!.mapValue!.fields.title.stringValue)
+                    Text(self.goalOrRoutine!.grTitle)
                         .fontWeight(.bold)
                         .lineLimit(nil)
                         .padding()
                         .font(.system(size: 18, design: .rounded))
-                    Text("Takes me " + self.goalOrRoutine!.mapValue!.fields.expectedCompletionTime.stringValue)
+                    Text("Takes me " + self.goalOrRoutine!.expectedCompletionTime)
                         .fontWeight(.light)
                         .font(.system(size: 12, design: .rounded))
                     Spacer()
-                    if(!self.done && (self.goalOrRoutine!.mapValue!.fields.isComplete!.booleanValue == false)){
+                    if(!self.done && (self.goalOrRoutine!.isComplete.lowercased() == "false")){
                         Button(action: {
                             print("done button clicked")
-                            self.model.completeGoalOrRoutine(userId: self.user.User,
-                                                             routineId: self.goalOrRoutine!.mapValue!.fields.id.stringValue,
-                                                             taskId: "NA",
-                                                             routineNumber: self.goalOrRoutineIndex!,
-                                                             taskNumber: -1,
-                                                             stepNumber: -1)
-                            if self.fullDayArray {
-                                self.user.UserDayData[self.goalOrRoutineIndex!].mapValue!.fields.isComplete!.booleanValue = true
-                            }
-                            else {
-                                self.user.UserDayBlockData[self.goalOrRoutineIndex!].mapValue!.fields.isComplete!.booleanValue = true
-                            }
+                            self.model.completeGoalOrRoutine(goalRoutineId: self.goalOrRoutine!.grUniqueID)
+                            self.model.goalsRoutinesData?[self.goalOrRoutineIndex!].isComplete = "True"
+                            self.model.goalsRoutinesBlockData?[self.goalOrRoutineIndex!].isComplete = "True"
                             self.done = true
                             self.extensionDelegate.scheduleMoodNotification()
                         }) {
@@ -208,10 +174,10 @@ struct TasksView: View {
                     }
                 }
             } else {
-                ScrollView([.vertical]) {
-                    VStack(alignment: .center) {
-                       if (self.done || (self.goalOrRoutine!.mapValue!.fields.isComplete!.booleanValue == true)){
-                            AssetImage(urlName: self.goalOrRoutine!.mapValue!.fields.photo.stringValue, placeholder: Image("default-task"))
+                ScrollView([.vertical]){
+                    VStack(alignment: .center){
+                        if (self.done || self.goalOrRoutine!.isComplete.lowercased() == "true"){
+                            AssetImage(urlName: self.goalOrRoutine!.photo, placeholder: Image("default-task"))
                                 .aspectRatio(contentMode: .fit)
                                 .opacity(0.60)
                                 .overlay(Image(systemName: "checkmark.circle")
@@ -219,20 +185,20 @@ struct TasksView: View {
                                     .padding(EdgeInsets(top: 12, leading: 0, bottom: 0, trailing: 0))
                                     .foregroundColor(.green))
                         } else {
-                            AssetImage(urlName: self.goalOrRoutine!.mapValue!.fields.photo.stringValue, placeholder: Image("default-task"))
+                            AssetImage(urlName: self.goalOrRoutine!.photo, placeholder: Image("default-task"))
                                 .aspectRatio(contentMode: .fit)
                         }
-                        VStack {
-                            Text(self.goalOrRoutine!.mapValue!.fields.title.stringValue)
+                        VStack{
+                            Text(self.goalOrRoutine!.grTitle)
                                 .fontWeight(.bold)
                                 .lineLimit(nil)
                                 .font(.system(size: 18, design: .rounded))
-                            Text("Takes me " + self.goalOrRoutine!.mapValue!.fields.expectedCompletionTime.stringValue)
+                            Text("Takes me " + self.goalOrRoutine!.expectedCompletionTime)
                                 .fontWeight(.light)
                                 .font(.system(size: 12, design: .rounded))
                         }
                         Spacer()
-                        if(!self.done && (self.goalOrRoutine!.mapValue!.fields.isComplete!.booleanValue == true)){
+                        if(!self.done && self.goalOrRoutine!.isComplete.lowercased() == "true"){
                             RoundedRectangle(cornerSize: CGSize(width: 120, height: 30), style: .continuous)
                                 .stroke(Color.green, lineWidth: 1)
                                 .frame(width:140, height:25)
@@ -242,31 +208,20 @@ struct TasksView: View {
                                     .font(.system(size: 16, design: .rounded)))
                                 .padding(2)
                         } else {
-                            if !self.started && (self.goalOrRoutine!.mapValue!.fields.isInProgress!.booleanValue == false){
+                            if(!self.started && self.goalOrRoutine!.isInProgress.lowercased() == "false"){                       //if it is not started show a start button
                                 Button(action: {
-                                    self.extensionDelegate.scheduleMoodNotification()
-                                    self.extensionDelegate.scheduleCheckInNotification(title: self.goalOrRoutine!.mapValue!.fields.title.stringValue, time: self.goalOrRoutine!.mapValue!.fields.expectedCompletionTime.stringValue)
                                     self.started = true
-                                    if self.fullDayArray {
-                                        self.user.UserDayData[self.goalOrRoutineIndex!].mapValue!.fields.isInProgress!.booleanValue = true
-                                    }
-                                    else {
-                                        self.user.UserDayBlockData[self.goalOrRoutineIndex!].mapValue!.fields.isInProgress!.booleanValue = true
-                                    }
+                                    self.model.goalsRoutinesData?[self.goalOrRoutineIndex!].isInProgress = "True"
+                                    self.model.goalsRoutinesBlockData?[self.goalOrRoutineIndex!].isInProgress = "True"
                                     // start goal
-                                    self.model.startGoalOrRoutine(userId: self.user.User,
-                                                                  routineId: self.goalOrRoutine!.mapValue!.fields.id.stringValue,
-                                                                  taskId: "NA",
-                                                                  routineNumber: self.goalOrRoutineIndex!,
-                                                                  taskNumber: -1,
-                                                                  stepNumber: -1)
+                                    self.model.startGoalOrRoutine(goalRoutineId: self.goalOrRoutine!.grUniqueID)
                                 }) {
                                     Text("Start")
                                         .fontWeight(.bold)
                                         .foregroundColor(.yellow)
                                         .font(.system(size: 16, design: .rounded))
                                 }
-                            } else {
+                            } else {                                                                                //if it is started show a Started Text
                                 RoundedRectangle(cornerSize: CGSize(width: 120, height: 30), style: .continuous)
                                     .stroke(Color.yellow, lineWidth: 1)
                                     .frame(width:140, height:25)
@@ -278,23 +233,17 @@ struct TasksView: View {
                             }
                         }
                     }.padding(.bottom, 0)
-                    ForEach(Array(self.model.goalsSubtasks[self.goalOrRoutine!.mapValue!.fields.id.stringValue]!!.enumerated()), id: \.offset) { index, item in
-                        VStack(alignment: .leading) {
-                            if item.mapValue.fields.isAvailable?.booleanValue ?? true {
-                                TaskItem(task: item, index: index, goalOrRoutineIndex: self.goalOrRoutineIndex!, goalOrRoutineID: self.goalOrRoutine!.mapValue!.fields.id.stringValue, previousTaskIsComplete: ((index == 0) ? true : self.model.goalsSubtasks[self.goalOrRoutine!.mapValue!.fields.id.stringValue]!![index - 1].mapValue.fields.isComplete!.booleanValue), fullDayArray: self.fullDayArray)
+                    ForEach(Array((self.model.goalsSubTasks[self.goalOrRoutine!.grUniqueID]!?.enumerated())!), id: \.offset){ index, item in
+                        VStack(alignment: .leading){
+                            if(item.isAvailable.lowercased() == "true"){
+                                newTaskItem(task: item, index: index , goalOrRoutineIndex: self.goalOrRoutineIndex!, goalOrRoutineID: self.goalOrRoutine?.grUniqueID, previousTaskIsComplete: ((index == 0) ? "True" : self.model.goalsSubTasks[self.goalOrRoutine!.grUniqueID]!![index-1].isComplete), fullDayArray: self.fullDayArray)
                             }
                         }
                     }
                 }.frame(height: geo.size.height)
-                 .padding(0)
-                 .navigationBarTitle("Steps")
+                .padding(0)
+                .navigationBarTitle("Steps")
             }
-        }
-    }
-}
-
-struct newTaskView: View {
-    var body: some View {
-        Text("Hello World")
+        }.onAppear()
     }
 }

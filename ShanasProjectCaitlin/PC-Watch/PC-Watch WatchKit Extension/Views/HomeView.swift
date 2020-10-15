@@ -281,7 +281,7 @@ struct infoView: View {
                         .fontWeight(.bold)
                         .font(.system(size: 18, design: .rounded))
                         .foregroundColor(.black)
-                    (item!.isPersistent == "True" ? Text("Starts at " + DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: self.item!.startDayAndTime) ?? Date()))
+                    (item!.isPersistent.lowercased() == "true" ? Text("Starts at " + DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: self.item!.startDayAndTime) ?? Date()))
                         .fontWeight(.light)
                         .font(.system(size: 12, design: .rounded)) :
                         Text("Takes me " + self.item!.expectedCompletionTime)
@@ -290,7 +290,7 @@ struct infoView: View {
                         .foregroundColor(.black)
                 }
                 Spacer()
-                if (self.item!.isComplete == "True"){
+                if (self.item!.isComplete.lowercased() == "true"){
                     SmallAssetImage(urlName: self.item!.photo, placeholder: Image("default-goal"))
                         .aspectRatio(contentMode: .fit)
                         .opacity(0.40)
@@ -298,7 +298,7 @@ struct infoView: View {
                             .font(.system(size:33))
                             .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
                             .foregroundColor(.green))
-                } else if (self.item!.isInProgress == "True") {
+                } else if (self.item!.isInProgress.lowercased() == "true") {
                     SmallAssetImage(urlName: self.item!.photo, placeholder: Image("default-goal"))
                         .aspectRatio(contentMode: .fit)
                         .opacity(0.40)
@@ -342,14 +342,14 @@ struct HomeView: View {
                             List {
                                 ForEach(Array(((self.networkManager.goalsRoutinesData!.enumerated()))), id: \.offset){ index, item in
                                     VStack(alignment: .leading){
-                                        NavigationLink(destination: newTaskView()){
+                                        NavigationLink(destination: newTaskView(goalOrRoutine: (item as GoalRoutine), goalOrRoutineIndex: index, fullDayArray: true)){
                                             HStack{
                                                 infoView(item: (item as GoalRoutine))
                                             }.frame(height: 80)
                                         }
                                     }
                                 }
-                                .listRowPlatterColor(Color.init(hex: "C8D7E4"))
+                                .listRowPlatterColor(Color.white)
                                 Button(action: {
                                     self.fullDay = false
                                     self.showLess = true
@@ -368,16 +368,16 @@ struct HomeView: View {
                     if self.showLess {
                         VStack(alignment: .leading) {
                             List {
-                                ForEach(Array((((self.networkManager.goalsRoutinesData?.enumerated())!))), id: \.offset){ index, item in
+                                ForEach(Array((((self.networkManager.goalsRoutinesBlockData!.enumerated())))), id: \.offset){ index, item in
                                     VStack(alignment: .leading){
-                                        NavigationLink(destination: newTaskView()){
+                                        NavigationLink(destination: newTaskView(goalOrRoutine: (item as GoalRoutine), goalOrRoutineIndex: index, fullDayArray: false)){
                                             HStack{
                                                 infoView(item: (item as GoalRoutine))
                                             }.frame(height: 80)
                                         }
                                     }
                                 }
-                                .listRowPlatterColor(Color.init(hex: "C8D7E4"))
+                                .listRowPlatterColor(Color.white)
                                 Button(action: {
                                     self.fullDay = true
                                     self.showLess = false

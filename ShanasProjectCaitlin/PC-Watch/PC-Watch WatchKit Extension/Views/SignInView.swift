@@ -13,7 +13,13 @@ struct SignInView: View {
     
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewPick = ViewController.shared
-    @State private var emailId = "vishal8694@gmail.com"//iodevcalendar@gmail.com //100-000027 //vishal8694@gmail.com //100-000029
+    
+    // Account Details
+    // iodevcalendar@gmail.com      //100-000027
+    // annamaneni.v@husky.neu.edu   //100-000028
+    // vishal8694@gmail.com         //100-000029
+    
+    @State private var emailId = "annamaneni.v@husky.neu.edu"
     @ObservedObject var User = UserManager.shared
     
     var body: some View {
