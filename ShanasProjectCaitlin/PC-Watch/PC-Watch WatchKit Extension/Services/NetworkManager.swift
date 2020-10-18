@@ -251,13 +251,12 @@ class NetworkManager: ObservableObject {
         print("Inside start goal or routine")
         
         guard let url = URL(string: "https://3s3sftsr90.execute-api.us-west-1.amazonaws.com/dev/api/v2/udpateGRWatchMobile") else { return }
-        let defaultDateTimeCompleted = "Thu, 01 Jan 2004 00:00:00 GMT"
-        let defaultDateTimeStarted = "Thu, 01 Jan 2004 00:00:00 GMT"
+        let defaultDateTimeStarted = createTimeStamp()
         let isInProgress = self.trueCase
         let isComplete = self.falseCase
         
         
-        let jsonData = GoalRoutinePost(id: goalRoutineId, datetimeCompleted: defaultDateTimeCompleted, datetimeStarted: defaultDateTimeStarted, isInProgress: isInProgress, isComplete: isComplete)
+        let jsonData = GoalRoutinePost(id: goalRoutineId, datetimeCompleted: "", datetimeStarted: defaultDateTimeStarted, isInProgress: isInProgress, isComplete: isComplete)
         
         let finalJsonData = try? JSONEncoder().encode(jsonData)
         
@@ -290,13 +289,12 @@ class NetworkManager: ObservableObject {
         print("Inside complete goal or routine")
         
         guard let url = URL(string: "https://3s3sftsr90.execute-api.us-west-1.amazonaws.com/dev/api/v2/udpateGRWatchMobile") else { return }
-        let defaultDateTimeCompleted = "Thu, 01 Jan 2004 00:00:00 GMT"
-        let defaultDateTimeStarted = "Thu, 01 Jan 2004 00:00:00 GMT"
+        let defaultDateTimeCompleted = createTimeStamp()
         let isInProgress = self.falseCase
         let isComplete = self.trueCase
         
         
-        let jsonData = GoalRoutinePost(id: goalRoutineId, datetimeCompleted: defaultDateTimeCompleted, datetimeStarted: defaultDateTimeStarted, isInProgress: isInProgress, isComplete: isComplete)
+        let jsonData = GoalRoutinePost(id: goalRoutineId, datetimeCompleted: defaultDateTimeCompleted, datetimeStarted: "", isInProgress: isInProgress, isComplete: isComplete)
         
         let finalJsonData = try? JSONEncoder().encode(jsonData)
         
@@ -325,17 +323,16 @@ class NetworkManager: ObservableObject {
             else { return }
         }.resume()
     }
-    func startActionOrTask(actionTaskId: String) {
-        print("Inside start action or task")
+    func completeActionOrTask(actionTaskId: String) {
+        print("Inside complete action or task")
         
         guard let url = URL(string: "https://3s3sftsr90.execute-api.us-west-1.amazonaws.com/dev/api/v2/updateATWatchMobile") else { return }
-        let defaultDateTimeCompleted = "Thu, 01 Jan 2004 00:00:00 GMT"
-        let defaultDateTimeStarted = "Thu, 01 Jan 2004 00:00:00 GMT"
-        let isInProgress = self.trueCase
-        let isComplete = self.falseCase
+        let defaultDateTimeCompleted = createTimeStamp()
+        let isInProgress = self.falseCase
+        let isComplete = self.trueCase
         
         
-        let jsonData = ActionTaskPost(id: actionTaskId, datetimeCompleted: defaultDateTimeCompleted, datetimeStarted: defaultDateTimeStarted, isInProgress: isInProgress, isComplete: isComplete)
+        let jsonData = ActionTaskPost(id: actionTaskId, datetimeCompleted: defaultDateTimeCompleted, datetimeStarted: "", isInProgress: isInProgress, isComplete: isComplete)
         
         let finalJsonData = try? JSONEncoder().encode(jsonData)
         
@@ -364,43 +361,15 @@ class NetworkManager: ObservableObject {
             else { return }
         }.resume()
     }
-    func completeActionOrTask(actionTaskId: String) {
-        print("Inside complete action or task")
+    func createTimeStamp() -> String{
+        //Useful linkg for datetime formatting -> https://www.datetimeformatter.com/how-to-format-date-time-in-swift/
         
-        guard let url = URL(string: "https://3s3sftsr90.execute-api.us-west-1.amazonaws.com/dev/api/v2/updateATWatchMobile") else { return }
-        let defaultDateTimeCompleted = "Thu, 01 Jan 2004 00:00:00 GMT"
-        let defaultDateTimeStarted = "Thu, 01 Jan 2004 00:00:00 GMT"
-        let isInProgress = self.falseCase
-        let isComplete = self.trueCase
-        
-        
-        let jsonData = ActionTaskPost(id: actionTaskId, datetimeCompleted: defaultDateTimeCompleted, datetimeStarted: defaultDateTimeStarted, isInProgress: isInProgress, isComplete: isComplete)
-        
-        let finalJsonData = try? JSONEncoder().encode(jsonData)
-        
-        print(finalJsonData!)
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.httpBody = finalJsonData
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("application/json", forHTTPHeaderField: "Accept")
-        
-        URLSession.shared.dataTask(with: request){ (data, _ , error) in
-            if let error = error {
-                print("Generic networking error: \(error)")
-            }
-
-            if let data = data {
-                do{
-                    let finalRespData = try JSONDecoder().decode(ActionTaskPostResp.self, from: data)
-                    print(finalRespData)
-                }
-                catch let jsonParseError {
-                    print("Error in parsing JSON response: \(jsonParseError)")
-                }
-            }
-            else { return }
-        }.resume()
+        //Data format example = "Thu, 01 Jan 2004 00:00:00 GMT"
+        let formatter3 = DateFormatter()
+        formatter3.dateFormat = "E, d MMM y hh:mm a zzz"
+        let today = Date()
+        let temp = formatter3.string(from: today)
+        print(temp)
+        return temp
     }
 }
