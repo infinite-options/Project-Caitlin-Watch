@@ -63,6 +63,7 @@ class NetworkManager: ObservableObject {
         
         group.enter()
         getGoalsAndRoutines(){ data in
+            print("GR Endpoint Return: \(data)")
             self.goalsRoutinesData = data
             self.goalsRoutinesData?.sort(by: self.sortGoalsAndRoutines)
             
@@ -194,6 +195,8 @@ class NetworkManager: ObservableObject {
                 print("Generic networking error: \(error)")
             }
             if let data = data {
+//                print("In Func Endpoint Return: \(data)")
+                print("JSON String: \(String(data: data, encoding: .utf8))")
                 do {
                     let data = try JSONDecoder().decode(GoalsAndRoutinesResponse.self, from: data)
                     completion(data.result)

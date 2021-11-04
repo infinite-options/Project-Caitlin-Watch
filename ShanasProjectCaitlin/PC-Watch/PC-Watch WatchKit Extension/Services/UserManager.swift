@@ -83,7 +83,7 @@ class UserManager: ObservableObject {
             if let data = data {
                 do{
                     let finalRespData = try JSONDecoder().decode(getUserFromEmailResponse.self, from: data)
-
+                    print("User ID: \(finalRespData)")
                     if(finalRespData.result != ""){
                         print("User found")
                         let GoalsEvents = NetworkManager.shared
