@@ -18,6 +18,7 @@ struct SignInView: View {
     // iodevcalendar@gmail.com      //100-000027
     // annamaneni.v@husky.neu.edu   //100-000028
     // vishal8694@gmail.com         //100-000029
+    //pmarathay@gmail.com           //100-000040
     
     @State private var emailId = "pmarathay@gmail.com"
     @ObservedObject var User = UserManager.shared

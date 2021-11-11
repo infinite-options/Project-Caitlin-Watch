@@ -15,12 +15,14 @@ struct AsyncImage<Placeholder: View>: View {
     init(url: URL, placeholder: Placeholder? = nil) {
         loader = ImageLoader(url: url)
         self.placeholder = placeholder
+        loader.load()
     }
 
     var body: some View {
         image
-            .onAppear(perform: loader.load)
-            .onDisappear(perform: loader.cancel)
+//            .onAppear(perform: loader.load)
+//            .onAppear(perform: loader.load)
+//            .onDisappear(perform: loader.cancel)
     }
     
     private var image: some View {
@@ -28,10 +30,8 @@ struct AsyncImage<Placeholder: View>: View {
             if loader.image != nil {
                 Image(uiImage: loader.image!)
                     .resizable()
-                    .frame(width: 100, height: 100)
-                    .clipShape(Circle())
-                    .overlay(Circle()
-                        .stroke(Color.white, lineWidth: 1))
+                    .frame(width: 30, height: 30)
+                    
 //                Circle()
 //                    .foregroundColor(Color.yellow.opacity(0.9))
 //                    .frame(width: 80, height: 80)
@@ -45,10 +45,8 @@ struct AsyncImage<Placeholder: View>: View {
 //                    .padding(EdgeInsets(top: 8, leading: 2, bottom: 0, trailing: 2))
             } else {
                 placeholder
-                    .frame(width: 100, height: 100)
-                    .clipShape(Circle())
-                    .overlay(Circle()
-                        .stroke(Color.white, lineWidth: 1))
+                    .frame(width: 30, height: 30)
+                    
             }
         }
     }

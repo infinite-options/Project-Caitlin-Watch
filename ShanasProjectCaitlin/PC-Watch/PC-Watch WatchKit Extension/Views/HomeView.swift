@@ -272,48 +272,90 @@ struct infoView: View {
     var item: GoalRoutine?
     @ObservedObject var viewPick = ViewController.shared
     @ObservedObject private var model = NetworkManager.shared
-
+    
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
                 VStack(alignment: .leading) {
                     Text(self.item!.grTitle)
                         .fontWeight(.bold)
-                        .font(.system(size: 18, design: .rounded))
-                        .foregroundColor(.black)
+                        .font(.system(size: 16, design: .rounded))
+                        .foregroundColor(.white)
+//                        .padding(EdgeInsets(top: 0, leading: -2, bottom: 0, trailing: -2))
                     (item!.isPersistent.lowercased() == "true" ? Text("Starts at " + DayDateObj.formatter.string(from: DayDateObj.timeLeft.date(from: self.item!.startDayAndTime) ?? Date()))
                         .fontWeight(.light)
+//                        .padding(EdgeInsets(top: 0, leading: -2, bottom: 0, trailing: -2))
                         .font(.system(size: 12, design: .rounded)) :
                         Text("Takes me " + self.item!.expectedCompletionTime)
                             .fontWeight(.light)
+//                            .padding(EdgeInsets(top: 0, leading: -2, bottom: 0, trailing: -2))
                             .font(.system(size: 12, design: .rounded)))
-                        .foregroundColor(.black)
+                        .foregroundColor(.white)
                 }
                 Spacer()
                 if (self.item!.isComplete.lowercased() == "true"){
-                    SmallAssetImage(urlName: self.item!.photo, placeholder: Image("default-goal"))
-                        .aspectRatio(contentMode: .fit)
-                        .opacity(0.40)
+//                    Image("default-goal")
+//                        .resizable()
+//                        .aspectRatio(contentMode: .fit)
+//                        .frame(width: 37, height: 37, alignment: .center)
+//                        .opacity(0.4)
+//                        .overlay(Image(systemName: "checkmark.circle")
+//                                .font(.system(size:20))
+//                                .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
+//                                .foregroundColor(.green))
+                    AsyncImage(
+                        url: URL(string: self.item!.photo)!,
+                        placeholder: Image(systemName: "default-goal"))
+//                        .padding(EdgeInsets(top: 0, leading: -2, bottom: 0, trailing: -2))
+                        .opacity(0.4)
                         .overlay(Image(systemName: "checkmark.circle")
-                            .font(.system(size:33))
-                            .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
-                            .foregroundColor(.green))
+                                .font(.system(size:20))
+                                .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
+                                .foregroundColor(.green))
+                    
+//                    SmallAssetImage(urlName: self.item!.photo, placeholder: Image("default-goal"))
+////                        .frame(width: 30, height: 30, alignment: .center)
+////                        .clipped()
+//                        .aspectRatio(contentMode: .fit)
+//                        .padding()
+//                        .opacity(0.40)
+//                        .overlay(Image(systemName: "checkmark.circle")
+//                            .font(.system(size:33))
+//                            .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
+//                            .foregroundColor(.green))
                 } else if (self.item!.isInProgress.lowercased() == "true") {
-                    SmallAssetImage(urlName: self.item!.photo, placeholder: Image("default-goal"))
-                        .aspectRatio(contentMode: .fit)
-                        .opacity(0.40)
-                        .overlay(Image(systemName: "arrow.2.circlepath.circle")
-                            .font(.system(size:33))
-                            .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
-                            .foregroundColor(.yellow))
+                        AsyncImage(
+                            url: URL(string: self.item!.photo)!,
+                            placeholder: Image(systemName: "default-goal"))
+//                            .padding(EdgeInsets(top: 0, leading: -2, bottom: 0, trailing: -2))
+                            .opacity(0.40)
+                            .overlay(Image(systemName: "arrow.2.circlepath.circle")
+                                .font(.system(size:20))
+                                .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
+                                .foregroundColor(.yellow))
+                    
+//                    SmallAssetImage(urlName: self.item!.photo, placeholder: Image("default-goal"))
+//                      SmallAssetImage(urlName: "https://www.pngitem.com/pimgs/m/519-5194627_goal-clipart-hd-png-download.png", placeholder: Image("default-goal"))
+//                        .aspectRatio(contentMode: .fit)
+//                        .padding()
+//                        .opacity(0.40)
+//                        .overlay(Image(systemName: "arrow.2.circlepath.circle")
+//                            .font(.system(size:33))
+//                            .padding(EdgeInsets(top: 2, leading: 0, bottom: 0, trailing: 0))
+//                            .foregroundColor(.yellow))
                 } else {
-                    SmallAssetImage(urlName: self.item!.photo, placeholder: Image("default-goal"))
-                        .aspectRatio(contentMode: .fit)
-                }
-            }
-        }
-    }
-}
+//                    SmallAssetImage(urlName: self.item!.photo, placeholder: Image("default-goal"))
+//                        .aspectRatio(contentMode: .fit)
+//                        .padding()
+                    AsyncImage(
+                        url: URL(string: self.item!.photo)!,
+                        placeholder: Image(systemName: "default-goal"))
+//                        .padding(EdgeInsets(top: 0, leading: -2, bottom: 0, trailing: -2))
+                } //else
+            } //hstack
+        } //vstack
+    } //body
+} //info view
 
 struct HomeView: View {
     
@@ -336,20 +378,48 @@ struct HomeView: View {
                 }.frame(width: geo.size.width, height: geo.size.height, alignment: .center)
                     .navigationBarTitle("My Day")
             } else {
-                VStack {
+                VStack (spacing: 20) {
                     if (self.fullDay) {
-                        VStack(alignment: .leading) {
+                        VStack(alignment: .leading, spacing: 20) {
                             List {
                                 ForEach(Array(((self.networkManager.goalsRoutinesData!.enumerated()))), id: \.offset){ index, item in
-                                    VStack(alignment: .leading){
+                                    VStack(alignment: .leading, spacing: 20){
                                         NavigationLink(destination: newTaskView(goalOrRoutine: (item as GoalRoutine), goalOrRoutineIndex: index, fullDayArray: true)){
-                                            HStack{
-                                                infoView(item: (item as GoalRoutine))
-                                            }.frame(height: 80)
+//                                            HStack (spacing: 20) {
+//                                                infoView(item: (item as GoalRoutine))
+//                                            }.frame(height: 50)
+                                            
+                                            //routines are persistent - red
+                                            if ((item as GoalRoutine).isPersistent.lowercased() == "true")
+                                            {
+//                                                self.setCurrentColor(color: Color.red)
+                                                HStack (spacing: 5) {
+                                                    Spacer()
+                                                    infoView(item: (item as GoalRoutine))
+                                                    Spacer()
+                                                }.frame(height: 50)
+                                                .background(Color(#colorLiteral(red: 0.9725490196, green: 0.4196078431, blue: 0.2862745098, alpha: 1)))
+                                                .padding(EdgeInsets(top: -1, leading: -3, bottom: -1, trailing: -3))
+                                            }
+                                            //goals are not persistent - yellow
+                                            else
+                                            {
+                                                HStack (spacing: 5) {
+                                                    Spacer()
+                                                    infoView(item: (item as GoalRoutine))
+                                                    Spacer()
+                                                }.frame(height: 50)
+                                                .background(Color(#colorLiteral(red: 1, green: 0.7411764706, blue: 0.1529411765, alpha: 1)))
+                                                .padding(EdgeInsets(top: -1, leading: -3, bottom: -1, trailing: -3))
+                                            }
+                                        
                                         }
+
                                     }
+                                    .cornerRadius(10)
                                 }
-                                .listRowPlatterColor(Color.white)
+                                .listRowPlatterColor(Color.clear)
+//                                .listRowInsets(EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
                                 Button(action: {
                                     self.fullDay = false
                                     self.showLess = true
@@ -361,30 +431,61 @@ struct HomeView: View {
                             }
                             .listStyle(CarouselListStyle())
                             .navigationBarTitle("My Day")
-                            .listRowBackground(Color.white)
+                            .listRowBackground(Color.clear)
                         }
                         .padding(0)
                     }
                     if self.showLess {
-                        VStack(alignment: .leading) {
+                        VStack(alignment: .leading, spacing: 20) {
                             List {
                                 ForEach(Array((((self.networkManager.goalsRoutinesBlockData!.enumerated())))), id: \.offset){ index, item in
-                                    VStack(alignment: .leading){
-                                        NavigationLink(destination: newTaskView(goalOrRoutine: (item as GoalRoutine), goalOrRoutineIndex: index, fullDayArray: false)){
-                                            HStack{
-                                                infoView(item: (item as GoalRoutine))
-                                            }.frame(height: 80)
+                                    VStack(alignment: .leading, spacing: 20){
+                                        NavigationLink(destination: newTaskView(goalOrRoutine: (item as GoalRoutine), goalOrRoutineIndex: index, fullDayArray: true)){
+//                                            HStack (spacing: 20) {
+//                                                infoView(item: (item as GoalRoutine))
+//                                            }.frame(height: 50)
+                                            
+                                            //routines are persistent - red
+                                            if ((item as GoalRoutine).isPersistent.lowercased() == "true")
+                                            {
+//                                                self.setCurrentColor(color: Color.red)
+                                                HStack (spacing: 5) {
+                                                    Spacer()
+                                                    infoView(item: (item as GoalRoutine))
+                                                    Spacer()
+                                                }.frame(height: 50)
+                                                .background(Color(#colorLiteral(red: 0.9725490196, green: 0.4196078431, blue: 0.2862745098, alpha: 1)))
+                                                .padding(EdgeInsets(top: -1, leading: -3, bottom: -1, trailing: -3))
+                                            }
+                                            //goals are not persistent - yellow
+                                            else
+                                            {
+                                                HStack (spacing: 5) {
+                                                    Spacer()
+                                                    infoView(item: (item as GoalRoutine))
+                                                    Spacer()
+                                                }.frame(height: 50)
+                                                .background(Color(#colorLiteral(red: 1, green: 0.7411764706, blue: 0.1529411765, alpha: 1)))
+                                                .padding(EdgeInsets(top: -1, leading: -3, bottom: -1, trailing: -3))
+                                            }
+                                        
                                         }
+
                                     }
+                                    .cornerRadius(10)
                                 }
-                                .listRowPlatterColor(Color.white)
+                                .listRowPlatterColor(Color.clear)
+                                
                                 Button(action: {
                                     self.fullDay = true
                                     self.showLess = false
-                                }) {
+                                })
+                                {
                                     Text("Show full day")
                                         .foregroundColor(Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1))
                                 }
+                                .frame(width: 200, height: 40, alignment: .center)
+                                .clipped()
                             }
                             .listStyle(CarouselListStyle())
                             .navigationBarTitle("My Day")
@@ -394,6 +495,7 @@ struct HomeView: View {
             }
         }
     }
+    
 
     private func isEvent(item: UserDayGoalEventList) -> Bool{
         if item is Event {

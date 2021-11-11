@@ -27,10 +27,10 @@ struct AssetImage<Placeholder: View>: View {
             if photoUrlToAssetImage[urlName] != nil {
                 Circle()
                     .foregroundColor(Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1))
-                    .frame(width: 50, height: 50)
+                    .frame(width: 50, height: 50) //50
                     .overlay(Image(photoUrlToAssetImage[urlName]!)
                         .resizable()
-                        .frame(width:30, height:30)
+                        .frame(width:30, height:30) //30
                         .padding(0))
                     .overlay(Circle().stroke(Color.white, lineWidth: 1))
                     .shadow(color: Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1) , radius: 4)
@@ -66,22 +66,25 @@ struct SmallAssetImage<Placeholder: View>: View {
             if photoUrlToAssetImage[urlName] != nil && photoUrlToAssetImage[urlName] != "" {
                 Circle()
                     .foregroundColor(Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1))
-                    .frame(width: 30, height: 30)
+                    .frame(width: 30, height: 30) //30
+                    .clipped()
                     .overlay(Image(photoUrlToAssetImage[urlName]!)
                         .resizable()
-                        .frame(width:22, height:22)
+                        .frame(width:22, height:22) //22
                         .padding(0))
                     .overlay(Circle().stroke(Color.white, lineWidth: 1))
                     .shadow(color: Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1) , radius: 4)
-                    .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 2))
+                    .padding(EdgeInsets(top: 15, leading: 10, bottom: 15, trailing: 10)) //8,2,8,2
             } else {
                 Circle()
                     .foregroundColor(Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1))
-                    .frame(width: 30, height: 30)
+                    .frame(width: 30, height: 30) //30
+                    .clipped()
                     .overlay(placeholder)
+                        .frame(width: 15, height: 15) //new
                     .overlay(Circle().stroke(Color.white, lineWidth: 1))
                     .shadow(color: Color(Color.RGBColorSpace.sRGB, red: 200/255, green: 215/255, blue: 228/255, opacity: 1) , radius: 4)
-                    .padding(EdgeInsets(top: 8, leading: 2, bottom: 8, trailing: 2))
+                    .padding(EdgeInsets(top: 15, leading: 10, bottom: 15, trailing: 10)) //8,2,8,2
             }
         }
     }
